@@ -1,0 +1,488 @@
+{
+    "project": {},
+    "files": {
+        "calendar.plugin.js": {
+            "name": "calendar.plugin.js",
+            "modules": {
+                "Calendar": 1
+            },
+            "classes": {
+                "Helpers": 1,
+                "Header": 1,
+                "MonthCalendar": 1,
+                "CalendarEvents": 1,
+                "VacationCalendar": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {
+        "Calendar": {
+            "name": "Calendar",
+            "submodules": {},
+            "classes": {
+                "Helpers": 1,
+                "Header": 1,
+                "MonthCalendar": 1,
+                "CalendarEvents": 1,
+                "VacationCalendar": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "calendar.plugin.js",
+            "line": 436,
+            "description": "Vacation calendar plugin."
+        }
+    },
+    "classes": {
+        "Helpers": {
+            "name": "Helpers",
+            "shortname": "Helpers",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Calendar",
+            "file": "calendar.plugin.js",
+            "line": 12,
+            "description": "This provides helpers."
+        },
+        "Header": {
+            "name": "Header",
+            "shortname": "Header",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Calendar",
+            "file": "calendar.plugin.js",
+            "line": 108,
+            "description": "Renders header of plugin. Contains actual year and navigation\nto previous and next year.",
+            "itemtype": "property",
+            "type": "JQuery"
+        },
+        "MonthCalendar": {
+            "name": "MonthCalendar",
+            "shortname": "MonthCalendar",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Calendar",
+            "file": "calendar.plugin.js",
+            "line": 186,
+            "description": "Provides rendering month calendars, marks specified events by\ncustom colors, displays tooltip for each event both personal and\nto other users. Sets Monday as the first day of week.",
+            "params": [
+                {
+                    "name": "settings",
+                    "description": "- Plugin settings",
+                    "type": "ISettings"
+                },
+                {
+                    "name": "year",
+                    "description": "- Actual year of calendar",
+                    "type": "Number"
+                }
+            ],
+            "itemtype": "property",
+            "type": "JQuery"
+        },
+        "CalendarEvents": {
+            "name": "CalendarEvents",
+            "shortname": "CalendarEvents",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Calendar",
+            "file": "calendar.plugin.js",
+            "line": 306,
+            "description": "Implements mouse event handlers and provides selected range\nof days indexes and sets selected class.",
+            "params": [
+                {
+                    "name": "element",
+                    "description": "- Calendar jquery element",
+                    "type": "JQuery"
+                },
+                {
+                    "name": "settings",
+                    "description": "- Plugin settings",
+                    "type": "ISettings"
+                }
+            ],
+            "itemtype": "property",
+            "type": "JQuery"
+        },
+        "VacationCalendar": {
+            "name": "VacationCalendar",
+            "shortname": "VacationCalendar",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Calendar",
+            "namespace": "",
+            "file": "calendar.plugin.js",
+            "line": 436,
+            "description": "Provides the base plugin class and initializes all components.",
+            "params": [
+                {
+                    "name": "element",
+                    "description": "- DOM element for plugin",
+                    "type": "JQuery"
+                },
+                {
+                    "name": "options",
+                    "description": "- Custom options",
+                    "type": "ISettings"
+                }
+            ],
+            "itemtype": "property",
+            "type": "JQuery"
+        }
+    },
+    "classitems": [
+        {
+            "file": "calendar.plugin.js",
+            "line": 1,
+            "description": "Created by Marcela on 28. 4. 2015.",
+            "class": "Helpers"
+        },
+        {
+            "file": "calendar.plugin.js",
+            "line": 5,
+            "description": "Created by Marcela on 28. 4. 2015.",
+            "class": "Helpers"
+        },
+        {
+            "file": "calendar.plugin.js",
+            "line": 20,
+            "description": "Utility that creates new array according to specified values (`from` and `to`).\nIf there is the specified input array, the result will contain elements\nfrom this array, otherwise there will be a sequence of integers in the range\nof each of the given values.\n\nThis is an __example__ of usage `ArrayRange` method\n\n    var array = [1,2,4,5,6,8,9,21,22,45],\n        from = 2,\n        to = 10;\n\n    Calendar.Helpers.ArrayRange(2,10,array);\n    // => [2, 4, 5, 6, 8, 9]\n\n    // example of unsorted array\n    Calendar.Helpers.ArrayRange(2,10,1,6,2,5,6,7,4,5]);\n    // => [2, 4, 5, 6, 7]\n\n    // example without input array\n    Calendar.Helpers.ArrayRange(2,10);\n    // => [2, 3, 4, 5, 6, 7, 8, 9, 10]",
+            "itemtype": "method",
+            "name": "ArrayRange",
+            "static": 1,
+            "params": [
+                {
+                    "name": "from",
+                    "description": "- Start value",
+                    "type": "Number"
+                },
+                {
+                    "name": "to",
+                    "description": "- End value",
+                    "type": "Number"
+                },
+                {
+                    "name": "array",
+                    "description": "- Input array",
+                    "type": "Array<number>",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Array<number>"
+            },
+            "class": "Helpers"
+        },
+        {
+            "file": "calendar.plugin.js",
+            "line": 70,
+            "description": "Provides the correct order of start and end indexes",
+            "itemtype": "method",
+            "name": "ArrayIndexes",
+            "static": 1,
+            "params": [
+                {
+                    "name": "indexes",
+                    "description": "- Object with start and end value",
+                    "type": "IArrayIndexes"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "IArrayIndexes"
+            },
+            "class": "Helpers"
+        },
+        {
+            "file": "calendar.plugin.js",
+            "line": 87,
+            "description": "Capitalizes the first letter of the text.",
+            "itemtype": "method",
+            "name": "CapitalizeFirstLetter",
+            "static": 1,
+            "params": [
+                {
+                    "name": "text",
+                    "description": "- Text",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "Helpers"
+        },
+        {
+            "file": "calendar.plugin.js",
+            "line": 102,
+            "description": "Created by Marcela on 29. 4. 2015.",
+            "class": "Helpers"
+        },
+        {
+            "file": "calendar.plugin.js",
+            "line": 121,
+            "description": "Creates whole header elements.",
+            "itemtype": "method",
+            "name": "render",
+            "return": {
+                "description": "JQuery"
+            },
+            "class": "Header"
+        },
+        {
+            "file": "calendar.plugin.js",
+            "line": 130,
+            "description": "Creates main header element and appends navigation buttons\nand title.",
+            "itemtype": "method",
+            "name": "renderHeader",
+            "return": {
+                "description": "JQuery"
+            },
+            "class": "Header"
+        },
+        {
+            "file": "calendar.plugin.js",
+            "line": 140,
+            "description": "Creates navigation button.",
+            "itemtype": "method",
+            "name": "renderButton",
+            "params": [
+                {
+                    "name": "direction",
+                    "description": "- Direction (prev or next)",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "JQuery"
+            },
+            "class": "Header"
+        },
+        {
+            "file": "calendar.plugin.js",
+            "line": 151,
+            "description": "Creates year title.",
+            "itemtype": "method",
+            "name": "renderTitle",
+            "return": {
+                "description": "JQuery"
+            },
+            "class": "Header"
+        },
+        {
+            "file": "calendar.plugin.js",
+            "line": 164,
+            "description": "Created by Marcela on 29. 4. 2015.",
+            "class": "Header"
+        },
+        {
+            "file": "calendar.plugin.js",
+            "line": 216,
+            "description": "Capitalizes the first letter of the month and weekdays names.",
+            "itemtype": "method",
+            "name": "capitalize",
+            "class": "MonthCalendar"
+        },
+        {
+            "file": "calendar.plugin.js",
+            "line": 225,
+            "description": "Creates wrapper for month tables.",
+            "itemtype": "method",
+            "name": "templateCalendar",
+            "return": {
+                "description": "",
+                "type": "JQuery"
+            },
+            "class": "MonthCalendar"
+        },
+        {
+            "file": "calendar.plugin.js",
+            "line": 239,
+            "description": "Creates table for month represented by month index,\nmarks weekdays and events.",
+            "itemtype": "method",
+            "name": "templateTable",
+            "params": [
+                {
+                    "name": "monthId",
+                    "description": "- Month index 0 - 11",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "JQuery"
+            },
+            "class": "MonthCalendar"
+        },
+        {
+            "file": "calendar.plugin.js",
+            "line": 297,
+            "description": "Created by Marcela on 2. 5. 2015.",
+            "class": "MonthCalendar"
+        },
+        {
+            "file": "calendar.plugin.js",
+            "line": 328,
+            "description": "Sets selected year to local variable.",
+            "itemtype": "method",
+            "name": "setSelectedlYear",
+            "params": [
+                {
+                    "name": "year",
+                    "description": "- Selected year",
+                    "type": "Number"
+                }
+            ],
+            "class": "CalendarEvents"
+        },
+        {
+            "file": "calendar.plugin.js",
+            "line": 337,
+            "description": "Implements mousedown event. Sets start index and adds selected class to actual cell.",
+            "itemtype": "method",
+            "name": "mousedown",
+            "params": [
+                {
+                    "name": "e",
+                    "description": "- Event handler object",
+                    "type": "JQueryEventObject"
+                }
+            ],
+            "class": "CalendarEvents"
+        },
+        {
+            "file": "calendar.plugin.js",
+            "line": 354,
+            "description": "Implements mouseover event. Sets end index, calculates range of selected cells\nand adds selected class to all cells according to calculated range.",
+            "itemtype": "method",
+            "name": "mouseover",
+            "params": [
+                {
+                    "name": "e",
+                    "description": "- Event handler object",
+                    "type": "JQueryEventObject"
+                }
+            ],
+            "class": "CalendarEvents"
+        },
+        {
+            "file": "calendar.plugin.js",
+            "line": 378,
+            "description": "Implements mouseup event. Sets end index, calculates start date and end date\nfrom indexes and call modal dialog. At the end resets start and end indexes.",
+            "itemtype": "method",
+            "name": "mouseup",
+            "params": [
+                {
+                    "name": "e",
+                    "description": "- Event handler object",
+                    "type": "JQueryEventObject"
+                }
+            ],
+            "class": "CalendarEvents"
+        },
+        {
+            "file": "calendar.plugin.js",
+            "line": 395,
+            "description": "Resolves left mouse pressing.",
+            "itemtype": "method",
+            "name": "leftMousePressed",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "e",
+                    "description": "- Event handler object",
+                    "type": "JQueryEventObject"
+                }
+            ],
+            "class": "CalendarEvents"
+        },
+        {
+            "file": "calendar.plugin.js",
+            "line": 407,
+            "description": "Remove values from `this.index` property after `mouseup` event\nto use for other selection.",
+            "itemtype": "method",
+            "name": "resetIndexes",
+            "access": "private",
+            "tagname": "",
+            "class": "CalendarEvents"
+        },
+        {
+            "file": "calendar.plugin.js",
+            "line": 421,
+            "description": "Created by Marcela on 28. 4. 2015.",
+            "class": "CalendarEvents"
+        },
+        {
+            "file": "calendar.plugin.js",
+            "line": 467,
+            "description": "Initializes view with calendars.",
+            "itemtype": "method",
+            "name": "init",
+            "class": "VacationCalendar",
+            "module": "Calendar"
+        },
+        {
+            "file": "calendar.plugin.js",
+            "line": 479,
+            "description": "Changes the year of calendar and calls rerendering calendar view",
+            "itemtype": "method",
+            "name": "changeYear",
+            "params": [
+                {
+                    "name": "e",
+                    "description": "- Button object handler",
+                    "type": "JQueryEventObject"
+                }
+            ],
+            "class": "VacationCalendar",
+            "module": "Calendar"
+        }
+    ],
+    "warnings": [
+        {
+            "message": "Missing item type\nCreated by Marcela on 28. 4. 2015.",
+            "line": " calendar.plugin.js:1"
+        },
+        {
+            "message": "Missing item type\nCreated by Marcela on 28. 4. 2015.",
+            "line": " calendar.plugin.js:5"
+        },
+        {
+            "message": "Missing item type\nCreated by Marcela on 29. 4. 2015.",
+            "line": " calendar.plugin.js:102"
+        },
+        {
+            "message": "Missing item type\nCreated by Marcela on 29. 4. 2015.",
+            "line": " calendar.plugin.js:164"
+        },
+        {
+            "message": "Missing item type\nCreated by Marcela on 2. 5. 2015.",
+            "line": " calendar.plugin.js:297"
+        },
+        {
+            "message": "Missing item type\nCreated by Marcela on 28. 4. 2015.",
+            "line": " calendar.plugin.js:421"
+        }
+    ]
+}

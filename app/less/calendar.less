@@ -1,0 +1,124 @@
+.calendar-wrapper {
+  .calendar-header {
+    margin-top: 5px;
+    margin-bottom: 5px;
+
+    .actual-year {
+      display: inline-block;
+      margin: 0 7px;
+      font-size: 1.3em;
+    }
+  }
+
+  .calendar-content {
+
+  }
+}
+
+.calendar-table {
+  margin-bottom: 15px;
+
+  .weekend {
+    color: red;
+  }
+
+  .calendar-header-month {
+    background-image: -webkit-linear-gradient(#ffffff, #ffffff 6%, #f7f7f7);
+    background-image: -o-linear-gradient(#ffffff, #ffffff 6%, #f7f7f7);
+    background-image: linear-gradient(#ffffff, #ffffff 6%, #f7f7f7);
+    background-repeat: no-repeat;
+
+    th {
+      border-bottom: none;
+      padding: 5px;
+    }
+  }
+
+  .calendar-header-day {
+    background-color: #f7f7f7;
+
+    th {
+      text-align: center;
+      font-size: 75%;
+      font-weight: normal;
+      color: #a8a8a8;
+      border: none;
+    }
+  }
+
+  .css-today {
+    th {
+      color: #ffffff;
+    }
+
+    &.calendar-header-month,
+    &.today {
+      text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+      /* IE10 Consumer Preview */
+      background-image: -ms-linear-gradient(top, #00A9F0 0%, #0093D2 100%);
+
+      /* Mozilla Firefox */
+      background-image: -moz-linear-gradient(top, #00A9F0 0%, #0093D2 100%);
+
+      /* Opera */
+      background-image: -o-linear-gradient(top, #00A9F0 0%, #0093D2 100%);
+
+      /* Webkit (Safari/Chrome 10) */
+      background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #00A9F0), color-stop(1, #0093D2));
+
+      /* Webkit (Chrome 11+) */
+      background-image: -webkit-linear-gradient(top, #00A9F0 0%, #0093D2 100%);
+
+      /* W3C Markup, IE10 Release Preview */
+      background-image: linear-gradient(to bottom, #00A9F0 0%, #0093D2 100%);
+    }
+
+    &.calendar-header-day {
+      background-color: #0093D2;
+    }
+  }
+
+  .calendar-body > tr > td {
+    text-align: center;
+    width: 30px;
+    height: 27px;
+    padding: 2px;
+    border: 1px solid #ddd;
+    cursor: default;
+  }
+
+  .vacation,
+  .selected-day {
+    color: #fff;
+    /* IE10 Consumer Preview */
+    background-image: -ms-linear-gradient(top, #83C21E 0%, #71A81A 100%);
+
+    /* Mozilla Firefox */
+    background-image: -moz-linear-gradient(top, #83C21E 0%, #71A81A 100%);
+
+    /* Opera */
+    background-image: -o-linear-gradient(top, #83C21E 0%, #71A81A 100%);
+
+    /* Webkit (Safari/Chrome 10) */
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #83C21E), color-stop(1, #71A81A));
+
+    /* Webkit (Chrome 11+) */
+    background-image: -webkit-linear-gradient(top, #83C21E 0%, #71A81A 100%);
+
+    /* W3C Markup, IE10 Release Preview */
+    background-image: linear-gradient(to bottom, #83C21E 0%, #71A81A 100%);
+
+    .popover {
+      color: #aaaaaa;
+    }
+  }
+
+  .vacation-comment {
+    width: 30px;
+    height: 27px;
+  }
+
+  .in-past {
+    opacity: 0.4;
+  }
+}

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Vacation calendar</title>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/bootstrap-theme.css" rel="stylesheet">
+    <link href="css/font-awesome.css" rel="stylesheet">
+    <link href="app/less/calendar.css" rel="stylesheet">
+
+</head>
+<body>
+<div class="container">
+    <div class="navbar-collapse collapse" style="border-bottom: 1px solid #ccc;">
+        <ul class="nav navbar-nav">
+            <li><h2>Vacation calendar</h2></li>
+        </ul>
+        <div class="navbar-right navbar-buttons" style="margin-top: 20px;">
+            <a href="index.html" rel="tooltip" class="btn btn-default btn-sm" style="border-radius: 50%;"
+               data-toggle="tooltip" data-placement="bottom" title="Home page"><i class="glyphicon glyphicon-home"></i></a>
+        </div>
+    </div>
+
+
+    <div>
+        <div id="calendar"></div>
+    </div>
+
+</div>
+
+<script src="js/jquery-2.1.1.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/moment.js"></script>
+<script src="js/moment-with-locales.js"></script>
+<script src="app/calendar.plugin.js"></script>
+
+<script type="text/javascript">
+    $(function() {
+        // Handler for .ready() called.
+        $("#calendar").vacationCalendar({
+            events: [
+                { name: "Vacation", color: "green"},
+                { name: "Available", color: "blue"},
+                { name: "Business trip", color: "orange"},
+                { name: "Unavailable", color: "red"}
+            ],
+            locale: "es"
+        });
+
+        $("#modalTest").modal();
+    });
+</script>
+</body>
+</html>

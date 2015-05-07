@@ -6,7 +6,7 @@ var Calendar;
 (function (Calendar) {
     (function (DialogResult) {
         DialogResult[DialogResult["Submit"] = 0] = "Submit";
-        DialogResult[DialogResult["Reset"] = 1] = "Reset";
+        DialogResult[DialogResult["Delete"] = 1] = "Delete";
         DialogResult[DialogResult["Cancel"] = 2] = "Cancel";
     })(Calendar.DialogResult || (Calendar.DialogResult = {}));
     var DialogResult = Calendar.DialogResult;
@@ -137,25 +137,17 @@ var Calendar;
                 "<div class='modal' tabindex='-1' role='dialog' aria-hidden='true'>",
                 "  <div class='modal-dialog modal-sm'>",
                 "    <div class='modal-content'>",
-                "       <div class='modal-header'>",
+                "       <div class='modal-header'  style='border-bottom: none;'>",
                 "           <button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>",
-                "           <h4 class='modal-title'>{{title}}</h4>",
                 "       </div>",
-                "       <div class='modal-body'>",
-                "           <div class='row'>",
-                "               <div class='col-md-4'>Start date:</div>",
-                "               <div class='col-md-8'>{{start}}</div>",
+                "       <div class='modal-body' style='padding-top: 0;'>",
+                "           <div class='row' style='padding-bottom: 15px;'>",
+                "               <div class='col-md-12'>{{start}}</div>",
+                "               <div class='col-md-12'>{{end}}</div>",
                 "           </div>",
-                "           <div class='row'>",
-                "               <div class='col-md-4'>End date:</div>",
-                "               <div class='col-md-8'>{{end}}</div>",
+                "           <div class='row' style='padding-bottom: 15px;'>",
+                "               <div class='col-md-12'><select class='select-event form-control'>{{options}}</select></div>",
                 "           </div>",
-                "           <hr>",
-                "           <div class='row'>",
-                "               <div class='col-md-4'>Events:</div>",
-                "               <div class='col-md-8'><select class='select-event form-control'>{{options}}</select></div>",
-                "           </div>",
-                "           <hr>",
                 "           <form>",
                 "               <div class='form-group'>",
                 "                   <div>Information (users will see this message)</div>",
@@ -166,11 +158,12 @@ var Calendar;
                 "                   <input type='text' name='privateNote' class='form-control'>",
                 "               </div>",
                 "           </form>",
-                "       </div>",
-                "       <div class='modal-footer'>",
-                "           <button type='button' id='btnSubmit' class='btn btn-primary'>Submit</button>",
-                "           <button type='button' id='btnReset' class='btn btn-default'>Reset</button>",
-                "           <button type='button' id='btnClose' class='btn btn-default' data-dismiss='modal'>Close</button>",
+                "           <div class='row'>",
+                "               <div class='col-md-12'>",
+                "                   <button type='button' id='btnDelete' class='btn btn-default pull-left'>Delete</button>",
+                "                   <button type='button' id='btnSubmit' class='btn btn-primary pull-right'>Submit</button>",
+                "               </div>",
+                "           </div>",
                 "       </div>",
                 "    </div>",
                 "  </div>",
@@ -194,7 +187,7 @@ var Calendar;
             this.modal.modal();
             this.modal.on("change", "select.select-event", function (e) { return _this.selectChange(e); });
             this.modal.on("change", "input", function (e) { return _this.messageChanged(e); });
-            this.modal.on("click", ".modal-footer button", function (e) { return _this.click(e); });
+            this.modal.on("click", ".modal-body button", function (e) { return _this.click(e); });
             this.modal.on("hidden.bs.modal", function () {
                 _this.modal.remove();
                 deferred.resolve(_this.dialogResult);
@@ -209,8 +202,8 @@ var Calendar;
         Dialog.prototype.btnSubmit = function (e) {
             this.dialogResult = 0 /* Submit */;
         };
-        Dialog.prototype.btnReset = function (e) {
-            this.dialogResult = 1 /* Reset */;
+        Dialog.prototype.btnDelete = function (e) {
+            this.dialogResult = 1 /* Delete */;
         };
         Dialog.prototype.btnClose = function (e) {
             this.dialogResult = 2 /* Cancel */;
@@ -231,9 +224,13 @@ var Calendar;
             }
         };
         Dialog.prototype.optionTemplate = function () {
-            var template = "<option value='{{value}}' style='background-color: {{color}};'>{{value}}</option>";
+            var template = "<option value='{{value}}' style='background-color: {{backgroundColor}}; color: {{color}}'>{{value}}</option>";
             var options = this.dialogSettings.events.map(function (item) {
-                return Calendar.Helpers.RenderTemplate(template, { "value": item.name, "color": item.color });
+                return Calendar.Helpers.RenderTemplate(template, {
+                    "value": item.name,
+                    "backgroundColor": item.backgroundColor != null ? item.backgroundColor : "green",
+                    "color": item.color != null ? item.color : "white"
+                });
             });
             return options.join("");
         };
@@ -543,15 +540,51 @@ var Calendar;
             this.dialogSettings.start = moment([this.year]).dayOfYear(idx.start);
             this.dialogSettings.end = moment([this.year]).dayOfYear(idx.end);
             this.showModal();
-            this.resetIndexes();
         };
         CalendarEvents.prototype.showModal = function () {
+            var _this = this;
             var modal = new Calendar.Dialog(this.dialogSettings);
             modal.show().then(function (result) {
-                var dialogResult = result == 0 /* Submit */ ? "Submit form" : result == 1 /* Reset */ ? "Reset events" : "Cancel events";
-                console.log(dialogResult);
-                console.log(modal.dialogSettings);
+                if (result === 0 /* Submit */) {
+                    _this.dialogSettings = modal.dialogSettings;
+                    _this.submitChanges();
+                }
+                else if (result === 1 /* Delete */) {
+                    _this.deleteItems();
+                }
+                _this.removeSelection();
             });
+        };
+        CalendarEvents.prototype.removeSelection = function () {
+            this.element.find("td").removeClass("selected-day");
+        };
+        CalendarEvents.prototype.submitChanges = function () {
+            // user implementation
+            this.applyEventFormat();
+        };
+        CalendarEvents.prototype.deleteItems = function () {
+            // user implementation
+            this.removeEventFormat();
+        };
+        CalendarEvents.prototype.applyEventFormat = function () {
+            var _this = this;
+            var selectedEvent = this.dialogSettings.events.filter(function (item) { return item.name === _this.dialogSettings.selectedEvent; }), oneEvent = selectedEvent[0], bgr = oneEvent["backgroundColor"] != null ? oneEvent["backgroundColor"] : "green", color = oneEvent["color"] != null ? oneEvent["color"] : "white", title = this.dialogSettings.personalNote + " : " + this.dialogSettings.message, eventRange = Calendar.Helpers.ArrayRange(this.indexes.start, this.indexes.end);
+            eventRange.forEach(function (item) {
+                var cell = $('td.cell[data-year-day=' + item + ']');
+                cell.addClass('event-day');
+                cell.css({ "background-color": bgr, "color": color });
+                cell.attr("title", title);
+            });
+            this.resetIndexes();
+        };
+        CalendarEvents.prototype.removeEventFormat = function () {
+            var eventRange = Calendar.Helpers.ArrayRange(this.indexes.start, this.indexes.end);
+            eventRange.forEach(function (item) {
+                var cell = $('td.cell[data-year-day=' + item + ']');
+                cell.css({ "background-color": "", "color": "" });
+                cell.removeAttr("title");
+            });
+            this.resetIndexes();
         };
         /**
          * Resolves left mouse pressing.
@@ -611,7 +644,8 @@ var Calendar;
             this.settings = {
                 events: [{
                     name: "Default",
-                    color: "green"
+                    backgroundColor: "green",
+                    color: "white"
                 }],
                 editable: true
             };

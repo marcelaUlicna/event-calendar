@@ -6,7 +6,7 @@ var Calendar;
 (function (Calendar) {
     (function (DialogResult) {
         DialogResult[DialogResult["Submit"] = 0] = "Submit";
-        DialogResult[DialogResult["Reset"] = 1] = "Reset";
+        DialogResult[DialogResult["Delete"] = 1] = "Delete";
         DialogResult[DialogResult["Cancel"] = 2] = "Cancel";
     })(Calendar.DialogResult || (Calendar.DialogResult = {}));
     var DialogResult = Calendar.DialogResult;

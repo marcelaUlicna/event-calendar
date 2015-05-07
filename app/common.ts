@@ -13,7 +13,8 @@ module Calendar {
 
     export interface IEvent {
         name: string;
-        color: string;
+        backgroundColor?: string;
+        color?: string;
     }
 
     export interface IArrayIndexes {
@@ -32,7 +33,7 @@ module Calendar {
 
     export enum DialogResult {
         Submit,
-        Reset,
+        Delete,
         Cancel
     }
 }

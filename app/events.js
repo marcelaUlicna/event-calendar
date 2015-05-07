@@ -105,15 +105,51 @@ var Calendar;
             this.dialogSettings.start = moment([this.year]).dayOfYear(idx.start);
             this.dialogSettings.end = moment([this.year]).dayOfYear(idx.end);
             this.showModal();
-            this.resetIndexes();
         };
         CalendarEvents.prototype.showModal = function () {
+            var _this = this;
             var modal = new Calendar.Dialog(this.dialogSettings);
             modal.show().then(function (result) {
-                var dialogResult = result == 0 /* Submit */ ? "Submit form" : result == 1 /* Reset */ ? "Reset events" : "Cancel events";
-                console.log(dialogResult);
-                console.log(modal.dialogSettings);
+                if (result === 0 /* Submit */) {
+                    _this.dialogSettings = modal.dialogSettings;
+                    _this.submitChanges();
+                }
+                else if (result === 1 /* Delete */) {
+                    _this.deleteItems();
+                }
+                _this.removeSelection();
             });
+        };
+        CalendarEvents.prototype.removeSelection = function () {
+            this.element.find("td").removeClass("selected-day");
+        };
+        CalendarEvents.prototype.submitChanges = function () {
+            // user implementation
+            this.applyEventFormat();
+        };
+        CalendarEvents.prototype.deleteItems = function () {
+            // user implementation
+            this.removeEventFormat();
+        };
+        CalendarEvents.prototype.applyEventFormat = function () {
+            var _this = this;
+            var selectedEvent = this.dialogSettings.events.filter(function (item) { return item.name === _this.dialogSettings.selectedEvent; }), oneEvent = selectedEvent[0], bgr = oneEvent["backgroundColor"] != null ? oneEvent["backgroundColor"] : "green", color = oneEvent["color"] != null ? oneEvent["color"] : "white", title = this.dialogSettings.personalNote + " : " + this.dialogSettings.message, eventRange = Calendar.Helpers.ArrayRange(this.indexes.start, this.indexes.end);
+            eventRange.forEach(function (item) {
+                var cell = $('td.cell[data-year-day=' + item + ']');
+                cell.addClass('event-day');
+                cell.css({ "background-color": bgr, "color": color });
+                cell.attr("title", title);
+            });
+            this.resetIndexes();
+        };
+        CalendarEvents.prototype.removeEventFormat = function () {
+            var eventRange = Calendar.Helpers.ArrayRange(this.indexes.start, this.indexes.end);
+            eventRange.forEach(function (item) {
+                var cell = $('td.cell[data-year-day=' + item + ']');
+                cell.css({ "background-color": "", "color": "" });
+                cell.removeAttr("title");
+            });
+            this.resetIndexes();
         };
         /**
          * Resolves left mouse pressing.

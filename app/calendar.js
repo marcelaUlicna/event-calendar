@@ -30,7 +30,8 @@ var Calendar;
             this.settings = {
                 events: [{
                     name: "Default",
-                    color: "green"
+                    backgroundColor: "green",
+                    color: "white"
                 }],
                 editable: true
             };

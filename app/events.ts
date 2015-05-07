@@ -125,18 +125,64 @@ module Calendar {
             this.dialogSettings.end = moment([this.year]).dayOfYear(idx.end);
 
             this.showModal();
-            this.resetIndexes();
         }
 
         showModal(): void {
             var modal = new Dialog(this.dialogSettings);
             modal.show().then((result) => {
-                var dialogResult = result == DialogResult.Submit ?
-                    "Submit form" : result == DialogResult.Reset ?
-                    "Reset events" : "Cancel events";
-                console.log(dialogResult);
-                console.log(modal.dialogSettings);
+                if(result === DialogResult.Submit) {
+                    this.dialogSettings = modal.dialogSettings;
+                    this.submitChanges();
+                } else if (result === DialogResult.Delete) {
+                    this.deleteItems();
+                }
+
+                this.removeSelection();
             });
+        }
+
+        removeSelection(): void {
+            this.element.find("td").removeClass("selected-day");
+        }
+
+        submitChanges(): void {
+            // user implementation
+            this.applyEventFormat();
+        }
+
+        deleteItems(): void {
+            // user implementation
+            this.removeEventFormat();
+
+        }
+
+        applyEventFormat(): void {
+            var selectedEvent = this.dialogSettings.events.filter((item) => item.name === this.dialogSettings.selectedEvent),
+                oneEvent = selectedEvent[0],
+                bgr = oneEvent["backgroundColor"] != null ? oneEvent["backgroundColor"] : "green",
+                color = oneEvent["color"] != null ? oneEvent["color"] : "white",
+                title = this.dialogSettings.personalNote + " : " + this.dialogSettings.message,
+                eventRange = Calendar.Helpers.ArrayRange(this.indexes.start, this.indexes.end);
+
+            eventRange.forEach((item) => {
+                var cell = $('td.cell[data-year-day=' + item + ']');
+                cell.addClass('event-day');
+                cell.css({ "background-color": bgr, "color": color });
+                cell.attr("title", title);
+            });
+
+            this.resetIndexes();
+        }
+
+        removeEventFormat(): void {
+            var eventRange = Calendar.Helpers.ArrayRange(this.indexes.start, this.indexes.end);
+            eventRange.forEach((item) => {
+                var cell = $('td.cell[data-year-day=' + item + ']');
+                cell.css({ "background-color": "", "color": "" });
+                cell.removeAttr("title");
+            });
+
+            this.resetIndexes();
         }
 
         /**

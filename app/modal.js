@@ -15,25 +15,17 @@ var Calendar;
                 "<div class='modal' tabindex='-1' role='dialog' aria-hidden='true'>",
                 "  <div class='modal-dialog modal-sm'>",
                 "    <div class='modal-content'>",
-                "       <div class='modal-header'>",
+                "       <div class='modal-header'  style='border-bottom: none;'>",
                 "           <button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>",
-                "           <h4 class='modal-title'>{{title}}</h4>",
                 "       </div>",
-                "       <div class='modal-body'>",
-                "           <div class='row'>",
-                "               <div class='col-md-4'>Start date:</div>",
-                "               <div class='col-md-8'>{{start}}</div>",
+                "       <div class='modal-body' style='padding-top: 0;'>",
+                "           <div class='row' style='padding-bottom: 15px;'>",
+                "               <div class='col-md-12'>{{start}}</div>",
+                "               <div class='col-md-12'>{{end}}</div>",
                 "           </div>",
-                "           <div class='row'>",
-                "               <div class='col-md-4'>End date:</div>",
-                "               <div class='col-md-8'>{{end}}</div>",
+                "           <div class='row' style='padding-bottom: 15px;'>",
+                "               <div class='col-md-12'><select class='select-event form-control'>{{options}}</select></div>",
                 "           </div>",
-                "           <hr>",
-                "           <div class='row'>",
-                "               <div class='col-md-4'>Events:</div>",
-                "               <div class='col-md-8'><select class='select-event form-control'>{{options}}</select></div>",
-                "           </div>",
-                "           <hr>",
                 "           <form>",
                 "               <div class='form-group'>",
                 "                   <div>Information (users will see this message)</div>",
@@ -44,11 +36,12 @@ var Calendar;
                 "                   <input type='text' name='privateNote' class='form-control'>",
                 "               </div>",
                 "           </form>",
-                "       </div>",
-                "       <div class='modal-footer'>",
-                "           <button type='button' id='btnSubmit' class='btn btn-primary'>Submit</button>",
-                "           <button type='button' id='btnReset' class='btn btn-default'>Reset</button>",
-                "           <button type='button' id='btnClose' class='btn btn-default' data-dismiss='modal'>Close</button>",
+                "           <div class='row'>",
+                "               <div class='col-md-12'>",
+                "                   <button type='button' id='btnDelete' class='btn btn-default pull-left'>Delete</button>",
+                "                   <button type='button' id='btnSubmit' class='btn btn-primary pull-right'>Submit</button>",
+                "               </div>",
+                "           </div>",
                 "       </div>",
                 "    </div>",
                 "  </div>",
@@ -72,7 +65,7 @@ var Calendar;
             this.modal.modal();
             this.modal.on("change", "select.select-event", function (e) { return _this.selectChange(e); });
             this.modal.on("change", "input", function (e) { return _this.messageChanged(e); });
-            this.modal.on("click", ".modal-footer button", function (e) { return _this.click(e); });
+            this.modal.on("click", ".modal-body button", function (e) { return _this.click(e); });
             this.modal.on("hidden.bs.modal", function () {
                 _this.modal.remove();
                 deferred.resolve(_this.dialogResult);
@@ -87,8 +80,8 @@ var Calendar;
         Dialog.prototype.btnSubmit = function (e) {
             this.dialogResult = 0 /* Submit */;
         };
-        Dialog.prototype.btnReset = function (e) {
-            this.dialogResult = 1 /* Reset */;
+        Dialog.prototype.btnDelete = function (e) {
+            this.dialogResult = 1 /* Delete */;
         };
         Dialog.prototype.btnClose = function (e) {
             this.dialogResult = 2 /* Cancel */;
@@ -109,9 +102,13 @@ var Calendar;
             }
         };
         Dialog.prototype.optionTemplate = function () {
-            var template = "<option value='{{value}}' style='background-color: {{color}};'>{{value}}</option>";
+            var template = "<option value='{{value}}' style='background-color: {{backgroundColor}}; color: {{color}}'>{{value}}</option>";
             var options = this.dialogSettings.events.map(function (item) {
-                return Calendar.Helpers.RenderTemplate(template, { "value": item.name, "color": item.color });
+                return Calendar.Helpers.RenderTemplate(template, {
+                    "value": item.name,
+                    "backgroundColor": item.backgroundColor != null ? item.backgroundColor : "green",
+                    "color": item.color != null ? item.color : "white"
+                });
             });
             return options.join("");
         };

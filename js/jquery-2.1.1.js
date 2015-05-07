@@ -5650,7 +5650,7 @@ function addGetHookIf( conditionFn, hookFn ) {
 				var ret,
 					marginDiv = div.appendChild( document.createElement( "div" ) );
 
-				// Reset CSS: box-sizing; display; margin; border; padding
+				// Delete CSS: box-sizing; display; margin; border; padding
 				marginDiv.style.cssText = div.style.cssText =
 					// Support: Firefox<29, Android 2.3
 					// Vendor-prefix box-sizing
@@ -5837,7 +5837,7 @@ function showHide( elements, show ) {
 		values[ index ] = data_priv.get( elem, "olddisplay" );
 		display = elem.style.display;
 		if ( show ) {
-			// Reset the inline display of this element to learn if it is
+			// Delete the inline display of this element to learn if it is
 			// being hidden by cascaded rules or not
 			if ( !values[ index ] && display === "none" ) {
 				elem.style.display = "";
@@ -6998,7 +6998,7 @@ jQuery.extend({
 				if ( !support.radioValue && value === "radio" &&
 					jQuery.nodeName( elem, "input" ) ) {
 					// Setting the type on a radio button after the value resets the value in IE6-9
-					// Reset value to default in case type is set after value during creation
+					// Delete value to default in case type is set after value during creation
 					var val = elem.value;
 					elem.setAttribute( "type", value );
 					if ( val ) {

@@ -19,6 +19,7 @@ module Calendar {
      * Provides the base plugin class and initializes all components.
      *
      * @class VacationCalendar
+     * @constructor
      * @param {JQuery} element - DOM element for plugin
      * @param {ISettings} options - Custom options
      * @property {JQuery} element - DOM element for plugin
@@ -29,11 +30,7 @@ module Calendar {
     export class VacationCalendar {
         element: JQuery;
         settings: ISettings = {
-            events:  [{
-                name: "Default",
-                backgroundColor: "green",
-                color: "white"
-            }],
+            events:  [{ name: "Default" }],
             editable: true
         };
         events: CalendarEvents;

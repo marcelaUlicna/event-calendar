@@ -9,6 +9,7 @@ var Calendar;
      * to previous and next year.
      *
      * @class Header
+     * @constructor
      * @property {JQuery} element - Header DOM element
      * @property {number} year - Actual year
      */

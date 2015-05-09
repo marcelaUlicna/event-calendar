@@ -6,13 +6,19 @@
 ///<reference path="common.ts" />
 ///<reference path="helpers.ts" />
 ///<reference path="modal.ts" />
+///<reference path="popover.ts" />
 var Calendar;
 (function (Calendar) {
     /**
      * Implements mouse event handlers and provides selected range
-     * of days indexes and sets selected class.
+     * of days indexes and sets selected class. Show modal dialog with
+     * custom setting when user can select one event and type message
+     * for other person and/or note to himself. After receiving response from
+     * modal dialog there is made design changes in calendar and calls
+     * method which provides custom server side request.
      *
      * @class CalendarEvents
+     * @constructor
      * @param {JQuery} element - Calendar jquery element
      * @param {ISettings} settings - Plugin settings
      * @property {JQuery} element - Calendar jquery element
@@ -27,7 +33,9 @@ var Calendar;
                 start: null,
                 end: null,
                 events: [],
-                selectedEvent: ""
+                selectedEvent: "",
+                defaultBgColor: "green",
+                defaultColor: "white"
             };
             this.element = element;
             this.settings = settings;
@@ -106,6 +114,12 @@ var Calendar;
             this.dialogSettings.end = moment([this.year]).dayOfYear(idx.end);
             this.showModal();
         };
+        /**
+         * Displays modal dialog with settings and action and handlers events "Submit" or "Delete"
+         * based on clicked button. After that calls removing selection styling.
+         *
+         * @method showModal
+         */
         CalendarEvents.prototype.showModal = function () {
             var _this = this;
             var modal = new Calendar.Dialog(this.dialogSettings);
@@ -120,36 +134,70 @@ var Calendar;
                 _this.removeSelection();
             });
         };
+        /**
+         * Removes class `selected-day` used for marking selection and calls `resetIndexes()`.
+         *
+         * @method removeSelection
+         *
+         */
         CalendarEvents.prototype.removeSelection = function () {
             this.element.find("td").removeClass("selected-day");
+            this.resetIndexes();
+            this.dialogSettings.personalNote = null;
+            this.dialogSettings.message = null;
+            this.dialogSettings.selectedEvent = this.settings.events[0].name;
         };
+        /**
+         * Submit action. Applies css style for selected event on client side.
+         * Calls `TODO: Submit server implementation` for server side implementation.
+         *
+         * @method submitChanges
+         */
         CalendarEvents.prototype.submitChanges = function () {
             // user implementation
             this.applyEventFormat();
         };
+        /**
+         * Delete action. Remove css style on client side.
+         * Calls `TODO: Delete server implementation` for server side implementation.
+         *
+         * @method deleteItems
+         */
         CalendarEvents.prototype.deleteItems = function () {
             // user implementation
             this.removeEventFormat();
         };
+        /**
+         * Sets css styling to each cell in range of selected indexes according to
+         * selected event and its properties (background color, color), sets title
+         * if any of messages is typed. Adds class `event-day` to each cell and initializes
+         * popover with messages.
+         *
+         * @method applyEventFormat
+         */
         CalendarEvents.prototype.applyEventFormat = function () {
             var _this = this;
-            var selectedEvent = this.dialogSettings.events.filter(function (item) { return item.name === _this.dialogSettings.selectedEvent; }), oneEvent = selectedEvent[0], bgr = oneEvent["backgroundColor"] != null ? oneEvent["backgroundColor"] : "green", color = oneEvent["color"] != null ? oneEvent["color"] : "white", title = this.dialogSettings.personalNote + " : " + this.dialogSettings.message, eventRange = Calendar.Helpers.ArrayRange(this.indexes.start, this.indexes.end);
+            var selectedEvent = this.dialogSettings.events.filter(function (item) { return item.name === _this.dialogSettings.selectedEvent; }), oneEvent = selectedEvent[0], bgr = oneEvent["backgroundColor"] || this.dialogSettings.defaultBgColor, color = oneEvent["color"] || this.dialogSettings.defaultColor, message = this.dialogSettings.message || null, note = this.settings.editable && this.dialogSettings.personalNote ? this.dialogSettings.personalNote : null, eventRange = Calendar.Helpers.ArrayRange(this.indexes.start, this.indexes.end);
             eventRange.forEach(function (item) {
                 var cell = $('td.cell[data-year-day=' + item + ']');
                 cell.addClass('event-day');
                 cell.css({ "background-color": bgr, "color": color });
-                cell.attr("title", title);
+                if (message || note) {
+                    Calendar.Popover.Popover(cell, message, note);
+                }
             });
-            this.resetIndexes();
         };
+        /**
+         * Removes css styling and attribute `title` from selected cells.
+         *
+         * @method removeEventFormat
+         */
         CalendarEvents.prototype.removeEventFormat = function () {
             var eventRange = Calendar.Helpers.ArrayRange(this.indexes.start, this.indexes.end);
             eventRange.forEach(function (item) {
                 var cell = $('td.cell[data-year-day=' + item + ']');
                 cell.css({ "background-color": "", "color": "" });
-                cell.removeAttr("title");
             });
-            this.resetIndexes();
         };
         /**
          * Resolves left mouse pressing.

@@ -39,15 +39,16 @@
         // Handler for .ready() called.
         $("#calendar").vacationCalendar({
             events: [
-                { name: "Vacation", color: "green"},
-                { name: "Available", color: "blue"},
-                { name: "Business trip", color: "orange"},
-                { name: "Unavailable", color: "red"}
+                { name: "Vacation", backgroundColor: "green", color: "white"},
+                { name: "Available", backgroundColor: "blue", color: "white"},
+                { name: "Business trip", backgroundColor: "orange" },
+                { name: "Unavailable", backgroundColor: "red", color: "white"},
+                { name: "Other" }
             ],
             locale: "es"
         });
 
-        $("#modalTest").modal();
+        //$("#calendar").vacationCalendar();
     });
 </script>
 </body>

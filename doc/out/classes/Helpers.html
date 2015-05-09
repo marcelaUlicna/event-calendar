@@ -39,9 +39,12 @@
                         <div id="api-tabview-panel">
                             <ul id="api-classes" class="apis classes">
                                 <li><a href="../classes/CalendarEvents.html">CalendarEvents</a></li>
+                                <li><a href="../classes/Dialog.html">Dialog</a></li>
                                 <li><a href="../classes/Header.html">Header</a></li>
                                 <li><a href="../classes/Helpers.html">Helpers</a></li>
+                                <li><a href="../classes/ModalTemplate.html">ModalTemplate</a></li>
                                 <li><a href="../classes/MonthCalendar.html">MonthCalendar</a></li>
+                                <li><a href="../classes/Popover.html">Popover</a></li>
                                 <li><a href="../classes/VacationCalendar.html">VacationCalendar</a></li>
                             </ul>
                 
@@ -85,7 +88,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/calendar.plugin.js.html#l12"><code>calendar.plugin.js:12</code></a>
+            Defined in: <a href="../files/calendar.plugin.js.html#l21"><code>calendar.plugin.js:21</code></a>
         </div>
 
             Module: <a href="../modules/Calendar.html">Calendar</a>
@@ -94,7 +97,7 @@
 
 
 <div class="box intro">
-    <p>This provides helpers.</p>
+    <p>This provides various helpers.</p>
 
 </div>
 
@@ -126,6 +129,11 @@
                             </li>
                             <li class="index-item method">
                                 <a href="#method_CapitalizeFirstLetter">CapitalizeFirstLetter</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_RenderTemplate">RenderTemplate</a>
 
                                     <span class="flag static">static</span>
                             </li>
@@ -164,7 +172,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/calendar.plugin.js.html#l70"><code>calendar.plugin.js:70</code></a>
+        <a href="../files/calendar.plugin.js.html#l79"><code>calendar.plugin.js:79</code></a>
         </p>
 
 
@@ -201,6 +209,10 @@
 
             <div class="returns-description">
                         <span class="type">IArrayIndexes</span>:
+                    <ul>
+<li>Correct start and end index</li>
+</ul>
+
             </div>
         </div>
 
@@ -237,7 +249,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/calendar.plugin.js.html#l20"><code>calendar.plugin.js:20</code></a>
+        <a href="../files/calendar.plugin.js.html#l29"><code>calendar.plugin.js:29</code></a>
         </p>
 
 
@@ -250,19 +262,19 @@ If there is the specified input array, the result will contain elements
 from this array, otherwise there will be a sequence of integers in the range
 of each of the given values.</p>
 <p>This is an <strong>example</strong> of usage <code>ArrayRange</code> method</p>
-<pre class="code prettyprint"><code>var array = [1,2,4,5,6,8,9,21,22,45],
+<pre class="code prettyprint"><code>var array = [1, 2, 4, 5, 6, 8, 9, 21, 22, 45],
     from = 2,
     to = 10;
 
-Calendar.Helpers.ArrayRange(2,10,array);
+Calendar.Helpers.ArrayRange(2, 10, array);
 // =&gt; [2, 4, 5, 6, 8, 9]
 
 // example of unsorted array
-Calendar.Helpers.ArrayRange(2,10,1,6,2,5,6,7,4,5]);
+Calendar.Helpers.ArrayRange(2, 10, [1, 6, 2, 5, 6, 7, 4, 5]);
 // =&gt; [2, 4, 5, 6, 7]
 
 // example without input array
-Calendar.Helpers.ArrayRange(2,10);
+Calendar.Helpers.ArrayRange(2, 10);
 // =&gt; [2, 3, 4, 5, 6, 7, 8, 9, 10]</code></pre>
 
     </div>
@@ -319,6 +331,10 @@ Calendar.Helpers.ArrayRange(2,10);
 
             <div class="returns-description">
                         <span class="type">Array<number></span>:
+                    <ul>
+<li>Array of integers</li>
+</ul>
+
             </div>
         </div>
 
@@ -349,7 +365,7 @@ Calendar.Helpers.ArrayRange(2,10);
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/calendar.plugin.js.html#l87"><code>calendar.plugin.js:87</code></a>
+        <a href="../files/calendar.plugin.js.html#l96"><code>calendar.plugin.js:96</code></a>
         </p>
 
 
@@ -386,6 +402,97 @@ Calendar.Helpers.ArrayRange(2,10);
 
             <div class="returns-description">
                         <span class="type">String</span>:
+                    <ul>
+<li>Text with capitalized first char</li>
+</ul>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_RenderTemplate" class="method item">
+    <h3 class="name"><code>RenderTemplate</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>template</code>
+                </li>
+                <li class="arg">
+                        <code>dict</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">String</span>
+        </span>
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/calendar.plugin.js.html#l107"><code>calendar.plugin.js:107</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Renders template - replaces placeholders in template with values from dictionary.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">template</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <ul>
+<li>Given template</li>
+</ul>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">dict</code>
+                        <span class="type">key: string: any</span>
+
+
+                    <div class="param-description">
+                        <ul>
+<li>Dictionary with keys and values</li>
+</ul>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">String</span>:
+                    <ul>
+<li>Template</li>
+</ul>
+
             </div>
         </div>
 

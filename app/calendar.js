@@ -17,6 +17,7 @@ var Calendar;
      * Provides the base plugin class and initializes all components.
      *
      * @class VacationCalendar
+     * @constructor
      * @param {JQuery} element - DOM element for plugin
      * @param {ISettings} options - Custom options
      * @property {JQuery} element - DOM element for plugin
@@ -28,11 +29,7 @@ var Calendar;
         function VacationCalendar(element, options) {
             var _this = this;
             this.settings = {
-                events: [{
-                    name: "Default",
-                    backgroundColor: "green",
-                    color: "white"
-                }],
+                events: [{ name: "Default" }],
                 editable: true
             };
             this.element = element;

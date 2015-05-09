@@ -26,6 +26,7 @@ var Calendar;
      * to other users. Sets Monday as the first day of week.
      *
      * @class MonthCalendar
+     * @constructor
      * @param {ISettings} settings - Plugin settings
      * @param {number} year - Actual year of calendar
      * @property {JQuery} element - Month calendars DOM element

@@ -22,19 +22,19 @@ module Calendar {
          *
          * This is an __example__ of usage `ArrayRange` method
          *
-         *     var array = [1,2,4,5,6,8,9,21,22,45],
+         *     var array = [1, 2, 4, 5, 6, 8, 9, 21, 22, 45],
          *         from = 2,
          *         to = 10;
          *
-         *     Calendar.Helpers.ArrayRange(2,10,array);
+         *     Calendar.Helpers.ArrayRange(2, 10, array);
          *     // => [2, 4, 5, 6, 8, 9]
          *
          *     // example of unsorted array
-         *     Calendar.Helpers.ArrayRange(2,10,1,6,2,5,6,7,4,5]);
+         *     Calendar.Helpers.ArrayRange(2, 10, [1, 6, 2, 5, 6, 7, 4, 5]);
          *     // => [2, 4, 5, 6, 7]
          *
          *     // example without input array
-         *     Calendar.Helpers.ArrayRange(2,10);
+         *     Calendar.Helpers.ArrayRange(2, 10);
          *     // => [2, 3, 4, 5, 6, 7, 8, 9, 10]
          *
          *
@@ -44,7 +44,7 @@ module Calendar {
          * @param {number} to - End value
          * @param {Array<number>} [array] - Input array
          *
-         * @return {Array<number>}
+         * @return {Array<number>} - Array of integers
         */
         static ArrayRange(from: number, to: number, array?: Array<number>): Array<number> {
             var A = [],
@@ -72,7 +72,7 @@ module Calendar {
          * @method ArrayIndexes
          * @static
          * @param {IArrayIndexes} indexes - Object with start and end value
-         * @return {IArrayIndexes}
+         * @return {IArrayIndexes} - Correct start and end index
          */
         static ArrayIndexes(indexes: IArrayIndexes): IArrayIndexes {
             if(indexes.start <= indexes.end) {
@@ -90,12 +90,21 @@ module Calendar {
          * @method CapitalizeFirstLetter
          * @static
          * @param {string} text - Text
-         * @return {string}
+         * @return {string} - Text with capitalized first char
          */
         static CapitalizeFirstLetter(text: string): string {
             return text.charAt(0).toUpperCase() + text.slice(1);
         }
 
+        /**
+         * Renders template - replaces placeholders in template with values from dictionary.
+         *
+         * @method RenderTemplate
+         * @static
+         * @param {string} template - Given template
+         * @param {[key: string]: any} dict - Dictionary with keys and values
+         * @return {string} - Template
+         * */
         static RenderTemplate(template: string, dict: { [key: string]: any }): string {
             return template.replace(/\{\{(.*?)\}\}/g, function (match: string, key?: string): string {
                 var value: any = dict,

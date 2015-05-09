@@ -21,19 +21,19 @@ var Calendar;
          *
          * This is an __example__ of usage `ArrayRange` method
          *
-         *     var array = [1,2,4,5,6,8,9,21,22,45],
+         *     var array = [1, 2, 4, 5, 6, 8, 9, 21, 22, 45],
          *         from = 2,
          *         to = 10;
          *
-         *     Calendar.Helpers.ArrayRange(2,10,array);
+         *     Calendar.Helpers.ArrayRange(2, 10, array);
          *     // => [2, 4, 5, 6, 8, 9]
          *
          *     // example of unsorted array
-         *     Calendar.Helpers.ArrayRange(2,10,1,6,2,5,6,7,4,5]);
+         *     Calendar.Helpers.ArrayRange(2, 10, [1, 6, 2, 5, 6, 7, 4, 5]);
          *     // => [2, 4, 5, 6, 7]
          *
          *     // example without input array
-         *     Calendar.Helpers.ArrayRange(2,10);
+         *     Calendar.Helpers.ArrayRange(2, 10);
          *     // => [2, 3, 4, 5, 6, 7, 8, 9, 10]
          *
          *
@@ -43,7 +43,7 @@ var Calendar;
          * @param {number} to - End value
          * @param {Array<number>} [array] - Input array
          *
-         * @return {Array<number>}
+         * @return {Array<number>} - Array of integers
         */
         Helpers.ArrayRange = function (from, to, array) {
             var A = [], step = 1;
@@ -69,7 +69,7 @@ var Calendar;
          * @method ArrayIndexes
          * @static
          * @param {IArrayIndexes} indexes - Object with start and end value
-         * @return {IArrayIndexes}
+         * @return {IArrayIndexes} - Correct start and end index
          */
         Helpers.ArrayIndexes = function (indexes) {
             if (indexes.start <= indexes.end) {
@@ -86,11 +86,20 @@ var Calendar;
          * @method CapitalizeFirstLetter
          * @static
          * @param {string} text - Text
-         * @return {string}
+         * @return {string} - Text with capitalized first char
          */
         Helpers.CapitalizeFirstLetter = function (text) {
             return text.charAt(0).toUpperCase() + text.slice(1);
         };
+        /**
+         * Renders template - replaces placeholders in template with values from dictionary.
+         *
+         * @method RenderTemplate
+         * @static
+         * @param {string} template - Given template
+         * @param {[key: string]: any} dict - Dictionary with keys and values
+         * @return {string} - Template
+         * */
         Helpers.RenderTemplate = function (template, dict) {
             return template.replace(/\{\{(.*?)\}\}/g, function (match, key) {
                 var value = dict, keys = key.split(".");

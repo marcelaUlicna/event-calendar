@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>VacationCalendar</title>
+    <title>ModalTemplate</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -83,12 +83,12 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>VacationCalendar Class</h1>
+<h1>ModalTemplate Class</h1>
 <div class="box meta">
 
 
         <div class="foundat">
-            Defined in: <a href="../files/calendar.plugin.js.html#l869"><code>calendar.plugin.js:869</code></a>
+            Defined in: <a href="../files/calendar.plugin.js.html#l278"><code>calendar.plugin.js:278</code></a>
         </div>
 
             Module: <a href="../modules/Calendar.html">Calendar</a>
@@ -97,84 +97,10 @@
 
 
 <div class="box intro">
-    <p>Provides the base plugin class and initializes all components.</p>
+    <p>Static class which contains templates for modal dialog</p>
 
 </div>
 
-    <div class="constructor">
-        <h2>Constructor</h2>
-        <div id="method_VacationCalendar" class="method item">
-            <h3 class="name"><code>VacationCalendar</code></h3>
-        
-                <div class="args">
-                    <span class="paren">(</span><ul class="args-list inline commas">
-                        <li class="arg">
-                                <code>element</code>
-                        </li>
-                        <li class="arg">
-                                <code>options</code>
-                        </li>
-                    </ul><span class="paren">)</span>
-                </div>
-        
-        
-        
-        
-        
-        
-        
-        
-            <div class="meta">
-                        <p>
-                        Defined in
-                <a href="../files/calendar.plugin.js.html#l869"><code>calendar.plugin.js:869</code></a>
-                </p>
-        
-        
-        
-            </div>
-        
-            <div class="description">
-                
-            </div>
-        
-                <div class="params">
-                    <h4>Parameters:</h4>
-        
-                    <ul class="params-list">
-                        <li class="param">
-                                <code class="param-name">element</code>
-                                <span class="type">JQuery</span>
-        
-        
-                            <div class="param-description">
-                                <ul>
-        <li>DOM element for plugin</li>
-        </ul>
-        
-                            </div>
-        
-                        </li>
-                        <li class="param">
-                                <code class="param-name">options</code>
-                                <span class="type">ISettings</span>
-        
-        
-                            <div class="param-description">
-                                <ul>
-        <li>Custom options</li>
-        </ul>
-        
-                            </div>
-        
-                        </li>
-                    </ul>
-                </div>
-        
-        
-        
-        </div>
-    </div>
 
 <div id="classdocs" class="tabview">
     <ul class="api-class-tabs">
@@ -192,12 +118,14 @@
 
                     <ul class="index-list methods">
                             <li class="index-item method">
-                                <a href="#method_changeYear">changeYear</a>
+                                <a href="#method_dropdownTemplate">dropdownTemplate</a>
 
+                                    <span class="flag static">static</span>
                             </li>
                             <li class="index-item method">
-                                <a href="#method_init">init</a>
+                                <a href="#method_template">template</a>
 
+                                    <span class="flag static">static</span>
                             </li>
                     </ul>
                 </div>
@@ -209,28 +137,32 @@
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
-<div id="method_changeYear" class="method item">
-    <h3 class="name"><code>changeYear</code></h3>
+<div id="method_dropdownTemplate" class="method item">
+    <h3 class="name"><code>dropdownTemplate</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>e</code>
+                        <code>dialogSettings</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
 
+        <span class="returns-inline">
+            <span class="type">String</span>
+        </span>
 
 
 
 
+        <span class="flag static">static</span>
 
 
 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/calendar.plugin.js.html#l910"><code>calendar.plugin.js:910</code></a>
+        <a href="../files/calendar.plugin.js.html#l332"><code>calendar.plugin.js:332</code></a>
         </p>
 
 
@@ -238,7 +170,7 @@
     </div>
 
     <div class="description">
-        <p>Changes the year of calendar and calls rerendering calendar view</p>
+        <p>Template for dropdown component with events.</p>
 
     </div>
 
@@ -247,13 +179,13 @@
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">e</code>
-                        <span class="type">JQueryEventObject</span>
+                        <code class="param-name">dialogSettings</code>
+                        <span class="type">IModalDialog</span>
 
 
                     <div class="param-description">
                         <ul>
-<li>Button object handler</li>
+<li>Modal dialog settings</li>
 </ul>
 
                     </div>
@@ -262,25 +194,40 @@
             </ul>
         </div>
 
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">String</span>:
+                    <ul>
+<li>Returns partial template</li>
+</ul>
+
+            </div>
+        </div>
 
 
 </div>
-<div id="method_init" class="method item">
-    <h3 class="name"><code>init</code></h3>
+<div id="method_template" class="method item">
+    <h3 class="name"><code>template</code></h3>
 
         <span class="paren">()</span>
 
+        <span class="returns-inline">
+            <span class="type">String</span>
+        </span>
 
 
 
 
+        <span class="flag static">static</span>
 
 
 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/calendar.plugin.js.html#l898"><code>calendar.plugin.js:898</code></a>
+        <a href="../files/calendar.plugin.js.html#l287"><code>calendar.plugin.js:287</code></a>
         </p>
 
 
@@ -288,11 +235,22 @@
     </div>
 
     <div class="description">
-        <p>Initializes view with calendars.</p>
+        <p>Whole modal dialog html template.</p>
 
     </div>
 
 
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">String</span>:
+                    <ul>
+<li>Returns template</li>
+</ul>
+
+            </div>
+        </div>
 
 
 </div>

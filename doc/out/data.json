@@ -8,7 +8,10 @@
             },
             "classes": {
                 "Helpers": 1,
+                "Dialog": 1,
+                "ModalTemplate": 1,
                 "Header": 1,
+                "Popover": 1,
                 "MonthCalendar": 1,
                 "CalendarEvents": 1,
                 "VacationCalendar": 1
@@ -23,7 +26,10 @@
             "submodules": {},
             "classes": {
                 "Helpers": 1,
+                "Dialog": 1,
+                "ModalTemplate": 1,
                 "Header": 1,
+                "Popover": 1,
                 "MonthCalendar": 1,
                 "CalendarEvents": 1,
                 "VacationCalendar": 1
@@ -32,7 +38,7 @@
             "namespaces": {},
             "tag": "module",
             "file": "calendar.plugin.js",
-            "line": 436,
+            "line": 869,
             "description": "Vacation calendar plugin."
         }
     },
@@ -47,8 +53,45 @@
             "extension_for": [],
             "module": "Calendar",
             "file": "calendar.plugin.js",
-            "line": 12,
-            "description": "This provides helpers."
+            "line": 21,
+            "description": "This provides various helpers."
+        },
+        "Dialog": {
+            "name": "Dialog",
+            "shortname": "Dialog",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Calendar",
+            "file": "calendar.plugin.js",
+            "line": 142,
+            "description": "Implements modal dialog which contains selected start and end date,\ncomponent with events to be selected and inputs where user can type\nsome message for other person and/or note for himself. There is available\nboth Submit and Delete button and the cross for closing dialog without\napplying any changes.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "dialogSettings",
+                    "description": "- Modal dialog settings",
+                    "type": "IModalDialog"
+                }
+            ],
+            "itemtype": "property",
+            "type": "IModalDialog"
+        },
+        "ModalTemplate": {
+            "name": "ModalTemplate",
+            "shortname": "ModalTemplate",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Calendar",
+            "file": "calendar.plugin.js",
+            "line": 278,
+            "description": "Static class which contains templates for modal dialog",
+            "static": 1
         },
         "Header": {
             "name": "Header",
@@ -60,10 +103,25 @@
             "extension_for": [],
             "module": "Calendar",
             "file": "calendar.plugin.js",
-            "line": 108,
+            "line": 378,
             "description": "Renders header of plugin. Contains actual year and navigation\nto previous and next year.",
+            "is_constructor": 1,
             "itemtype": "property",
             "type": "JQuery"
+        },
+        "Popover": {
+            "name": "Popover",
+            "shortname": "Popover",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Calendar",
+            "file": "calendar.plugin.js",
+            "line": 442,
+            "description": "Implements bootstrap popover for each cell with any event.\nShows both message for other people and personal note if it is available.\nIt is triggered by hover.",
+            "static": 1
         },
         "MonthCalendar": {
             "name": "MonthCalendar",
@@ -75,8 +133,9 @@
             "extension_for": [],
             "module": "Calendar",
             "file": "calendar.plugin.js",
-            "line": 186,
+            "line": 515,
             "description": "Provides rendering month calendars, marks specified events by\ncustom colors, displays tooltip for each event both personal and\nto other users. Sets Monday as the first day of week.",
+            "is_constructor": 1,
             "params": [
                 {
                     "name": "settings",
@@ -102,8 +161,9 @@
             "extension_for": [],
             "module": "Calendar",
             "file": "calendar.plugin.js",
-            "line": 306,
-            "description": "Implements mouse event handlers and provides selected range\nof days indexes and sets selected class.",
+            "line": 638,
+            "description": "Implements mouse event handlers and provides selected range\nof days indexes and sets selected class. Show modal dialog with\ncustom setting when user can select one event and type message\nfor other person and/or note to himself. After receiving response from\nmodal dialog there is made design changes in calendar and calls\nmethod which provides custom server side request.",
+            "is_constructor": 1,
             "params": [
                 {
                     "name": "element",
@@ -130,8 +190,9 @@
             "module": "Calendar",
             "namespace": "",
             "file": "calendar.plugin.js",
-            "line": 436,
+            "line": 869,
             "description": "Provides the base plugin class and initializes all components.",
+            "is_constructor": 1,
             "params": [
                 {
                     "name": "element",
@@ -157,14 +218,14 @@
         },
         {
             "file": "calendar.plugin.js",
-            "line": 5,
+            "line": 14,
             "description": "Created by Marcela on 28. 4. 2015.",
             "class": "Helpers"
         },
         {
             "file": "calendar.plugin.js",
-            "line": 20,
-            "description": "Utility that creates new array according to specified values (`from` and `to`).\nIf there is the specified input array, the result will contain elements\nfrom this array, otherwise there will be a sequence of integers in the range\nof each of the given values.\n\nThis is an __example__ of usage `ArrayRange` method\n\n    var array = [1,2,4,5,6,8,9,21,22,45],\n        from = 2,\n        to = 10;\n\n    Calendar.Helpers.ArrayRange(2,10,array);\n    // => [2, 4, 5, 6, 8, 9]\n\n    // example of unsorted array\n    Calendar.Helpers.ArrayRange(2,10,1,6,2,5,6,7,4,5]);\n    // => [2, 4, 5, 6, 7]\n\n    // example without input array\n    Calendar.Helpers.ArrayRange(2,10);\n    // => [2, 3, 4, 5, 6, 7, 8, 9, 10]",
+            "line": 29,
+            "description": "Utility that creates new array according to specified values (`from` and `to`).\nIf there is the specified input array, the result will contain elements\nfrom this array, otherwise there will be a sequence of integers in the range\nof each of the given values.\n\nThis is an __example__ of usage `ArrayRange` method\n\n    var array = [1, 2, 4, 5, 6, 8, 9, 21, 22, 45],\n        from = 2,\n        to = 10;\n\n    Calendar.Helpers.ArrayRange(2, 10, array);\n    // => [2, 4, 5, 6, 8, 9]\n\n    // example of unsorted array\n    Calendar.Helpers.ArrayRange(2, 10, [1, 6, 2, 5, 6, 7, 4, 5]);\n    // => [2, 4, 5, 6, 7]\n\n    // example without input array\n    Calendar.Helpers.ArrayRange(2, 10);\n    // => [2, 3, 4, 5, 6, 7, 8, 9, 10]",
             "itemtype": "method",
             "name": "ArrayRange",
             "static": 1,
@@ -187,14 +248,14 @@
                 }
             ],
             "return": {
-                "description": "",
+                "description": "- Array of integers",
                 "type": "Array<number>"
             },
             "class": "Helpers"
         },
         {
             "file": "calendar.plugin.js",
-            "line": 70,
+            "line": 79,
             "description": "Provides the correct order of start and end indexes",
             "itemtype": "method",
             "name": "ArrayIndexes",
@@ -207,14 +268,14 @@
                 }
             ],
             "return": {
-                "description": "",
+                "description": "- Correct start and end index",
                 "type": "IArrayIndexes"
             },
             "class": "Helpers"
         },
         {
             "file": "calendar.plugin.js",
-            "line": 87,
+            "line": 96,
             "description": "Capitalizes the first letter of the text.",
             "itemtype": "method",
             "name": "CapitalizeFirstLetter",
@@ -227,20 +288,208 @@
                 }
             ],
             "return": {
-                "description": "",
+                "description": "- Text with capitalized first char",
                 "type": "String"
             },
             "class": "Helpers"
         },
         {
             "file": "calendar.plugin.js",
-            "line": 102,
-            "description": "Created by Marcela on 29. 4. 2015.",
+            "line": 107,
+            "description": "Renders template - replaces placeholders in template with values from dictionary.",
+            "itemtype": "method",
+            "name": "RenderTemplate",
+            "static": 1,
+            "params": [
+                {
+                    "name": "template",
+                    "description": "- Given template",
+                    "type": "String"
+                },
+                {
+                    "name": "dict",
+                    "description": "- Dictionary with keys and values",
+                    "type": "[key: string]: any"
+                }
+            ],
+            "return": {
+                "description": "- Template",
+                "type": "String"
+            },
             "class": "Helpers"
         },
         {
             "file": "calendar.plugin.js",
-            "line": 121,
+            "line": 132,
+            "description": "Created by Marcela on 5. 5. 2015.",
+            "class": "Helpers"
+        },
+        {
+            "file": "calendar.plugin.js",
+            "line": 164,
+            "description": "Fills `templateDictionary` with keys and its values.",
+            "itemtype": "method",
+            "name": "getDictionary",
+            "access": "private",
+            "tagname": "",
+            "return": {
+                "description": "- Returns dictionary template",
+                "type": "Any"
+            },
+            "class": "Dialog"
+        },
+        {
+            "file": "calendar.plugin.js",
+            "line": 179,
+            "description": "Renders modal dialog and binds all necessary events. After closing modal dialog\nit is removed from DOM.",
+            "itemtype": "method",
+            "name": "show",
+            "return": {
+                "description": "- Returns promise from modal dialog with dialog result",
+                "type": "JQueryPromise<DialogResult>"
+            },
+            "class": "Dialog"
+        },
+        {
+            "file": "calendar.plugin.js",
+            "line": 200,
+            "description": "Resolves button click from dialog and calls appropriate method.",
+            "itemtype": "method",
+            "name": "click",
+            "params": [
+                {
+                    "name": "e",
+                    "description": "- Button object handler",
+                    "type": "JQueryEventObject"
+                }
+            ],
+            "class": "Dialog"
+        },
+        {
+            "file": "calendar.plugin.js",
+            "line": 211,
+            "description": "Sets dialogResult to `DialogResult.Submit`.",
+            "itemtype": "method",
+            "name": "btnSubmit",
+            "params": [
+                {
+                    "name": "e",
+                    "description": "- Button object handler",
+                    "type": "JQueryEventObject"
+                }
+            ],
+            "class": "Dialog"
+        },
+        {
+            "file": "calendar.plugin.js",
+            "line": 220,
+            "description": "Sets dialogResult to `DialogResult.Delete`.",
+            "itemtype": "method",
+            "name": "btnDelete",
+            "params": [
+                {
+                    "name": "e",
+                    "description": "- Button object handler",
+                    "type": "JQueryEventObject"
+                }
+            ],
+            "class": "Dialog"
+        },
+        {
+            "file": "calendar.plugin.js",
+            "line": 229,
+            "description": "Sets dialogResult to `DialogResult.Cancel`.",
+            "itemtype": "method",
+            "name": "btnClose",
+            "params": [
+                {
+                    "name": "e",
+                    "description": "- Button object handler",
+                    "type": "JQueryEventObject"
+                }
+            ],
+            "class": "Dialog"
+        },
+        {
+            "file": "calendar.plugin.js",
+            "line": 238,
+            "description": "Closes modal dialog.",
+            "itemtype": "method",
+            "name": "close",
+            "class": "Dialog"
+        },
+        {
+            "file": "calendar.plugin.js",
+            "line": 246,
+            "description": "Applies changes after selecting some event from list component,\nsaves selected item to `dialogSettings` property and\nsets selected item to main button to reflect actual item.",
+            "itemtype": "method",
+            "name": "selectChange",
+            "params": [
+                {
+                    "name": "e",
+                    "description": "- Selected item event handler",
+                    "type": "JQueryEventObject"
+                }
+            ],
+            "class": "Dialog"
+        },
+        {
+            "file": "calendar.plugin.js",
+            "line": 260,
+            "description": "Saves input text to `dialogSettings` property.",
+            "itemtype": "method",
+            "name": "messageChanged",
+            "params": [
+                {
+                    "name": "e",
+                    "description": "- Input event handler",
+                    "type": "JQueryEventObject"
+                }
+            ],
+            "class": "Dialog"
+        },
+        {
+            "file": "calendar.plugin.js",
+            "line": 287,
+            "description": "Whole modal dialog html template.",
+            "itemtype": "method",
+            "name": "template",
+            "static": 1,
+            "return": {
+                "description": "- Returns template",
+                "type": "String"
+            },
+            "class": "ModalTemplate"
+        },
+        {
+            "file": "calendar.plugin.js",
+            "line": 332,
+            "description": "Template for dropdown component with events.",
+            "itemtype": "method",
+            "name": "dropdownTemplate",
+            "static": 1,
+            "params": [
+                {
+                    "name": "dialogSettings",
+                    "description": "- Modal dialog settings",
+                    "type": "IModalDialog"
+                }
+            ],
+            "return": {
+                "description": "- Returns partial template",
+                "type": "String"
+            },
+            "class": "ModalTemplate"
+        },
+        {
+            "file": "calendar.plugin.js",
+            "line": 372,
+            "description": "Created by Marcela on 29. 4. 2015.",
+            "class": "ModalTemplate"
+        },
+        {
+            "file": "calendar.plugin.js",
+            "line": 392,
             "description": "Creates whole header elements.",
             "itemtype": "method",
             "name": "render",
@@ -251,7 +500,7 @@
         },
         {
             "file": "calendar.plugin.js",
-            "line": 130,
+            "line": 401,
             "description": "Creates main header element and appends navigation buttons\nand title.",
             "itemtype": "method",
             "name": "renderHeader",
@@ -262,7 +511,7 @@
         },
         {
             "file": "calendar.plugin.js",
-            "line": 140,
+            "line": 411,
             "description": "Creates navigation button.",
             "itemtype": "method",
             "name": "renderButton",
@@ -280,7 +529,7 @@
         },
         {
             "file": "calendar.plugin.js",
-            "line": 151,
+            "line": 422,
             "description": "Creates year title.",
             "itemtype": "method",
             "name": "renderTitle",
@@ -291,13 +540,74 @@
         },
         {
             "file": "calendar.plugin.js",
-            "line": 164,
-            "description": "Created by Marcela on 29. 4. 2015.",
+            "line": 435,
+            "description": "Created by Marcela on 9. 5. 2015.",
             "class": "Header"
         },
         {
             "file": "calendar.plugin.js",
-            "line": 216,
+            "line": 453,
+            "description": "Initializes popover for cell element.",
+            "itemtype": "method",
+            "name": "Popover",
+            "static": 1,
+            "params": [
+                {
+                    "name": "cell",
+                    "description": "- Cell element to apply popover",
+                    "type": "JQuery"
+                },
+                {
+                    "name": "message",
+                    "description": "- Message text",
+                    "type": "String",
+                    "optional": true
+                },
+                {
+                    "name": "note",
+                    "description": "- Note text for creator",
+                    "type": "String",
+                    "optional": true
+                }
+            ],
+            "class": "Popover"
+        },
+        {
+            "file": "calendar.plugin.js",
+            "line": 474,
+            "description": "Popover content.",
+            "itemtype": "method",
+            "name": "template",
+            "static": 1,
+            "params": [
+                {
+                    "name": "message",
+                    "description": "- Message text",
+                    "type": "String",
+                    "optional": true
+                },
+                {
+                    "name": "note",
+                    "description": "- Note text for creator",
+                    "type": "String",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "- Template",
+                "type": "String"
+            },
+            "class": "Popover"
+        },
+        {
+            "file": "calendar.plugin.js",
+            "line": 493,
+            "description": "Created by Marcela on 29. 4. 2015.",
+            "class": "Popover"
+        },
+        {
+            "file": "calendar.plugin.js",
+            "line": 546,
             "description": "Capitalizes the first letter of the month and weekdays names.",
             "itemtype": "method",
             "name": "capitalize",
@@ -305,7 +615,7 @@
         },
         {
             "file": "calendar.plugin.js",
-            "line": 225,
+            "line": 555,
             "description": "Creates wrapper for month tables.",
             "itemtype": "method",
             "name": "templateCalendar",
@@ -317,7 +627,7 @@
         },
         {
             "file": "calendar.plugin.js",
-            "line": 239,
+            "line": 569,
             "description": "Creates table for month represented by month index,\nmarks weekdays and events.",
             "itemtype": "method",
             "name": "templateTable",
@@ -336,13 +646,13 @@
         },
         {
             "file": "calendar.plugin.js",
-            "line": 297,
+            "line": 627,
             "description": "Created by Marcela on 2. 5. 2015.",
             "class": "MonthCalendar"
         },
         {
             "file": "calendar.plugin.js",
-            "line": 328,
+            "line": 677,
             "description": "Sets selected year to local variable.",
             "itemtype": "method",
             "name": "setSelectedlYear",
@@ -357,7 +667,7 @@
         },
         {
             "file": "calendar.plugin.js",
-            "line": 337,
+            "line": 686,
             "description": "Implements mousedown event. Sets start index and adds selected class to actual cell.",
             "itemtype": "method",
             "name": "mousedown",
@@ -372,7 +682,7 @@
         },
         {
             "file": "calendar.plugin.js",
-            "line": 354,
+            "line": 703,
             "description": "Implements mouseover event. Sets end index, calculates range of selected cells\nand adds selected class to all cells according to calculated range.",
             "itemtype": "method",
             "name": "mouseover",
@@ -387,8 +697,8 @@
         },
         {
             "file": "calendar.plugin.js",
-            "line": 378,
-            "description": "Implements mouseup event. Sets end index, calculates start date and end date\nfrom indexes and call modal dialog. At the end resets start and end indexes.",
+            "line": 727,
+            "description": "Implements mouseup event. Sets end index, calculates start and end dates\nfrom indexes and calls modal dialog to enter personal event. At the end resets start and end indexes.",
             "itemtype": "method",
             "name": "mouseup",
             "params": [
@@ -402,7 +712,55 @@
         },
         {
             "file": "calendar.plugin.js",
-            "line": 395,
+            "line": 743,
+            "description": "Displays modal dialog with settings and action and handlers events \"Submit\" or \"Delete\"\nbased on clicked button. After that calls removing selection styling.",
+            "itemtype": "method",
+            "name": "showModal",
+            "class": "CalendarEvents"
+        },
+        {
+            "file": "calendar.plugin.js",
+            "line": 763,
+            "description": "Removes class `selected-day` used for marking selection and calls `resetIndexes()`.",
+            "itemtype": "method",
+            "name": "removeSelection",
+            "class": "CalendarEvents"
+        },
+        {
+            "file": "calendar.plugin.js",
+            "line": 776,
+            "description": "Submit action. Applies css style for selected event on client side.\nCalls `TODO: Submit server implementation` for server side implementation.",
+            "itemtype": "method",
+            "name": "submitChanges",
+            "class": "CalendarEvents"
+        },
+        {
+            "file": "calendar.plugin.js",
+            "line": 786,
+            "description": "Delete action. Remove css style on client side.\nCalls `TODO: Delete server implementation` for server side implementation.",
+            "itemtype": "method",
+            "name": "deleteItems",
+            "class": "CalendarEvents"
+        },
+        {
+            "file": "calendar.plugin.js",
+            "line": 796,
+            "description": "Sets css styling to each cell in range of selected indexes according to\nselected event and its properties (background color, color), sets title\nif any of messages is typed. Adds class `event-day` to each cell and initializes\npopover with messages.",
+            "itemtype": "method",
+            "name": "applyEventFormat",
+            "class": "CalendarEvents"
+        },
+        {
+            "file": "calendar.plugin.js",
+            "line": 816,
+            "description": "Removes css styling and attribute `title` from selected cells.",
+            "itemtype": "method",
+            "name": "removeEventFormat",
+            "class": "CalendarEvents"
+        },
+        {
+            "file": "calendar.plugin.js",
+            "line": 828,
             "description": "Resolves left mouse pressing.",
             "itemtype": "method",
             "name": "leftMousePressed",
@@ -419,7 +777,7 @@
         },
         {
             "file": "calendar.plugin.js",
-            "line": 407,
+            "line": 840,
             "description": "Remove values from `this.index` property after `mouseup` event\nto use for other selection.",
             "itemtype": "method",
             "name": "resetIndexes",
@@ -429,13 +787,13 @@
         },
         {
             "file": "calendar.plugin.js",
-            "line": 421,
+            "line": 854,
             "description": "Created by Marcela on 28. 4. 2015.",
             "class": "CalendarEvents"
         },
         {
             "file": "calendar.plugin.js",
-            "line": 467,
+            "line": 898,
             "description": "Initializes view with calendars.",
             "itemtype": "method",
             "name": "init",
@@ -444,7 +802,7 @@
         },
         {
             "file": "calendar.plugin.js",
-            "line": 479,
+            "line": 910,
             "description": "Changes the year of calendar and calls rerendering calendar view",
             "itemtype": "method",
             "name": "changeYear",
@@ -461,28 +819,40 @@
     ],
     "warnings": [
         {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " calendar.plugin.js:179"
+        },
+        {
             "message": "Missing item type\nCreated by Marcela on 28. 4. 2015.",
             "line": " calendar.plugin.js:1"
         },
         {
             "message": "Missing item type\nCreated by Marcela on 28. 4. 2015.",
-            "line": " calendar.plugin.js:5"
+            "line": " calendar.plugin.js:14"
+        },
+        {
+            "message": "Missing item type\nCreated by Marcela on 5. 5. 2015.",
+            "line": " calendar.plugin.js:132"
         },
         {
             "message": "Missing item type\nCreated by Marcela on 29. 4. 2015.",
-            "line": " calendar.plugin.js:102"
+            "line": " calendar.plugin.js:372"
+        },
+        {
+            "message": "Missing item type\nCreated by Marcela on 9. 5. 2015.",
+            "line": " calendar.plugin.js:435"
         },
         {
             "message": "Missing item type\nCreated by Marcela on 29. 4. 2015.",
-            "line": " calendar.plugin.js:164"
+            "line": " calendar.plugin.js:493"
         },
         {
             "message": "Missing item type\nCreated by Marcela on 2. 5. 2015.",
-            "line": " calendar.plugin.js:297"
+            "line": " calendar.plugin.js:627"
         },
         {
             "message": "Missing item type\nCreated by Marcela on 28. 4. 2015.",
-            "line": " calendar.plugin.js:421"
+            "line": " calendar.plugin.js:854"
         }
     ]
 }

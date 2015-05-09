@@ -27,6 +27,8 @@ module Calendar {
         end: any;
         events: Array<IEvent>;
         selectedEvent: string;
+        defaultBgColor: string;
+        defaultColor: string;
         message?: string;
         personalNote?: string;
     }

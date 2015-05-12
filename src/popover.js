@@ -19,13 +19,13 @@ var Calendar;
         /**
          * Initializes popover for cell element.
          *
-         * @method Popover
+         * @method popover
          * @static
          * @param {JQuery} cell - Cell element to apply popover
          * @param {string} [message] - Message text
          * @param {string} [note] - Note text for creator
          */
-        Popover.Popover = function (cell, message, note) {
+        Popover.popover = function (cell, message, note) {
             var _this = this;
             cell.popover({
                 container: 'body',
@@ -48,10 +48,10 @@ var Calendar;
          */
         Popover.template = function (message, note) {
             var messageTmp = message && message.length ? this.messageTmp.replace("{{message}}", message) : "", noteTmp = note && note.length ? this.noteTmp.replace("{{note}}", note) : "";
-            return "<div>" + noteTmp + messageTmp + "</div>";
+            return "<div>" + messageTmp + noteTmp + "</div>";
         };
-        Popover.messageTmp = "<div><i class='fa fa-comment-o'></i> {{message}}</div>";
-        Popover.noteTmp = "<div><i class='fa fa-pencil-square-o'></i> {{note}}</div>";
+        Popover.messageTmp = "<div>{{message}}</div>";
+        Popover.noteTmp = "<div class='note'>{{note}}</div>";
         return Popover;
     })();
     Calendar.Popover = Popover;

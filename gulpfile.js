@@ -3,18 +3,17 @@ var gulp = require('gulp'),
     ts = require('gulp-typescript'),
     less =require('gulp-less'),
     sequence = require('run-sequence'),
-    connect = require('gulp-connect'),
-    livereload = require('gulp-livereload');
+    connect = require('gulp-connect');
 
 // javascripts
 gulp.task('typescript', function(){
-    var tsResult = gulp.src(['typing/*.d.ts', 'app/*.ts'])
+    var tsResult = gulp.src(['typing/*.d.ts', 'src/*.ts'])
                         .pipe(ts({
                             noExternalResolve: true,
                             out: 'event-calendar.js'
                         }));
 
-    return tsResult.js.pipe(gulp.dest('dist/app')).pipe(livereload());
+    return tsResult.js.pipe(gulp.dest('dist/app'));
 });
 
 gulp.task('js', function(){
@@ -28,11 +27,11 @@ gulp.task('js', function(){
 
 // css
 gulp.task('less', function(){
-    return gulp.src('app/less/calendar.less')
+    return gulp.src('src/less/calendar.less')
         .pipe(less({
             paths: [ path.join(__dirname, 'less', 'node_modules') ]
         }))
-        .pipe(gulp.dest('dist/app')).pipe(livereload());
+        .pipe(gulp.dest('dist/app'));
 });
 
 gulp.task('css', function(){
@@ -55,7 +54,7 @@ gulp.task('fonts', function(){
 // server
 gulp.task('connect', function () {
     connect.server({
-        port: 8000,
+        port: 8010,
         livereload: true,
         hostname: "*",
         base: "dist/"
@@ -64,8 +63,8 @@ gulp.task('connect', function () {
 
 // watch
 gulp.task('watch', function(){
-    gulp.watch('app/*.ts', ['typescript']);
-    gulp.watch('app/less/calendar.less', ['less']);
+    gulp.watch('src/*.js', ['typescript']);
+    gulp.watch('src/less/calendar.css', ['less']);
 });
 
 gulp.task('dev', ['fonts', 'js', 'css', 'typescript', 'less', 'connect', 'watch']);

@@ -183,7 +183,7 @@ var Calendar;
                 cell.addClass('event-day');
                 cell.css({ "background-color": bgr, "color": color });
                 if (message || note) {
-                    Calendar.Popover.Popover(cell, message, note);
+                    Calendar.Popover.popover(cell, message, note);
                 }
             });
         };

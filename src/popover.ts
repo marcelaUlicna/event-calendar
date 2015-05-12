@@ -16,19 +16,19 @@ module Calendar {
      * @static
      */
     export class Popover {
-        private static messageTmp: string = "<div><i class='fa fa-comment-o'></i> {{message}}</div>";
-        private static noteTmp: string = "<div><i class='fa fa-pencil-square-o'></i> {{note}}</div>";
+        private static messageTmp: string = "<div>{{message}}</div>";
+        private static noteTmp: string = "<div class='note'>{{note}}</div>";
 
         /**
          * Initializes popover for cell element.
          *
-         * @method Popover
+         * @method popover
          * @static
          * @param {JQuery} cell - Cell element to apply popover
          * @param {string} [message] - Message text
          * @param {string} [note] - Note text for creator
          */
-        static Popover(cell: JQuery, message?: string, note?:string): void {
+        static popover(cell: JQuery, message?: string, note?:string): void {
             cell.popover({
                 container: 'body',
                 html: true,
@@ -53,7 +53,7 @@ module Calendar {
             var messageTmp = message && message.length ? this.messageTmp.replace("{{message}}", message) : "",
                 noteTmp = note && note.length ? this.noteTmp.replace("{{note}}", note) : "";
 
-            return "<div>" + noteTmp + messageTmp + "</div>";
+            return "<div>" + messageTmp + noteTmp + "</div>";
         }
     }
 }

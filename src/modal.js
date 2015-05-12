@@ -1,15 +1,13 @@
 /**
  * Created by Marcela on 5. 5. 2015.
  */
-
 ///<reference path="../typing/jquery.d.ts" />
 ///<reference path="../typing/bootstrap.d.ts" />
 ///<reference path="../typing/moment.d.ts" />
 ///<reference path="common.ts" />
 ///<reference path="helpers" />
-
-module Calendar {
-
+var Calendar;
+(function (Calendar) {
     /**
      * Implements modal dialog which contains selected start and end date,
      * component with events to be selected and inputs where user can type
@@ -25,20 +23,13 @@ module Calendar {
      * @property {JQuery} modal - Dialog element
      * @property {DialogResult} [dialogResult=DialogResult.Cancel] - Result of dialog event
      */
-    export class Dialog {
-
-        dialogSettings: IModalDialog;
-        templateDictionary: { [key: string]: any };
-        modal: JQuery;
-
-        dialogResult: DialogResult = DialogResult.Cancel;
-
-        constructor(dialogSettings: IModalDialog) {
+    var Dialog = (function () {
+        function Dialog(dialogSettings) {
+            this.dialogResult = 2 /* Cancel */;
             this.dialogSettings = dialogSettings;
             this.dialogSettings.selectedEvent = this.dialogSettings.events[0].name;
             this.templateDictionary = this.getDictionary();
         }
-
         /**
          * Fills `templateDictionary` with keys and its values.
          *
@@ -46,15 +37,14 @@ module Calendar {
          * @private
          * @return {any} - Returns dictionary template
          */
-        private getDictionary(): any {
+        Dialog.prototype.getDictionary = function () {
             return {
                 "title": "Modal title",
                 "start": moment(this.dialogSettings.start).format("LL"),
-                "end":  moment(this.dialogSettings.end).format("LL"),
+                "end": moment(this.dialogSettings.end).format("LL"),
                 "dropdown": Calendar.ModalTemplate.dropdownTemplate(this.dialogSettings)
             };
-        }
-
+        };
         /**
          * Renders modal dialog and binds all necessary events. After closing modal dialog
          * it is removed from DOM.
@@ -62,73 +52,86 @@ module Calendar {
          * @method show
          * @returns {JQueryPromise<DialogResult>} - Returns promise from modal dialog with dialog result
          */
-        show(): JQueryPromise<DialogResult> {
-            var deferred = $.Deferred<DialogResult>();
-
+        Dialog.prototype.show = function () {
+            var _this = this;
+            var deferred = $.Deferred();
             this.modal = $(Calendar.Helpers.RenderTemplate(Calendar.ModalTemplate.template(), this.templateDictionary)).appendTo($("body"));
             this.modal.modal();
-            this.modal.on("click", ".modal-body .dropdown-menu li", (e) => this.selectChange(e));
-            this.modal.on("change", "input", (e) => this.messageChanged(e));
-            this.modal.on("click", ".modal-body .btn-action", (e) => this.click(e));
-            this.modal.on("hidden.bs.modal", () => {
-                    this.modal.remove();
-                    deferred.resolve(this.dialogResult);
-                }
-            );
+            this.modal.on("click", ".modal-body .dropdown-menu li", function (e) { return _this.selectChange(e); });
+            this.modal.on("change", "input", function (e) { return _this.messageChanged(e); });
+            this.modal.on("click", ".modal-body .btn-action", function (e) { return _this.click(e); });
+            this.modal.on("keyup", function (e) { return _this.modalKeyup(e); });
+            this.modal.on("hidden.bs.modal", function () {
+                _this.modal.remove();
+                deferred.resolve(_this.dialogResult);
+            });
             return deferred.promise();
-        }
-
+        };
         /**
          * Resolves button click from dialog and calls appropriate method.
          *
          * @method click
          * @param {JQueryEventObject} e - Button object handler
          */
-        click(e: JQueryEventObject): void {
+        Dialog.prototype.click = function (e) {
             var action = $(e.target).attr("id");
             this[action](e);
-            this.close();
-        }
-
+        };
+        /**
+         * jQuery keyup() event for enter and escape key.
+         * Enter key confirms dialog and escape key closes dialog
+         * without changes.
+         *
+         * @method modalKeyup
+         * @param {JQueryEventObject} e - Key event handler
+         * */
+        Dialog.prototype.modalKeyup = function (e) {
+            var key = e.keyCode || e.which;
+            if (key === 13) {
+                this.btnSubmit(e);
+            }
+            else if (key === 27) {
+                this.btnClose(e);
+            }
+        };
         /**
          * Sets dialogResult to `DialogResult.Submit`.
          *
          * @method btnSubmit
          * @param {JQueryEventObject} e - Button object handler
          */
-        btnSubmit(e: JQueryEventObject): void {
-            this.dialogResult = DialogResult.Submit;
-        }
-
+        Dialog.prototype.btnSubmit = function (e) {
+            this.dialogResult = 0 /* Submit */;
+            this.close();
+        };
         /**
          * Sets dialogResult to `DialogResult.Delete`.
          *
          * @method btnDelete
          * @param {JQueryEventObject} e - Button object handler
          */
-        btnDelete(e: JQueryEventObject): void {
-            this.dialogResult = DialogResult.Delete;
-        }
-
+        Dialog.prototype.btnDelete = function (e) {
+            this.dialogResult = 1 /* Delete */;
+            this.close();
+        };
         /**
          * Sets dialogResult to `DialogResult.Cancel`.
          *
          * @method btnClose
          * @param {JQueryEventObject} e - Button object handler
          */
-        btnClose(e: JQueryEventObject): void {
-            this.dialogResult = DialogResult.Cancel;
-        }
-
+        Dialog.prototype.btnClose = function (e) {
+            this.dialogResult = 2 /* Cancel */;
+            this.close();
+        };
         /**
          * Closes modal dialog.
          *
          * @method close
          */
-        close(): void {
+        Dialog.prototype.close = function () {
             this.modal.modal("hide");
-        }
-
+        };
         /**
          * Applies changes after selecting some event from list component,
          * saves selected item to `dialogSettings` property and
@@ -137,58 +140,39 @@ module Calendar {
          * @method selectChange
          * @param {JQueryEventObject} e - Selected item event handler
          */
-        selectChange(e: JQueryEventObject): void {
+        Dialog.prototype.selectChange = function (e) {
             var li = $(e.target).closest("li");
-
             this.dialogSettings.selectedEvent = li.attr("data-value");
-
-            var html = li.find("a").html(),
-                faIndex = html.indexOf("<i class"),
-                htmlWithCaret = html.slice(0, faIndex) + " <span class='caret pull-right'></span>" + html.slice(faIndex);
-
+            var html = li.find("a").html(), faIndex = html.indexOf("<i class"), htmlWithCaret = html.slice(0, faIndex) + " <span class='caret pull-right'></span>" + html.slice(faIndex);
             $(".calendar-modal .dropdown-toggle").html(htmlWithCaret);
-        }
-
+        };
         /**
          * Saves input text to `dialogSettings` property.
          *
          * @method messageChanged
          * @param {JQueryEventObject} e - Input event handler
          */
-        messageChanged(e:JQueryEventObject): void {
+        Dialog.prototype.messageChanged = function (e) {
             var input = $(e.target);
-
-            if(input.attr("name") === "userMessage") {
+            if (input.attr("name") === "userMessage") {
                 this.dialogSettings.message = input.val();
-            } else {
+            }
+            else {
                 this.dialogSettings.personalNote = input.val();
             }
-        }
-    }
-
+        };
+        return Dialog;
+    })();
+    Calendar.Dialog = Dialog;
     /**
      * Static class which contains templates for modal dialog
      *
      * @class ModalTemplate
      * @static
      */
-    export class ModalTemplate {
-
-        private static dropdownButton: string = [
-            "<div class='btn-group' role='group'>",
-            "   <button type='button' class='btn btn-default dropdown-toggle' data-toggle='dropdown' aria-expanded='false'>",
-            "       {{value}}",
-            "       <span class='caret pull-right'></span>",
-            "       <i class='fa fa-square pull-right' style='color: {{backgroundColor}}'></i>",
-            "   </button>",
-            "   <ul class='dropdown-menu' role='menu'>",
-            "       {{dropdownlist}}",
-            "   </ul>",
-            "</div>"
-        ].join("\n");
-
-        private static dropdownList: string = "<li data-value='{{value}}'><a href='#'>{{value}}<i class='fa fa-square pull-right' style='color: {{backgroundColor}};'></i></a></li>";
-
+    var ModalTemplate = (function () {
+        function ModalTemplate() {
+        }
         /**
          * Whole modal dialog html template.
          *
@@ -196,8 +180,8 @@ module Calendar {
          * @static
          * @return {string} - Returns template
          */
-        static template(): string {
-            return  [
+        ModalTemplate.template = function () {
+            return [
                 "<div class='modal calendar-modal' tabindex='-1' role='dialog' aria-hidden='true'>",
                 "  <div class='modal-dialog modal-sm'>",
                 "    <div class='modal-content'>",
@@ -233,8 +217,7 @@ module Calendar {
                 "  </div>",
                 "</div>"
             ].join("\n");
-        }
-
+        };
         /**
          * Template for dropdown component with events.
          *
@@ -243,21 +226,36 @@ module Calendar {
          * @param {IModalDialog} dialogSettings - Modal dialog settings
          * @return {string} - Returns partial template
          */
-        static dropdownTemplate(dialogSettings: IModalDialog): string {
+        ModalTemplate.dropdownTemplate = function (dialogSettings) {
+            var _this = this;
             var firstEvent = dialogSettings.events[0];
-
-            var dropdownlist = dialogSettings.events.map((item) => {
-                return Calendar.Helpers.RenderTemplate(this.dropdownList, {
+            var dropdownlist = dialogSettings.events.map(function (item) {
+                return Calendar.Helpers.RenderTemplate(_this.dropdownList, {
                     "value": item.name,
                     "backgroundColor": item.backgroundColor || dialogSettings.defaultBgColor
                 });
             });
-
             return Calendar.Helpers.RenderTemplate(this.dropdownButton, {
                 "value": firstEvent.name,
                 "backgroundColor": firstEvent.backgroundColor || dialogSettings.defaultBgColor,
                 "dropdownlist": dropdownlist.join("")
             });
-        }
-    }
-}
+        };
+        ModalTemplate.dropdownButton = [
+            "<div class='btn-group' role='group'>",
+            "   <button type='button' class='btn btn-default dropdown-toggle' data-toggle='dropdown' aria-expanded='false'>",
+            "       {{value}}",
+            "       <span class='caret pull-right'></span>",
+            "       <i class='fa fa-square pull-right' style='color: {{backgroundColor}}'></i>",
+            "   </button>",
+            "   <ul class='dropdown-menu' role='menu'>",
+            "       {{dropdownlist}}",
+            "   </ul>",
+            "</div>"
+        ].join("\n");
+        ModalTemplate.dropdownList = "<li data-value='{{value}}'><a href='#'>{{value}}<i class='fa fa-square pull-right' style='color: {{backgroundColor}};'></i></a></li>";
+        return ModalTemplate;
+    })();
+    Calendar.ModalTemplate = ModalTemplate;
+})(Calendar || (Calendar = {}));
+//# sourceMappingURL=modal.js.map

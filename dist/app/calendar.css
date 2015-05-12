@@ -86,3 +86,8 @@
   background-color: #00deff;
   opacity: 0.4;
 }
+.popover-content .note {
+  font-size: 0.85em;
+  font-style: italic;
+  color: #0000ff;
+}

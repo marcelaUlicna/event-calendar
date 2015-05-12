@@ -12,6 +12,69 @@ var Calendar;
     var DialogResult = Calendar.DialogResult;
 })(Calendar || (Calendar = {}));
 /**
+ * Created by Marcela on 29. 4. 2015.
+ */
+///<reference path="../typing/jquery.d.ts" />
+var Calendar;
+(function (Calendar) {
+    /**
+     * Renders header of plugin. Contains actual year and navigation
+     * to previous and next year.
+     *
+     * @class Header
+     * @constructor
+     * @property {JQuery} element - Header DOM element
+     * @property {number} year - Actual year
+     */
+    var Header = (function () {
+        function Header(year) {
+            this.year = year;
+            this.element = this.render();
+        }
+        /**
+         * Creates whole header elements.
+         *
+         * @method render
+         * @return JQuery
+         */
+        Header.prototype.render = function () {
+            return $("<div />").addClass("row calendar-header").append(this.renderHeader());
+        };
+        /**
+         * Creates main header element and appends navigation buttons
+         * and title.
+         *
+         * @method renderHeader
+         * @return JQuery
+         */
+        Header.prototype.renderHeader = function () {
+            return $("<div />").addClass("col-md-12").append($("<div />").addClass("pull-left").append(this.renderButton("prev")).append(this.renderTitle()).append(this.renderButton("next")));
+        };
+        /**
+         * Creates navigation button.
+         *
+         * @method renderButton
+         * @param {string} direction - Direction (prev or next)
+         * @return JQuery
+         */
+        Header.prototype.renderButton = function (direction) {
+            var yearValue = direction === "prev" ? this.year - 1 : this.year + 1, iconClass = direction === "prev" ? "fa fa-chevron-left" : "fa fa-chevron-right";
+            return $("<div />").addClass("btn btn-default year-direction").attr("type", "button").attr("name", "year").attr("data-direction", direction).attr("value", yearValue).append($("<span />").addClass(iconClass));
+        };
+        /**
+         * Creates year title.
+         *
+         * @method renderTitle
+         * @return JQuery
+         */
+        Header.prototype.renderTitle = function () {
+            return $("<div />").addClass("actual-year").attr("data-year", this.year).append($("<strong />").text(this.year));
+        };
+        return Header;
+    })();
+    Calendar.Header = Header;
+})(Calendar || (Calendar = {}));
+/**
  * Created by Marcela on 28. 4. 2015.
  */
 ///<reference path="../typing/jquery.d.ts" />
@@ -130,6 +193,140 @@ var Calendar;
     Calendar.Helpers = Helpers;
 })(Calendar || (Calendar = {}));
 /**
+ * Created by Marcela on 29. 4. 2015.
+ */
+///<reference path="../typing/jquery.d.ts" />
+///<reference path="../typing/moment.d.ts" />
+///<reference path="common.ts" />
+///<reference path="helpers.ts" />
+/*
+* moment.locale("cs-cz")
+*
+* moment.months()
+* ["leden", "únor", "březen", "duben", "květen", "červen", "červenec", "srpen", "září", "říjen", "listopad", "prosinec"]
+* ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"]
+* ["январь", "февраль", "март", "апрель", "май", "июнь", "июль", "август", "сентябрь", "октябрь", "ноябрь", "декабрь"]
+*
+* moment.weekdaysMin()
+* ["ne", "po", "út", "st", "čt", "pá", "so"]
+* ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sá"]
+* ["вс", "пн", "вт", "ср", "чт", "пт", "сб"]
+* */
+var Calendar;
+(function (Calendar) {
+    /**
+     * Provides rendering month calendars, marks specified events by
+     * custom colors, displays tooltip for each event both personal and
+     * to other users. Sets Monday as the first day of week.
+     *
+     * @class MonthCalendar
+     * @constructor
+     * @param {ISettings} settings - Plugin settings
+     * @param {number} year - Actual year of calendar
+     * @property {JQuery} element - Month calendars DOM element
+     * @property {ISettings} settings - Plugin settings
+     * @property {number} year - Actual year of calendar
+     * @property {Date} today - Javascript Date object
+     * @property {Array<string>} months - Array of month names
+     * @property {Array<string>} weekdays - Array of weekdays shortcuts
+     */
+    var MonthCalendar = (function () {
+        function MonthCalendar(settings, year) {
+            this.today = new Date();
+            this.settings = settings;
+            this.year = year;
+            this.months = moment.months();
+            this.weekdays = moment.weekdaysShort();
+            // set Monday as first day of week
+            var sunday = this.weekdays[0];
+            this.weekdays.shift();
+            this.weekdays.push(sunday);
+            // capitalize first letter
+            this.capitalize();
+            this.element = this.templateCalendar();
+        }
+        /**
+         * Capitalizes the first letter of the month and weekdays names.
+         *
+         * @method capitalize
+         */
+        MonthCalendar.prototype.capitalize = function () {
+            this.months = this.months.map(function (item) { return Calendar.Helpers.CapitalizeFirstLetter(item); });
+            this.weekdays = this.weekdays.map(function (item) { return Calendar.Helpers.CapitalizeFirstLetter(item); });
+        };
+        /**
+         * Creates wrapper for month tables.
+         *
+         * @method templateCalendar
+         * @return {JQuery}
+         */
+        MonthCalendar.prototype.templateCalendar = function () {
+            var view = $("<div />").addClass("row");
+            for (var i = 0, length = this.months.length; i < length; i++) {
+                var monthElement = $("<div />").addClass("col-md-3 col-sm-4");
+                monthElement.append(this.templateTable(i)).appendTo(view);
+            }
+            return view;
+        };
+        /**
+         * Creates table for month represented by month index,
+         * marks weekdays and events.
+         *
+         * @method templateTable
+         * @param {number} monthId - Month index 0 - 11
+         * @return {JQuery}
+         */
+        MonthCalendar.prototype.templateTable = function (monthId) {
+            var actualDate = new Date(this.year, monthId), weekDay = (actualDate.getDay() + 6) % 7, daysInMonth = moment(actualDate).daysInMonth(), displayDay = daysInMonth == 0; // set display first day in calendar if it is Monday
+            // table
+            var table = $("<table />").addClass("calendar-table table-bordered").append($("<thead />").append($("<tr />").addClass("calendar-header-month").append($("<th />").attr("colSpan", 7).text(this.months[monthId]))).append($("<tr />").addClass("calendar-header-day"))).append($("<tbody />").addClass("calendar-body"));
+            // header
+            var dayRow = table.find(".calendar-header-day");
+            this.weekdays.forEach(function (item) { return dayRow.append($("<th />").text(item)); });
+            // body
+            var calendarBody = table.find(".calendar-body");
+            var index = 1;
+            for (var i = 0; i < 6; i++) {
+                var row = $("<tr />");
+                for (var j = 0; j < 7; j++) {
+                    var cell = $("<td />").addClass("cell");
+                    if (i === 0 && j >= weekDay) {
+                        displayDay = true;
+                    }
+                    if (displayDay) {
+                        var cellDate = new Date(this.year, monthId, index), cellDateIndex = cellDate.getDay();
+                        // set weekend
+                        if (cellDateIndex === 6 || cellDateIndex === 0) {
+                            cell.addClass("weekend");
+                        }
+                        // set today
+                        if (moment(cellDate).format("YYYY-MM-DD") === moment(this.today).format("YYYY-MM-DD")) {
+                            cell.addClass("css-today").addClass("today");
+                        }
+                        // set vacation
+                        // TODO ============
+                        // set date number
+                        cell.attr("data-year-day", moment(cellDate).dayOfYear()).text(index);
+                        // resolve month index
+                        if (index < daysInMonth) {
+                            index++;
+                        }
+                        else {
+                            index = 1;
+                            displayDay = false;
+                        }
+                    }
+                    row.append(cell);
+                }
+                calendarBody.append(row);
+            }
+            return table;
+        };
+        return MonthCalendar;
+    })();
+    Calendar.MonthCalendar = MonthCalendar;
+})(Calendar || (Calendar = {}));
+/**
  * Created by Marcela on 5. 5. 2015.
  */
 ///<reference path="../typing/jquery.d.ts" />
@@ -191,6 +388,7 @@ var Calendar;
             this.modal.on("click", ".modal-body .dropdown-menu li", function (e) { return _this.selectChange(e); });
             this.modal.on("change", "input", function (e) { return _this.messageChanged(e); });
             this.modal.on("click", ".modal-body .btn-action", function (e) { return _this.click(e); });
+            this.modal.on("keyup", function (e) { return _this.modalKeyup(e); });
             this.modal.on("hidden.bs.modal", function () {
                 _this.modal.remove();
                 deferred.resolve(_this.dialogResult);
@@ -206,7 +404,23 @@ var Calendar;
         Dialog.prototype.click = function (e) {
             var action = $(e.target).attr("id");
             this[action](e);
-            this.close();
+        };
+        /**
+         * jQuery keyup() event for enter and escape key.
+         * Enter key confirms dialog and escape key closes dialog
+         * without changes.
+         *
+         * @method modalKeyup
+         * @param {JQueryEventObject} e - Key event handler
+         * */
+        Dialog.prototype.modalKeyup = function (e) {
+            var key = e.keyCode || e.which;
+            if (key === 13) {
+                this.btnSubmit(e);
+            }
+            else if (key === 27) {
+                this.btnClose(e);
+            }
         };
         /**
          * Sets dialogResult to `DialogResult.Submit`.
@@ -216,6 +430,7 @@ var Calendar;
          */
         Dialog.prototype.btnSubmit = function (e) {
             this.dialogResult = 0 /* Submit */;
+            this.close();
         };
         /**
          * Sets dialogResult to `DialogResult.Delete`.
@@ -225,6 +440,7 @@ var Calendar;
          */
         Dialog.prototype.btnDelete = function (e) {
             this.dialogResult = 1 /* Delete */;
+            this.close();
         };
         /**
          * Sets dialogResult to `DialogResult.Cancel`.
@@ -234,6 +450,7 @@ var Calendar;
          */
         Dialog.prototype.btnClose = function (e) {
             this.dialogResult = 2 /* Cancel */;
+            this.close();
         };
         /**
          * Closes modal dialog.
@@ -370,69 +587,6 @@ var Calendar;
     Calendar.ModalTemplate = ModalTemplate;
 })(Calendar || (Calendar = {}));
 /**
- * Created by Marcela on 29. 4. 2015.
- */
-///<reference path="../typing/jquery.d.ts" />
-var Calendar;
-(function (Calendar) {
-    /**
-     * Renders header of plugin. Contains actual year and navigation
-     * to previous and next year.
-     *
-     * @class Header
-     * @constructor
-     * @property {JQuery} element - Header DOM element
-     * @property {number} year - Actual year
-     */
-    var Header = (function () {
-        function Header(year) {
-            this.year = year;
-            this.element = this.render();
-        }
-        /**
-         * Creates whole header elements.
-         *
-         * @method render
-         * @return JQuery
-         */
-        Header.prototype.render = function () {
-            return $("<div />").addClass("row calendar-header").append(this.renderHeader());
-        };
-        /**
-         * Creates main header element and appends navigation buttons
-         * and title.
-         *
-         * @method renderHeader
-         * @return JQuery
-         */
-        Header.prototype.renderHeader = function () {
-            return $("<div />").addClass("col-md-12").append($("<div />").addClass("pull-left").append(this.renderButton("prev")).append(this.renderTitle()).append(this.renderButton("next")));
-        };
-        /**
-         * Creates navigation button.
-         *
-         * @method renderButton
-         * @param {string} direction - Direction (prev or next)
-         * @return JQuery
-         */
-        Header.prototype.renderButton = function (direction) {
-            var yearValue = direction === "prev" ? this.year - 1 : this.year + 1, iconClass = direction === "prev" ? "fa fa-chevron-left" : "fa fa-chevron-right";
-            return $("<div />").addClass("btn btn-default year-direction").attr("type", "button").attr("name", "year").attr("data-direction", direction).attr("value", yearValue).append($("<span />").addClass(iconClass));
-        };
-        /**
-         * Creates year title.
-         *
-         * @method renderTitle
-         * @return JQuery
-         */
-        Header.prototype.renderTitle = function () {
-            return $("<div />").addClass("actual-year").attr("data-year", this.year).append($("<strong />").text(this.year));
-        };
-        return Header;
-    })();
-    Calendar.Header = Header;
-})(Calendar || (Calendar = {}));
-/**
  * Created by Marcela on 9. 5. 2015.
  */
 ///<reference path="../typing/jquery.d.ts" />
@@ -453,13 +607,13 @@ var Calendar;
         /**
          * Initializes popover for cell element.
          *
-         * @method Popover
+         * @method popover
          * @static
          * @param {JQuery} cell - Cell element to apply popover
          * @param {string} [message] - Message text
          * @param {string} [note] - Note text for creator
          */
-        Popover.Popover = function (cell, message, note) {
+        Popover.popover = function (cell, message, note) {
             var _this = this;
             cell.popover({
                 container: 'body',
@@ -482,147 +636,13 @@ var Calendar;
          */
         Popover.template = function (message, note) {
             var messageTmp = message && message.length ? this.messageTmp.replace("{{message}}", message) : "", noteTmp = note && note.length ? this.noteTmp.replace("{{note}}", note) : "";
-            return "<div>" + noteTmp + messageTmp + "</div>";
+            return "<div>" + messageTmp + noteTmp + "</div>";
         };
-        Popover.messageTmp = "<div><i class='fa fa-comment-o'></i> {{message}}</div>";
-        Popover.noteTmp = "<div><i class='fa fa-pencil-square-o'></i> {{note}}</div>";
+        Popover.messageTmp = "<div>{{message}}</div>";
+        Popover.noteTmp = "<div class='note'>{{note}}</div>";
         return Popover;
     })();
     Calendar.Popover = Popover;
-})(Calendar || (Calendar = {}));
-/**
- * Created by Marcela on 29. 4. 2015.
- */
-///<reference path="../typing/jquery.d.ts" />
-///<reference path="../typing/moment.d.ts" />
-///<reference path="common.ts" />
-///<reference path="helpers.ts" />
-/*
-* moment.locale("cs-cz")
-*
-* moment.months()
-* ["leden", "únor", "březen", "duben", "květen", "červen", "červenec", "srpen", "září", "říjen", "listopad", "prosinec"]
-* ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"]
-* ["январь", "февраль", "март", "апрель", "май", "июнь", "июль", "август", "сентябрь", "октябрь", "ноябрь", "декабрь"]
-*
-* moment.weekdaysMin()
-* ["ne", "po", "út", "st", "čt", "pá", "so"]
-* ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sá"]
-* ["вс", "пн", "вт", "ср", "чт", "пт", "сб"]
-* */
-var Calendar;
-(function (Calendar) {
-    /**
-     * Provides rendering month calendars, marks specified events by
-     * custom colors, displays tooltip for each event both personal and
-     * to other users. Sets Monday as the first day of week.
-     *
-     * @class MonthCalendar
-     * @constructor
-     * @param {ISettings} settings - Plugin settings
-     * @param {number} year - Actual year of calendar
-     * @property {JQuery} element - Month calendars DOM element
-     * @property {ISettings} settings - Plugin settings
-     * @property {number} year - Actual year of calendar
-     * @property {Date} today - Javascript Date object
-     * @property {Array<string>} months - Array of month names
-     * @property {Array<string>} weekdays - Array of weekdays shortcuts
-     */
-    var MonthCalendar = (function () {
-        function MonthCalendar(settings, year) {
-            this.today = new Date();
-            this.settings = settings;
-            this.year = year;
-            this.months = moment.months();
-            this.weekdays = moment.weekdaysShort();
-            // set Monday as first day of week
-            var sunday = this.weekdays[0];
-            this.weekdays.shift();
-            this.weekdays.push(sunday);
-            // capitalize first letter
-            this.capitalize();
-            this.element = this.templateCalendar();
-        }
-        /**
-         * Capitalizes the first letter of the month and weekdays names.
-         *
-         * @method capitalize
-         */
-        MonthCalendar.prototype.capitalize = function () {
-            this.months = this.months.map(function (item) { return Calendar.Helpers.CapitalizeFirstLetter(item); });
-            this.weekdays = this.weekdays.map(function (item) { return Calendar.Helpers.CapitalizeFirstLetter(item); });
-        };
-        /**
-         * Creates wrapper for month tables.
-         *
-         * @method templateCalendar
-         * @return {JQuery}
-         */
-        MonthCalendar.prototype.templateCalendar = function () {
-            var view = $("<div />").addClass("row");
-            for (var i = 0, length = this.months.length; i < length; i++) {
-                var monthElement = $("<div />").addClass("col-md-3 col-sm-4");
-                monthElement.append(this.templateTable(i)).appendTo(view);
-            }
-            return view;
-        };
-        /**
-         * Creates table for month represented by month index,
-         * marks weekdays and events.
-         *
-         * @method templateTable
-         * @param {number} monthId - Month index 0 - 11
-         * @return {JQuery}
-         */
-        MonthCalendar.prototype.templateTable = function (monthId) {
-            var actualDate = new Date(this.year, monthId), weekDay = (actualDate.getDay() + 6) % 7, daysInMonth = moment(actualDate).daysInMonth(), displayDay = daysInMonth == 0; // set display first day in calendar if it is Monday
-            // table
-            var table = $("<table />").addClass("calendar-table table-bordered").append($("<thead />").append($("<tr />").addClass("calendar-header-month").append($("<th />").attr("colSpan", 7).text(this.months[monthId]))).append($("<tr />").addClass("calendar-header-day"))).append($("<tbody />").addClass("calendar-body"));
-            // header
-            var dayRow = table.find(".calendar-header-day");
-            this.weekdays.forEach(function (item) { return dayRow.append($("<th />").text(item)); });
-            // body
-            var calendarBody = table.find(".calendar-body");
-            var index = 1;
-            for (var i = 0; i < 6; i++) {
-                var row = $("<tr />");
-                for (var j = 0; j < 7; j++) {
-                    var cell = $("<td />").addClass("cell");
-                    if (i === 0 && j >= weekDay) {
-                        displayDay = true;
-                    }
-                    if (displayDay) {
-                        var cellDate = new Date(this.year, monthId, index), cellDateIndex = cellDate.getDay();
-                        // set weekend
-                        if (cellDateIndex === 6 || cellDateIndex === 0) {
-                            cell.addClass("weekend");
-                        }
-                        // set today
-                        if (moment(cellDate).format("YYYY-MM-DD") === moment(this.today).format("YYYY-MM-DD")) {
-                            cell.addClass("css-today").addClass("today");
-                        }
-                        // set vacation
-                        // TODO ============
-                        // set date number
-                        cell.attr("data-year-day", moment(cellDate).dayOfYear()).text(index);
-                        // resolve month index
-                        if (index < daysInMonth) {
-                            index++;
-                        }
-                        else {
-                            index = 1;
-                            displayDay = false;
-                        }
-                    }
-                    row.append(cell);
-                }
-                calendarBody.append(row);
-            }
-            return table;
-        };
-        return MonthCalendar;
-    })();
-    Calendar.MonthCalendar = MonthCalendar;
 })(Calendar || (Calendar = {}));
 /**
  * Created by Marcela on 2. 5. 2015.
@@ -809,7 +829,7 @@ var Calendar;
                 cell.addClass('event-day');
                 cell.css({ "background-color": bgr, "color": color });
                 if (message || note) {
-                    Calendar.Popover.Popover(cell, message, note);
+                    Calendar.Popover.popover(cell, message, note);
                 }
             });
         };

@@ -1,0 +1,93 @@
+.elipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.calendar-wrapper .calendar-header {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+.calendar-wrapper .calendar-header .actual-year {
+  display: inline-block;
+  margin: 0 7px;
+  font-size: 1.3em;
+}
+.calendar-modal .dropdown-toggle {
+  width: 266px;
+  text-align: left;
+}
+.calendar-modal .dropdown-toggle .caret {
+  margin-top: 8px;
+}
+.calendar-modal .dropdown-menu {
+  width: 100%;
+}
+.calendar-modal .fa.fa-square {
+  margin-top: 3px;
+  margin-right: 5px;
+}
+.calendar-table {
+  margin-bottom: 15px;
+}
+.calendar-table .weekend {
+  color: red;
+}
+.calendar-table .calendar-header-month {
+  background-image: -webkit-linear-gradient(#ffffff, #ffffff 6%, #f7f7f7);
+  background-image: -o-linear-gradient(#ffffff, #ffffff 6%, #f7f7f7);
+  background-image: linear-gradient(#ffffff, #ffffff 6%, #f7f7f7);
+  background-repeat: no-repeat;
+}
+.calendar-table .calendar-header-month th {
+  border-bottom: none;
+  padding: 5px;
+}
+.calendar-table .calendar-header-day {
+  background-color: #f7f7f7;
+}
+.calendar-table .calendar-header-day th {
+  text-align: center;
+  font-size: 75%;
+  font-weight: normal;
+  color: #a8a8a8;
+  border: none;
+}
+.calendar-table .css-today th {
+  color: #ffffff;
+}
+.calendar-table .css-today.calendar-header-month,
+.calendar-table .css-today.today {
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  /* IE10 Consumer Preview */
+  background-image: -ms-linear-gradient(top, #00a9f0 0%, #0093d2 100%);
+  /* Mozilla Firefox */
+  background-image: -moz-linear-gradient(top, #00a9f0 0%, #0093d2 100%);
+  /* Opera */
+  background-image: -o-linear-gradient(top, #00a9f0 0%, #0093d2 100%);
+  /* Webkit (Safari/Chrome 10) */
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #00a9f0), color-stop(1, #0093d2));
+  /* Webkit (Chrome 11+) */
+  background-image: -webkit-linear-gradient(top, #00a9f0 0%, #0093d2 100%);
+  /* W3C Markup, IE10 Release Preview */
+  background-image: linear-gradient(to bottom, #00a9f0 0%, #0093d2 100%);
+}
+.calendar-table .css-today.calendar-header-day {
+  background-color: #0093D2;
+}
+.calendar-table .calendar-body > tr > td {
+  text-align: center;
+  width: 30px;
+  height: 27px;
+  padding: 2px;
+  border: 1px solid #ddd;
+  cursor: default;
+}
+.calendar-table .selected-day {
+  background-color: #00deff;
+  opacity: 0.4;
+}
+.popover-content .note {
+  font-size: 0.85em;
+  font-style: italic;
+  color: #0000ff;
+}

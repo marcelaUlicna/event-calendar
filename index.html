@@ -4,20 +4,23 @@
     <meta charset="UTF-8">
     <title>Vacation calendar</title>
 
-    <link href="dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="dist/css/font-awesome.min.css" rel="stylesheet">
-    <link href="dist/app/calendar.css" rel="stylesheet">
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/font-awesome.min.css" rel="stylesheet">
+    <link href="assets/app/calendar.css" rel="stylesheet">
 
 </head>
 <body>
 <div class="container">
     <div class="navbar-collapse collapse" style="border-bottom: 1px solid #ccc;">
         <ul class="nav navbar-nav">
-            <li><h2>Vacation calendar</h2></li>
+            <li><h2>Event calendar</h2></li>
         </ul>
-        <div class="navbar-right navbar-buttons" style="margin-top: 20px;">
-            <a href="index.html" rel="tooltip" class="btn btn-default btn-sm" style="border-radius: 50%;"
-               data-toggle="tooltip" data-placement="bottom" title="Home page"><i class="glyphicon glyphicon-home"></i></a>
+        <div class="navbar-right" style="margin-top: 20px;">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="doc/out/index.html" target="_blank">Documentation</a>
+                </li>
+            </ul>
         </div>
     </div>
 
@@ -28,10 +31,10 @@
 
 </div>
 
-<script src="dist/js/jquery.min.js"></script>
-<script src="dist/js/bootstrap.min.js"></script>
-<script src="dist/js/moment-with-locales.min.js"></script>
-<script src="dist/app/event-calendar.js"></script>
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+<script src="assets/js/moment-with-locales.min.js"></script>
+<script src="assets/app/event-calendar.js"></script>
 
 <script type="text/javascript">
     $(function() {
@@ -44,10 +47,8 @@
                 { name: "Unavailable", backgroundColor: "red", color: "white"},
                 { name: "Other" }
             ],
-            locale: "es"
+            locale: "cs"
         });
-
-        //$("#calendar").vacationCalendar();
     });
 </script>
 </body>

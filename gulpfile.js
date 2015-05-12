@@ -2,8 +2,7 @@ var gulp = require('gulp'),
     path = require('path'),
     ts = require('gulp-typescript'),
     less =require('gulp-less'),
-    sequence = require('run-sequence'),
-    connect = require('gulp-connect');
+    sequence = require('run-sequence');
 
 // javascripts
 gulp.task('typescript', function(){
@@ -13,7 +12,7 @@ gulp.task('typescript', function(){
                             out: 'event-calendar.js'
                         }));
 
-    return tsResult.js.pipe(gulp.dest('dist/app'));
+    return tsResult.js.pipe(gulp.dest('assets/app'));
 });
 
 gulp.task('js', function(){
@@ -22,7 +21,7 @@ gulp.task('js', function(){
                     'node_modules/bootstrap/dist/js/bootstrap.min.js',
                     'node_modules/moment/min/moment-with-locales.min.js'
                 ])
-                .pipe(gulp.dest('dist/js'));
+                .pipe(gulp.dest('assets/js'));
 });
 
 // css
@@ -31,7 +30,7 @@ gulp.task('less', function(){
         .pipe(less({
             paths: [ path.join(__dirname, 'less', 'node_modules') ]
         }))
-        .pipe(gulp.dest('dist/app'));
+        .pipe(gulp.dest('assets/app'));
 });
 
 gulp.task('css', function(){
@@ -39,7 +38,7 @@ gulp.task('css', function(){
                     'node_modules/bootstrap/dist/css/bootstrap.min.css',
                     'node_modules/font-awesome/css/font-awesome.min.css'
                 ])
-                .pipe(gulp.dest('dist/css'));
+                .pipe(gulp.dest('assets/css'));
 });
 
 // fonts
@@ -48,26 +47,9 @@ gulp.task('fonts', function(){
                     'node_modules/font-awesome/fonts/*',
                     'node_modules/bootstrap/fonts/*'
                 ])
-               .pipe(gulp.dest('dist/fonts'));
+               .pipe(gulp.dest('assets/fonts'));
 });
 
-// server
-gulp.task('connect', function () {
-    connect.server({
-        port: 8010,
-        livereload: true,
-        hostname: "*",
-        base: "dist/"
-    });
-});
-
-// watch
-gulp.task('watch', function(){
-    gulp.watch('src/*.js', ['typescript']);
-    gulp.watch('src/less/calendar.css', ['less']);
-});
-
-gulp.task('dev', ['fonts', 'js', 'css', 'typescript', 'less', 'connect', 'watch']);
 gulp.task('default', function(){
     sequence('fonts', 'js', 'css', 'typescript', 'less');
 });

@@ -1,2 +1,1 @@
-# EventCalendar
-Event Calendar - TypeScript plugin
+# gh-pages

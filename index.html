@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Vacation calendar</title>
+
+    <link href="dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="dist/css/font-awesome.min.css" rel="stylesheet">
+    <link href="dist/app/calendar.css" rel="stylesheet">
+
+</head>
+<body>
+<div class="container">
+    <div class="navbar-collapse collapse" style="border-bottom: 1px solid #ccc;">
+        <ul class="nav navbar-nav">
+            <li><h2>Vacation calendar</h2></li>
+        </ul>
+        <div class="navbar-right navbar-buttons" style="margin-top: 20px;">
+            <a href="index.html" rel="tooltip" class="btn btn-default btn-sm" style="border-radius: 50%;"
+               data-toggle="tooltip" data-placement="bottom" title="Home page"><i class="glyphicon glyphicon-home"></i></a>
+        </div>
+    </div>
+
+
+    <div>
+        <div id="calendar"></div>
+    </div>
+
+</div>
+
+<script src="dist/js/jquery.min.js"></script>
+<script src="dist/js/bootstrap.min.js"></script>
+<script src="dist/js/moment-with-locales.min.js"></script>
+<script src="dist/app/event-calendar.js"></script>
+
+<script type="text/javascript">
+    $(function() {
+        // Handler for .ready() called.
+        $("#calendar").vacationCalendar({
+            events: [
+                { name: "Vacation", backgroundColor: "green", color: "white"},
+                { name: "Available", backgroundColor: "blue", color: "white"},
+                { name: "Business trip", backgroundColor: "orange" },
+                { name: "Unavailable", backgroundColor: "red", color: "white"},
+                { name: "Other" }
+            ],
+            locale: "es"
+        });
+
+        //$("#calendar").vacationCalendar();
+    });
+</script>
+</body>
+</html>

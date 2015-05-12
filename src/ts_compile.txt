@@ -1,1 +1,0 @@
-tsc -out calendar.plugin.js common.ts helpers.ts modal.ts header.ts popover.ts months.ts events.ts calendar.ts

@@ -13,8 +13,8 @@
                 "Dialog": 1,
                 "ModalTemplate": 1,
                 "Popover": 1,
-                "CalendarEvents": 1,
-                "VacationCalendar": 1
+                "Events": 1,
+                "EventCalendar": 1
             },
             "fors": {},
             "namespaces": {}
@@ -31,8 +31,8 @@
                 "Dialog": 1,
                 "ModalTemplate": 1,
                 "Popover": 1,
-                "CalendarEvents": 1,
-                "VacationCalendar": 1
+                "Events": 1,
+                "EventCalendar": 1
             },
             "fors": {},
             "namespaces": {},
@@ -151,9 +151,9 @@
             "description": "Implements bootstrap popover for each cell with any event.\nShows both message for other people and personal note if it is available.\nIt is triggered by hover.",
             "static": 1
         },
-        "CalendarEvents": {
-            "name": "CalendarEvents",
-            "shortname": "CalendarEvents",
+        "Events": {
+            "name": "Events",
+            "shortname": "Events",
             "classitems": [],
             "plugins": [],
             "extensions": [],
@@ -179,9 +179,9 @@
             "itemtype": "property",
             "type": "JQuery"
         },
-        "VacationCalendar": {
-            "name": "VacationCalendar",
-            "shortname": "VacationCalendar",
+        "EventCalendar": {
+            "name": "EventCalendar",
+            "shortname": "EventCalendar",
             "classitems": [],
             "plugins": [],
             "extensions": [],
@@ -678,7 +678,7 @@
                     "type": "Number"
                 }
             ],
-            "class": "CalendarEvents"
+            "class": "Events"
         },
         {
             "file": "event-calendar.js",
@@ -693,7 +693,7 @@
                     "type": "JQueryEventObject"
                 }
             ],
-            "class": "CalendarEvents"
+            "class": "Events"
         },
         {
             "file": "event-calendar.js",
@@ -708,7 +708,7 @@
                     "type": "JQueryEventObject"
                 }
             ],
-            "class": "CalendarEvents"
+            "class": "Events"
         },
         {
             "file": "event-calendar.js",
@@ -723,7 +723,7 @@
                     "type": "JQueryEventObject"
                 }
             ],
-            "class": "CalendarEvents"
+            "class": "Events"
         },
         {
             "file": "event-calendar.js",
@@ -731,7 +731,7 @@
             "description": "Displays modal dialog with settings and action and handlers events \"Submit\" or \"Delete\"\nbased on clicked button. After that calls removing selection styling.",
             "itemtype": "method",
             "name": "showModal",
-            "class": "CalendarEvents"
+            "class": "Events"
         },
         {
             "file": "event-calendar.js",
@@ -739,7 +739,7 @@
             "description": "Removes class `selected-day` used for marking selection and calls `resetIndexes()`.",
             "itemtype": "method",
             "name": "removeSelection",
-            "class": "CalendarEvents"
+            "class": "Events"
         },
         {
             "file": "event-calendar.js",
@@ -747,7 +747,7 @@
             "description": "Submit action. Applies css style for selected event on client side.\nCalls `TODO: Submit server implementation` for server side implementation.",
             "itemtype": "method",
             "name": "submitChanges",
-            "class": "CalendarEvents"
+            "class": "Events"
         },
         {
             "file": "event-calendar.js",
@@ -755,7 +755,7 @@
             "description": "Delete action. Remove css style on client side.\nCalls `TODO: Delete server implementation` for server side implementation.",
             "itemtype": "method",
             "name": "deleteItems",
-            "class": "CalendarEvents"
+            "class": "Events"
         },
         {
             "file": "event-calendar.js",
@@ -763,7 +763,7 @@
             "description": "Sets css styling to each cell in range of selected indexes according to\nselected event and its properties (background color, color), sets title\nif any of messages is typed. Adds class `event-day` to each cell and initializes\npopover with messages.",
             "itemtype": "method",
             "name": "applyEventFormat",
-            "class": "CalendarEvents"
+            "class": "Events"
         },
         {
             "file": "event-calendar.js",
@@ -771,7 +771,7 @@
             "description": "Removes css styling and attribute `title` from selected cells.",
             "itemtype": "method",
             "name": "removeEventFormat",
-            "class": "CalendarEvents"
+            "class": "Events"
         },
         {
             "file": "event-calendar.js",
@@ -788,7 +788,7 @@
                     "type": "JQueryEventObject"
                 }
             ],
-            "class": "CalendarEvents"
+            "class": "Events"
         },
         {
             "file": "event-calendar.js",
@@ -798,13 +798,13 @@
             "name": "resetIndexes",
             "access": "private",
             "tagname": "",
-            "class": "CalendarEvents"
+            "class": "Events"
         },
         {
             "file": "event-calendar.js",
             "line": 874,
             "description": "Created by Marcela on 28. 4. 2015.",
-            "class": "CalendarEvents"
+            "class": "Events"
         },
         {
             "file": "event-calendar.js",
@@ -812,7 +812,7 @@
             "description": "Initializes view with calendars.",
             "itemtype": "method",
             "name": "init",
-            "class": "VacationCalendar",
+            "class": "EventCalendar",
             "module": "Calendar"
         },
         {
@@ -828,7 +828,7 @@
                     "type": "JQueryEventObject"
                 }
             ],
-            "class": "VacationCalendar",
+            "class": "EventCalendar",
             "module": "Calendar"
         }
     ],

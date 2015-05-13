@@ -16,7 +16,7 @@ var Calendar;
     /**
      * Provides the base plugin class and initializes all components.
      *
-     * @class VacationCalendar
+     * @class EventCalendar
      * @constructor
      * @param {JQuery} element - DOM element for plugin
      * @param {ISettings} options - Custom options
@@ -25,8 +25,8 @@ var Calendar;
      * @property {CalendarEvents} events - Calendar events
      * @property {number} year - Actual year of calendar
      */
-    var VacationCalendar = (function () {
-        function VacationCalendar(element, options) {
+    var EventCalendar = (function () {
+        function EventCalendar(element, options) {
             var _this = this;
             this.settings = {
                 events: [{ name: "Default" }],
@@ -38,7 +38,7 @@ var Calendar;
             if (this.settings.locale) {
                 moment.locale(this.settings.locale);
             }
-            this.events = new Calendar.CalendarEvents(this.element, this.settings);
+            this.events = new Calendar.Events(this.element, this.settings);
             this.events.setSelectedlYear(this.year);
             this.element.on("click", ".year-direction", function (e) { return _this.changeYear(e); });
         }
@@ -47,7 +47,7 @@ var Calendar;
          *
          * @method init
          */
-        VacationCalendar.prototype.init = function () {
+        EventCalendar.prototype.init = function () {
             //console.log(this.settings);
             this.element.empty();
             var header = new Calendar.Header(this.year), monthTables = new Calendar.MonthCalendar(this.settings, this.year);
@@ -60,15 +60,15 @@ var Calendar;
          * @method changeYear
          * @param {JQueryEventObject} e - Button object handler
          */
-        VacationCalendar.prototype.changeYear = function (e) {
+        EventCalendar.prototype.changeYear = function (e) {
             var direction = $(e.target).closest(".year-direction").attr("data-direction");
             this.year = direction === "prev" ? this.year - 1 : this.year + 1;
             this.init();
             this.events.setSelectedlYear(this.year);
         };
-        return VacationCalendar;
+        return EventCalendar;
     })();
-    Calendar.VacationCalendar = VacationCalendar;
+    Calendar.EventCalendar = EventCalendar;
 })(Calendar || (Calendar = {}));
 (function ($) {
     $.fn.vacationCalendar = function () {
@@ -76,7 +76,7 @@ var Calendar;
         return this.each(function () {
             var $this = $(this), data = $this.data("jquery.vacation.calendar"), options = $.extend({}, $.fn.vacationCalendar.defaults, $this.data(), typeof option === 'object' && option);
             if (!data) {
-                $this.data("jquery.vacation.calendar", (data = new Calendar.VacationCalendar($this, options)));
+                $this.data("jquery.vacation.calendar", (data = new Calendar.EventCalendar($this, options)));
             }
             if (typeof option === 'string') {
                 data[option](args[1]);

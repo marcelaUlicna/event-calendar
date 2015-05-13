@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Dialog</title>
+    <title>Events</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -83,12 +83,12 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>Dialog Class</h1>
+<h1>Events Class</h1>
 <div class="box meta">
 
 
         <div class="foundat">
-            Defined in: <a href="../files/event-calendar.js.html#l339"><code>event-calendar.js:339</code></a>
+            Defined in: <a href="../files/event-calendar.js.html#l658"><code>event-calendar.js:658</code></a>
         </div>
 
             Module: <a href="../modules/Calendar.html">Calendar</a>
@@ -97,23 +97,27 @@
 
 
 <div class="box intro">
-    <p>Implements modal dialog which contains selected start and end date,
-component with events to be selected and inputs where user can type
-some message for other person and/or note for himself. There is available
-both Submit and Delete button and the cross for closing dialog without
-applying any changes.</p>
+    <p>Implements mouse event handlers and provides selected range
+of days indexes and sets selected class. Show modal dialog with
+custom setting when user can select one event and type message
+for other person and/or note to himself. After receiving response from
+modal dialog there is made design changes in calendar and calls
+method which provides custom server side request.</p>
 
 </div>
 
     <div class="constructor">
         <h2>Constructor</h2>
-        <div id="method_Dialog" class="method item">
-            <h3 class="name"><code>Dialog</code></h3>
+        <div id="method_Events" class="method item">
+            <h3 class="name"><code>Events</code></h3>
         
                 <div class="args">
                     <span class="paren">(</span><ul class="args-list inline commas">
                         <li class="arg">
-                                <code>dialogSettings</code>
+                                <code>element</code>
+                        </li>
+                        <li class="arg">
+                                <code>settings</code>
                         </li>
                     </ul><span class="paren">)</span>
                 </div>
@@ -128,7 +132,7 @@ applying any changes.</p>
             <div class="meta">
                         <p>
                         Defined in
-                <a href="../files/event-calendar.js.html#l339"><code>event-calendar.js:339</code></a>
+                <a href="../files/event-calendar.js.html#l658"><code>event-calendar.js:658</code></a>
                 </p>
         
         
@@ -144,13 +148,26 @@ applying any changes.</p>
         
                     <ul class="params-list">
                         <li class="param">
-                                <code class="param-name">dialogSettings</code>
-                                <span class="type">IModalDialog</span>
+                                <code class="param-name">element</code>
+                                <span class="type">JQuery</span>
         
         
                             <div class="param-description">
                                 <ul>
-        <li>Modal dialog settings</li>
+        <li>Calendar jquery element</li>
+        </ul>
+        
+                            </div>
+        
+                        </li>
+                        <li class="param">
+                                <code class="param-name">settings</code>
+                                <span class="type">ISettings</span>
+        
+        
+                            <div class="param-description">
+                                <ul>
+        <li>Plugin settings</li>
         </ul>
         
                             </div>
@@ -180,43 +197,51 @@ applying any changes.</p>
 
                     <ul class="index-list methods">
                             <li class="index-item method">
-                                <a href="#method_btnClose">btnClose</a>
+                                <a href="#method_applyEventFormat">applyEventFormat</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_btnDelete">btnDelete</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_btnSubmit">btnSubmit</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_click">click</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_close">close</a>
+                                <a href="#method_deleteItems">deleteItems</a>
 
                             </li>
                             <li class="index-item method private">
-                                <a href="#method_getDictionary">getDictionary</a>
+                                <a href="#method_leftMousePressed">leftMousePressed</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_messageChanged">messageChanged</a>
+                                <a href="#method_mousedown">mousedown</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_modalKeyup">modalKeyup</a>
+                                <a href="#method_mouseover">mouseover</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_selectChange">selectChange</a>
+                                <a href="#method_mouseup">mouseup</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_show">show</a>
+                                <a href="#method_removeEventFormat">removeEventFormat</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_removeSelection">removeSelection</a>
+
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_resetIndexes">resetIndexes</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_setSelectedlYear">setSelectedlYear</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_showModal">showModal</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_submitChanges">submitChanges</a>
 
                             </li>
                     </ul>
@@ -229,232 +254,8 @@ applying any changes.</p>
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
-<div id="method_btnClose" class="method item">
-    <h3 class="name"><code>btnClose</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>e</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/event-calendar.js.html#l445"><code>event-calendar.js:445</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Sets dialogResult to <code>DialogResult.Cancel</code>.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">e</code>
-                        <span class="type">JQueryEventObject</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>Button object handler</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_btnDelete" class="method item">
-    <h3 class="name"><code>btnDelete</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>e</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/event-calendar.js.html#l435"><code>event-calendar.js:435</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Sets dialogResult to <code>DialogResult.Delete</code>.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">e</code>
-                        <span class="type">JQueryEventObject</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>Button object handler</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_btnSubmit" class="method item">
-    <h3 class="name"><code>btnSubmit</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>e</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/event-calendar.js.html#l425"><code>event-calendar.js:425</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Sets dialogResult to <code>DialogResult.Submit</code>.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">e</code>
-                        <span class="type">JQueryEventObject</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>Button object handler</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_click" class="method item">
-    <h3 class="name"><code>click</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>e</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/event-calendar.js.html#l398"><code>event-calendar.js:398</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Resolves button click from dialog and calls appropriate method.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">e</code>
-                        <span class="type">JQueryEventObject</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>Button object handler</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_close" class="method item">
-    <h3 class="name"><code>close</code></h3>
+<div id="method_applyEventFormat" class="method item">
+    <h3 class="name"><code>applyEventFormat</code></h3>
 
         <span class="paren">()</span>
 
@@ -468,7 +269,7 @@ applying any changes.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/event-calendar.js.html#l455"><code>event-calendar.js:455</code></a>
+        <a href="../files/event-calendar.js.html#l816"><code>event-calendar.js:816</code></a>
         </p>
 
 
@@ -476,7 +277,10 @@ applying any changes.</p>
     </div>
 
     <div class="description">
-        <p>Closes modal dialog.</p>
+        <p>Sets css styling to each cell in range of selected indexes according to
+selected event and its properties (background color, color), sets title
+if any of messages is typed. Adds class <code>event-day</code> to each cell and initializes
+popover with messages.</p>
 
     </div>
 
@@ -484,14 +288,49 @@ applying any changes.</p>
 
 
 </div>
-<div id="method_getDictionary" class="method item private">
-    <h3 class="name"><code>getDictionary</code></h3>
+<div id="method_deleteItems" class="method item">
+    <h3 class="name"><code>deleteItems</code></h3>
 
         <span class="paren">()</span>
 
-        <span class="returns-inline">
-            <span class="type">Any</span>
-        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/event-calendar.js.html#l806"><code>event-calendar.js:806</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Delete action. Remove css style on client side.
+Calls <code>TODO: Delete server implementation</code> for server side implementation.</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_leftMousePressed" class="method item private">
+    <h3 class="name"><code>leftMousePressed</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>e</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
 
 
         <span class="flag private">private</span>
@@ -503,7 +342,7 @@ applying any changes.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/event-calendar.js.html#l361"><code>event-calendar.js:361</code></a>
+        <a href="../files/event-calendar.js.html#l848"><code>event-calendar.js:848</code></a>
         </p>
 
 
@@ -511,27 +350,35 @@ applying any changes.</p>
     </div>
 
     <div class="description">
-        <p>Fills <code>templateDictionary</code> with keys and its values.</p>
+        <p>Resolves left mouse pressing.</p>
 
     </div>
 
+        <div class="params">
+            <h4>Parameters:</h4>
 
-        <div class="returns">
-            <h4>Returns:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">e</code>
+                        <span class="type">JQueryEventObject</span>
 
-            <div class="returns-description">
-                        <span class="type">Any</span>:
-                    <ul>
-<li>Returns dictionary template</li>
+
+                    <div class="param-description">
+                        <ul>
+<li>Event handler object</li>
 </ul>
 
-            </div>
+                    </div>
+
+                </li>
+            </ul>
         </div>
 
 
+
 </div>
-<div id="method_messageChanged" class="method item">
-    <h3 class="name"><code>messageChanged</code></h3>
+<div id="method_mousedown" class="method item">
+    <h3 class="name"><code>mousedown</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
@@ -551,7 +398,7 @@ applying any changes.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/event-calendar.js.html#l477"><code>event-calendar.js:477</code></a>
+        <a href="../files/event-calendar.js.html#l706"><code>event-calendar.js:706</code></a>
         </p>
 
 
@@ -559,7 +406,7 @@ applying any changes.</p>
     </div>
 
     <div class="description">
-        <p>Saves input text to <code>dialogSettings</code> property.</p>
+        <p>Implements mousedown event. Sets start index and adds selected class to actual cell.</p>
 
     </div>
 
@@ -574,7 +421,7 @@ applying any changes.</p>
 
                     <div class="param-description">
                         <ul>
-<li>Input event handler</li>
+<li>Event handler object</li>
 </ul>
 
                     </div>
@@ -586,8 +433,8 @@ applying any changes.</p>
 
 
 </div>
-<div id="method_modalKeyup" class="method item">
-    <h3 class="name"><code>modalKeyup</code></h3>
+<div id="method_mouseover" class="method item">
+    <h3 class="name"><code>mouseover</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
@@ -607,7 +454,7 @@ applying any changes.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/event-calendar.js.html#l408"><code>event-calendar.js:408</code></a>
+        <a href="../files/event-calendar.js.html#l723"><code>event-calendar.js:723</code></a>
         </p>
 
 
@@ -615,9 +462,8 @@ applying any changes.</p>
     </div>
 
     <div class="description">
-        <p>jQuery keyup() event for enter and escape key.
-Enter key confirms dialog and escape key closes dialog
-without changes.</p>
+        <p>Implements mouseover event. Sets end index, calculates range of selected cells
+and adds selected class to all cells according to calculated range.</p>
 
     </div>
 
@@ -632,7 +478,7 @@ without changes.</p>
 
                     <div class="param-description">
                         <ul>
-<li>Key event handler</li>
+<li>Event handler object</li>
 </ul>
 
                     </div>
@@ -644,8 +490,8 @@ without changes.</p>
 
 
 </div>
-<div id="method_selectChange" class="method item">
-    <h3 class="name"><code>selectChange</code></h3>
+<div id="method_mouseup" class="method item">
+    <h3 class="name"><code>mouseup</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
@@ -665,7 +511,7 @@ without changes.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/event-calendar.js.html#l463"><code>event-calendar.js:463</code></a>
+        <a href="../files/event-calendar.js.html#l747"><code>event-calendar.js:747</code></a>
         </p>
 
 
@@ -673,9 +519,8 @@ without changes.</p>
     </div>
 
     <div class="description">
-        <p>Applies changes after selecting some event from list component,
-saves selected item to <code>dialogSettings</code> property and
-sets selected item to main button to reflect actual item.</p>
+        <p>Implements mouseup event. Sets end index, calculates start and end dates
+from indexes and calls modal dialog to enter personal event. At the end resets start and end indexes.</p>
 
     </div>
 
@@ -690,7 +535,7 @@ sets selected item to main button to reflect actual item.</p>
 
                     <div class="param-description">
                         <ul>
-<li>Selected item event handler</li>
+<li>Event handler object</li>
 </ul>
 
                     </div>
@@ -702,14 +547,11 @@ sets selected item to main button to reflect actual item.</p>
 
 
 </div>
-<div id="method_show" class="method item">
-    <h3 class="name"><code>show</code></h3>
+<div id="method_removeEventFormat" class="method item">
+    <h3 class="name"><code>removeEventFormat</code></h3>
 
         <span class="paren">()</span>
 
-        <span class="returns-inline">
-            <span class="type">JQueryPromise<DialogResult></span>
-        </span>
 
 
 
@@ -720,7 +562,7 @@ sets selected item to main button to reflect actual item.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/event-calendar.js.html#l376"><code>event-calendar.js:376</code></a>
+        <a href="../files/event-calendar.js.html#l836"><code>event-calendar.js:836</code></a>
         </p>
 
 
@@ -728,23 +570,195 @@ sets selected item to main button to reflect actual item.</p>
     </div>
 
     <div class="description">
-        <p>Renders modal dialog and binds all necessary events. After closing modal dialog
-it is removed from DOM.</p>
+        <p>Removes css styling and attribute <code>title</code> from selected cells.</p>
 
     </div>
 
 
-        <div class="returns">
-            <h4>Returns:</h4>
 
-            <div class="returns-description">
-                        <span class="type">JQueryPromise<DialogResult></span>:
-                    <ul>
-<li>Returns promise from modal dialog with dialog result</li>
+
+</div>
+<div id="method_removeSelection" class="method item">
+    <h3 class="name"><code>removeSelection</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/event-calendar.js.html#l783"><code>event-calendar.js:783</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Removes class <code>selected-day</code> used for marking selection and calls <code>resetIndexes()</code>.</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_resetIndexes" class="method item private">
+    <h3 class="name"><code>resetIndexes</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/event-calendar.js.html#l860"><code>event-calendar.js:860</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Remove values from <code>this.index</code> property after <code>mouseup</code> event
+to use for other selection.</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_setSelectedlYear" class="method item">
+    <h3 class="name"><code>setSelectedlYear</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>year</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/event-calendar.js.html#l697"><code>event-calendar.js:697</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Sets selected year to local variable.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">year</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <ul>
+<li>Selected year</li>
 </ul>
 
-            </div>
+                    </div>
+
+                </li>
+            </ul>
         </div>
+
+
+
+</div>
+<div id="method_showModal" class="method item">
+    <h3 class="name"><code>showModal</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/event-calendar.js.html#l763"><code>event-calendar.js:763</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Displays modal dialog with settings and action and handlers events &quot;Submit&quot; or &quot;Delete&quot;
+based on clicked button. After that calls removing selection styling.</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_submitChanges" class="method item">
+    <h3 class="name"><code>submitChanges</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/event-calendar.js.html#l796"><code>event-calendar.js:796</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Submit action. Applies css style for selected event on client side.
+Calls <code>TODO: Submit server implementation</code> for server side implementation.</p>
+
+    </div>
+
+
 
 
 </div>

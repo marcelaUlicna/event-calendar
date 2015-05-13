@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>MonthCalendar</title>
+    <title>EventCalendar</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -83,12 +83,12 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>MonthCalendar Class</h1>
+<h1>EventCalendar Class</h1>
 <div class="box meta">
 
 
         <div class="foundat">
-            Defined in: <a href="../files/event-calendar.js.html#l217"><code>event-calendar.js:217</code></a>
+            Defined in: <a href="../files/event-calendar.js.html#l889"><code>event-calendar.js:889</code></a>
         </div>
 
             Module: <a href="../modules/Calendar.html">Calendar</a>
@@ -97,24 +97,22 @@
 
 
 <div class="box intro">
-    <p>Provides rendering month calendars, marks specified events by
-custom colors, displays tooltip for each event both personal and
-to other users. Sets Monday as the first day of week.</p>
+    <p>Provides the base plugin class and initializes all components.</p>
 
 </div>
 
     <div class="constructor">
         <h2>Constructor</h2>
-        <div id="method_MonthCalendar" class="method item">
-            <h3 class="name"><code>MonthCalendar</code></h3>
+        <div id="method_EventCalendar" class="method item">
+            <h3 class="name"><code>EventCalendar</code></h3>
         
                 <div class="args">
                     <span class="paren">(</span><ul class="args-list inline commas">
                         <li class="arg">
-                                <code>settings</code>
+                                <code>element</code>
                         </li>
                         <li class="arg">
-                                <code>year</code>
+                                <code>options</code>
                         </li>
                     </ul><span class="paren">)</span>
                 </div>
@@ -129,7 +127,7 @@ to other users. Sets Monday as the first day of week.</p>
             <div class="meta">
                         <p>
                         Defined in
-                <a href="../files/event-calendar.js.html#l217"><code>event-calendar.js:217</code></a>
+                <a href="../files/event-calendar.js.html#l889"><code>event-calendar.js:889</code></a>
                 </p>
         
         
@@ -145,26 +143,26 @@ to other users. Sets Monday as the first day of week.</p>
         
                     <ul class="params-list">
                         <li class="param">
-                                <code class="param-name">settings</code>
-                                <span class="type">ISettings</span>
+                                <code class="param-name">element</code>
+                                <span class="type">JQuery</span>
         
         
                             <div class="param-description">
                                 <ul>
-        <li>Plugin settings</li>
+        <li>DOM element for plugin</li>
         </ul>
         
                             </div>
         
                         </li>
                         <li class="param">
-                                <code class="param-name">year</code>
-                                <span class="type">Number</span>
+                                <code class="param-name">options</code>
+                                <span class="type">ISettings</span>
         
         
                             <div class="param-description">
                                 <ul>
-        <li>Actual year of calendar</li>
+        <li>Custom options</li>
         </ul>
         
                             </div>
@@ -194,15 +192,11 @@ to other users. Sets Monday as the first day of week.</p>
 
                     <ul class="index-list methods">
                             <li class="index-item method">
-                                <a href="#method_capitalize">capitalize</a>
+                                <a href="#method_changeYear">changeYear</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_templateCalendar">templateCalendar</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_templateTable">templateTable</a>
+                                <a href="#method_init">init</a>
 
                             </li>
                     </ul>
@@ -215,92 +209,17 @@ to other users. Sets Monday as the first day of week.</p>
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
-<div id="method_capitalize" class="method item">
-    <h3 class="name"><code>capitalize</code></h3>
-
-        <span class="paren">()</span>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/event-calendar.js.html#l248"><code>event-calendar.js:248</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Capitalizes the first letter of the month and weekdays names.</p>
-
-    </div>
-
-
-
-
-</div>
-<div id="method_templateCalendar" class="method item">
-    <h3 class="name"><code>templateCalendar</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type">JQuery</span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/event-calendar.js.html#l257"><code>event-calendar.js:257</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Creates wrapper for month tables.</p>
-
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">JQuery</span>:
-            </div>
-        </div>
-
-
-</div>
-<div id="method_templateTable" class="method item">
-    <h3 class="name"><code>templateTable</code></h3>
+<div id="method_changeYear" class="method item">
+    <h3 class="name"><code>changeYear</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>monthId</code>
+                        <code>e</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
 
-        <span class="returns-inline">
-            <span class="type">JQuery</span>
-        </span>
 
 
 
@@ -311,7 +230,7 @@ to other users. Sets Monday as the first day of week.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/event-calendar.js.html#l271"><code>event-calendar.js:271</code></a>
+        <a href="../files/event-calendar.js.html#l930"><code>event-calendar.js:930</code></a>
         </p>
 
 
@@ -319,8 +238,7 @@ to other users. Sets Monday as the first day of week.</p>
     </div>
 
     <div class="description">
-        <p>Creates table for month represented by month index,
-marks weekdays and events.</p>
+        <p>Changes the year of calendar and calls rerendering calendar view</p>
 
     </div>
 
@@ -329,13 +247,13 @@ marks weekdays and events.</p>
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">monthId</code>
-                        <span class="type">Number</span>
+                        <code class="param-name">e</code>
+                        <span class="type">JQueryEventObject</span>
 
 
                     <div class="param-description">
                         <ul>
-<li>Month index 0 - 11</li>
+<li>Button object handler</li>
 </ul>
 
                     </div>
@@ -344,13 +262,37 @@ marks weekdays and events.</p>
             </ul>
         </div>
 
-        <div class="returns">
-            <h4>Returns:</h4>
 
-            <div class="returns-description">
-                        <span class="type">JQuery</span>:
-            </div>
-        </div>
+
+</div>
+<div id="method_init" class="method item">
+    <h3 class="name"><code>init</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/event-calendar.js.html#l918"><code>event-calendar.js:918</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Initializes view with calendars.</p>
+
+    </div>
+
+
 
 
 </div>

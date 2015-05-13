@@ -17,7 +17,7 @@ var Calendar;
      * modal dialog there is made design changes in calendar and calls
      * method which provides custom server side request.
      *
-     * @class CalendarEvents
+     * @class Events
      * @constructor
      * @param {JQuery} element - Calendar jquery element
      * @param {ISettings} settings - Plugin settings
@@ -26,8 +26,8 @@ var Calendar;
      * @property {IArrayIndexes} indexes - Object that persists start and end index
      * @property {number} year - Selected year
      */
-    var CalendarEvents = (function () {
-        function CalendarEvents(element, settings) {
+    var Events = (function () {
+        function Events(element, settings) {
             var _this = this;
             this.dialogSettings = {
                 start: null,
@@ -54,7 +54,7 @@ var Calendar;
          * @method setSelectedlYear
          * @param {number} year - Selected year
          */
-        CalendarEvents.prototype.setSelectedlYear = function (year) {
+        Events.prototype.setSelectedlYear = function (year) {
             this.year = year;
         };
         /**
@@ -63,7 +63,7 @@ var Calendar;
          * @method mousedown
          * @param {JQueryEventObject} e - Event handler object
          */
-        CalendarEvents.prototype.mousedown = function (e) {
+        Events.prototype.mousedown = function (e) {
             if (!this.leftMousePressed(e))
                 return;
             e.preventDefault();
@@ -81,7 +81,7 @@ var Calendar;
          * @method mouseover
          * @param {JQueryEventObject} e - Event handler object
          */
-        CalendarEvents.prototype.mouseover = function (e) {
+        Events.prototype.mouseover = function (e) {
             e.preventDefault();
             if (!this.indexes.start)
                 return;
@@ -105,7 +105,7 @@ var Calendar;
          * @method mouseup
          * @param {JQueryEventObject} e - Event handler object
          */
-        CalendarEvents.prototype.mouseup = function (e) {
+        Events.prototype.mouseup = function (e) {
             e.preventDefault();
             if (!this.indexes.start || !this.indexes.end)
                 return;
@@ -120,7 +120,7 @@ var Calendar;
          *
          * @method showModal
          */
-        CalendarEvents.prototype.showModal = function () {
+        Events.prototype.showModal = function () {
             var _this = this;
             var modal = new Calendar.Dialog(this.dialogSettings);
             modal.show().then(function (result) {
@@ -140,7 +140,7 @@ var Calendar;
          * @method removeSelection
          *
          */
-        CalendarEvents.prototype.removeSelection = function () {
+        Events.prototype.removeSelection = function () {
             this.element.find("td").removeClass("selected-day");
             this.resetIndexes();
             this.dialogSettings.personalNote = null;
@@ -153,7 +153,7 @@ var Calendar;
          *
          * @method submitChanges
          */
-        CalendarEvents.prototype.submitChanges = function () {
+        Events.prototype.submitChanges = function () {
             // user implementation
             this.applyEventFormat();
         };
@@ -163,7 +163,7 @@ var Calendar;
          *
          * @method deleteItems
          */
-        CalendarEvents.prototype.deleteItems = function () {
+        Events.prototype.deleteItems = function () {
             // user implementation
             this.removeEventFormat();
         };
@@ -175,7 +175,7 @@ var Calendar;
          *
          * @method applyEventFormat
          */
-        CalendarEvents.prototype.applyEventFormat = function () {
+        Events.prototype.applyEventFormat = function () {
             var _this = this;
             var selectedEvent = this.dialogSettings.events.filter(function (item) { return item.name === _this.dialogSettings.selectedEvent; }), oneEvent = selectedEvent[0], bgr = oneEvent["backgroundColor"] || this.dialogSettings.defaultBgColor, color = oneEvent["color"] || this.dialogSettings.defaultColor, message = this.dialogSettings.message || null, note = this.settings.editable && this.dialogSettings.personalNote ? this.dialogSettings.personalNote : null, eventRange = Calendar.Helpers.ArrayRange(this.indexes.start, this.indexes.end);
             eventRange.forEach(function (item) {
@@ -192,7 +192,7 @@ var Calendar;
          *
          * @method removeEventFormat
          */
-        CalendarEvents.prototype.removeEventFormat = function () {
+        Events.prototype.removeEventFormat = function () {
             var eventRange = Calendar.Helpers.ArrayRange(this.indexes.start, this.indexes.end);
             eventRange.forEach(function (item) {
                 var cell = $('td.cell[data-year-day=' + item + ']');
@@ -206,7 +206,7 @@ var Calendar;
          * @private
          * @param {JQueryEventObject} e - Event handler object
          */
-        CalendarEvents.prototype.leftMousePressed = function (e) {
+        Events.prototype.leftMousePressed = function (e) {
             var event = window.event;
             var button = e.which || event.button;
             return button === 1;
@@ -218,11 +218,11 @@ var Calendar;
          * @method resetIndexes
          * @private
          */
-        CalendarEvents.prototype.resetIndexes = function () {
+        Events.prototype.resetIndexes = function () {
             this.indexes = { start: null, end: null };
         };
-        return CalendarEvents;
+        return Events;
     })();
-    Calendar.CalendarEvents = CalendarEvents;
+    Calendar.Events = Events;
 })(Calendar || (Calendar = {}));
 //# sourceMappingURL=events.js.map

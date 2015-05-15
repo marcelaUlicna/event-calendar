@@ -41,6 +41,17 @@ module Calendar {
         }
 
         /**
+         * Destroys popover.
+         *
+         * @method destroy
+         * @static
+         * @param {JQuery} cell - Cell element to destroy popover
+         */
+        static destroy(cell: JQuery): void {
+            cell.popover('destroy');
+        }
+
+        /**
          * Popover content.
          *
          * @method template

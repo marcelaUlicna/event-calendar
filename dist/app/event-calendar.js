@@ -366,11 +366,15 @@ var Calendar;
          * @return {any} - Returns dictionary template
          */
         Dialog.prototype.getDictionary = function () {
+            var localization = this.dialogSettings.localization;
             return {
-                "title": "Modal title",
                 "start": moment(this.dialogSettings.start).format("LL"),
                 "end": moment(this.dialogSettings.end).format("LL"),
-                "dropdown": Calendar.ModalTemplate.dropdownTemplate(this.dialogSettings)
+                "dropdown": Calendar.ModalTemplate.dropdownTemplate(this.dialogSettings),
+                "messageSentence": localization.messageSentence,
+                "noteSentence": localization.noteSentence,
+                "submitButton": localization.submitButton,
+                "deleteButton": localization.deleteButton
             };
         };
         /**
@@ -526,18 +530,18 @@ var Calendar;
                 "           </div>",
                 "           <form>",
                 "               <div class='form-group'>",
-                "                   <div>Information (users will see this message)</div>",
+                "                   <div>{{messageSentence}}</div>",
                 "                   <input type='text' name='userMessage' class='form-control'>",
                 "               </div>",
                 "               <div class='form-group'>",
-                "                   <div>Notes (only you will see this message)</div>",
+                "                   <div>{{noteSentence}}</div>",
                 "                   <input type='text' name='privateNote' class='form-control'>",
                 "               </div>",
                 "           </form>",
                 "           <div class='row'>",
                 "               <div class='col-md-12'>",
-                "                   <button type='button' id='btnDelete' class='btn btn-default pull-left btn-action'>Delete</button>",
-                "                   <button type='button' id='btnSubmit' class='btn btn-primary pull-right btn-action'>Submit</button>",
+                "                   <button type='button' id='btnDelete' class='btn btn-default pull-left btn-action'>{{deleteButton}}</button>",
+                "                   <button type='button' id='btnSubmit' class='btn btn-primary pull-right btn-action'>{{submitButton}}</button>",
                 "               </div>",
                 "           </div>",
                 "       </div>",
@@ -626,6 +630,16 @@ var Calendar;
             });
         };
         /**
+         * Destroys popover.
+         *
+         * @method destroy
+         * @static
+         * @param {JQuery} cell - Cell element to destroy popover
+         */
+        Popover.destroy = function (cell) {
+            cell.popover('destroy');
+        };
+        /**
          * Popover content.
          *
          * @method template
@@ -681,10 +695,12 @@ var Calendar;
                 events: [],
                 selectedEvent: "",
                 defaultBgColor: "green",
-                defaultColor: "white"
+                defaultColor: "white",
+                localization: null
             };
             this.element = element;
             this.settings = settings;
+            this.dialogSettings.localization = this.settings.localization;
             this.dialogSettings.events = this.settings.events;
             this.dialogSettings.selectedEvent = this.settings.events[0].name;
             this.resetIndexes();
@@ -834,7 +850,8 @@ var Calendar;
             });
         };
         /**
-         * Removes css styling and attribute `title` from selected cells.
+         * Removes css styling and attribute `title` from selected cells
+         * and destroys popover with messages.
          *
          * @method removeEventFormat
          */
@@ -843,6 +860,8 @@ var Calendar;
             eventRange.forEach(function (item) {
                 var cell = $('td.cell[data-year-day=' + item + ']');
                 cell.css({ "background-color": "", "color": "" });
+                cell.removeAttr("title");
+                Calendar.Popover.destroy(cell);
             });
         };
         /**
@@ -893,21 +912,13 @@ var Calendar;
      * @constructor
      * @param {JQuery} element - DOM element for plugin
      * @param {ISettings} options - Custom options
-     * @property {JQuery} element - DOM element for plugin
-     * @property {ISettings} settings - Default settings
-     * @property {CalendarEvents} events - Calendar events
-     * @property {number} year - Actual year of calendar
      */
     var EventCalendar = (function () {
         function EventCalendar(element, options) {
             var _this = this;
-            this.settings = {
-                events: [{ name: "Default" }],
-                editable: true
-            };
             this.element = element;
             this.year = new Date().getFullYear();
-            this.settings = $.extend(true, this.settings, options);
+            this.settings = $.extend(true, this.defaultSettings(), options);
             if (this.settings.locale) {
                 moment.locale(this.settings.locale);
             }
@@ -915,6 +926,24 @@ var Calendar;
             this.events.setSelectedlYear(this.year);
             this.element.on("click", ".year-direction", function (e) { return _this.changeYear(e); });
         }
+        /**
+         * Initializes default plugin settings.
+         *
+         * @method defaultSettings
+         * @return {ISettings} - Default settings
+         * */
+        EventCalendar.prototype.defaultSettings = function () {
+            return {
+                events: [{ name: "Default" }],
+                editable: true,
+                localization: {
+                    messageSentence: "Information (users will see this message)",
+                    noteSentence: "Notes (only you will see this message)",
+                    submitButton: "Submit",
+                    deleteButton: "Delete"
+                }
+            };
+        };
         /**
          * Initializes view with calendars.
          *

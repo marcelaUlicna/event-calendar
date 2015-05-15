@@ -39,12 +39,14 @@ module Calendar {
             events: [],
             selectedEvent: "",
             defaultBgColor: "green",
-            defaultColor: "white"
+            defaultColor: "white",
+            localization: null
         };
 
         constructor(element: JQuery, settings: ISettings) {
             this.element = element;
             this.settings = settings;
+            this.dialogSettings.localization = this.settings.localization;
             this.dialogSettings.events = this.settings.events;
             this.dialogSettings.selectedEvent = this.settings.events[0].name;
             this.resetIndexes();
@@ -220,7 +222,8 @@ module Calendar {
         }
 
         /**
-         * Removes css styling and attribute `title` from selected cells.
+         * Removes css styling and attribute `title` from selected cells
+         * and destroys popover with messages.
          *
          * @method removeEventFormat
          */
@@ -229,6 +232,8 @@ module Calendar {
             eventRange.forEach((item) => {
                 var cell = $('td.cell[data-year-day=' + item + ']');
                 cell.css({ "background-color": "", "color": "" });
+                cell.removeAttr("title");
+                Calendar.Popover.destroy(cell);
             });
         }
 

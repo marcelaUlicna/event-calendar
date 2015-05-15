@@ -22,25 +22,45 @@ module Calendar {
      * @constructor
      * @param {JQuery} element - DOM element for plugin
      * @param {ISettings} options - Custom options
-     * @property {JQuery} element - DOM element for plugin
-     * @property {ISettings} settings - Default settings
-     * @property {CalendarEvents} events - Calendar events
-     * @property {number} year - Actual year of calendar
      */
     export class EventCalendar {
+        /**
+         * DOM element for plugin
+         *
+         * @property element
+         * @type JQuery
+         */
         element: JQuery;
-        settings: ISettings = {
-            events:  [{ name: "Default" }],
-            editable: true
-        };
+
+        /**
+         * Default settings
+         *
+         * @property settings
+         * @type ISettings
+         */
+        settings: ISettings;
+
+        /**
+         * Calendar events
+         *
+         * @property events
+         * @type Events
+         */
         events: Events;
+
+        /**
+         * Actual year of calendar
+         *
+         * @property year
+         * @type number
+         */
         year: number;
 
         constructor(element: JQuery, options: ISettings) {
             this.element = element;
             this.year = new Date().getFullYear();
 
-            this.settings = $.extend(true, this.settings, options);
+            this.settings = $.extend(true, this.defaultSettings(), options);
 
             if(this.settings.locale) {
                 moment.locale(this.settings.locale);
@@ -50,6 +70,25 @@ module Calendar {
             this.events.setSelectedlYear(this.year);
 
             this.element.on("click", ".year-direction", e => this.changeYear(e));
+        }
+
+        /**
+         * Initializes default plugin settings.
+         *
+         * @method defaultSettings
+         * @return {ISettings} - Default settings
+         * */
+        defaultSettings(): ISettings {
+            return {
+                events:  [{ name: "Default" }],
+                editable: true,
+                localization: {
+                    messageSentence: "Information (users will see this message)",
+                    noteSentence: "Notes (only you will see this message)",
+                    submitButton: "Submit",
+                    deleteButton: "Delete"
+                }
+            }
         }
 
         /**

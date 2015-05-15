@@ -1,0 +1,11 @@
+{
+  "name": "Documentation of Event Calendar",
+  "description": "A javaScript plugin written in TypeScript",
+  "version": "1.0.0",
+  "url": "http://marcelaulicna.github.io/event-calendar",
+  "options": {
+    "linkNatives": "true",
+    "paths": "dist/app",
+    "outdir": "doc"
+  }
+}

@@ -47,11 +47,16 @@ module Calendar {
          * @return {any} - Returns dictionary template
          */
         private getDictionary(): any {
+            var localization = this.dialogSettings.localization;
+
             return {
-                "title": "Modal title",
                 "start": moment(this.dialogSettings.start).format("LL"),
                 "end":  moment(this.dialogSettings.end).format("LL"),
-                "dropdown": Calendar.ModalTemplate.dropdownTemplate(this.dialogSettings)
+                "dropdown": Calendar.ModalTemplate.dropdownTemplate(this.dialogSettings),
+                "messageSentence": localization.messageSentence,
+                "noteSentence": localization.noteSentence,
+                "submitButton": localization.submitButton,
+                "deleteButton": localization.deleteButton
             };
         }
 
@@ -234,18 +239,18 @@ module Calendar {
                 "           </div>",
                 "           <form>",
                 "               <div class='form-group'>",
-                "                   <div>Information (users will see this message)</div>",
+                "                   <div>{{messageSentence}}</div>",
                 "                   <input type='text' name='userMessage' class='form-control'>",
                 "               </div>",
                 "               <div class='form-group'>",
-                "                   <div>Notes (only you will see this message)</div>",
+                "                   <div>{{noteSentence}}</div>",
                 "                   <input type='text' name='privateNote' class='form-control'>",
                 "               </div>",
                 "           </form>",
                 "           <div class='row'>",
                 "               <div class='col-md-12'>",
-                "                   <button type='button' id='btnDelete' class='btn btn-default pull-left btn-action'>Delete</button>",
-                "                   <button type='button' id='btnSubmit' class='btn btn-primary pull-right btn-action'>Submit</button>",
+                "                   <button type='button' id='btnDelete' class='btn btn-default pull-left btn-action'>{{deleteButton}}</button>",
+                "                   <button type='button' id='btnSubmit' class='btn btn-primary pull-right btn-action'>{{submitButton}}</button>",
                 "               </div>",
                 "           </div>",
                 "       </div>",

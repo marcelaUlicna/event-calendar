@@ -8,7 +8,15 @@ module Calendar {
     export interface ISettings {
         events: Array<IEvent>;
         editable: boolean;
+        localization: ILocalization;
         locale?: string;
+    }
+
+    export interface ILocalization {
+        messageSentence: string;
+        noteSentence: string;
+        submitButton: string;
+        deleteButton: string;
     }
 
     export interface IEvent {
@@ -31,6 +39,7 @@ module Calendar {
         defaultColor: string;
         message?: string;
         personalNote?: string;
+        localization: ILocalization;
     }
 
     export enum DialogResult {

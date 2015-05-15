@@ -3,7 +3,8 @@ var gulp = require('gulp'),
     ts = require('gulp-typescript'),
     less =require('gulp-less'),
     sequence = require('run-sequence'),
-    connect = require('gulp-connect');
+    connect = require('gulp-connect'),
+    run = require('gulp-run');
 
 // javascripts
 gulp.task('typescript', function(){
@@ -59,6 +60,11 @@ gulp.task('connect', function () {
         hostname: "*",
         base: "dist/"
     });
+});
+
+// yuidoc
+gulp.task('doc', function(){
+    run('yuidoc -c yuidoc.json').exec();
 });
 
 // watch

@@ -38,6 +38,16 @@ var Calendar;
             });
         };
         /**
+         * Destroys popover.
+         *
+         * @method destroy
+         * @static
+         * @param {JQuery} cell - Cell element to destroy popover
+         */
+        Popover.destroy = function (cell) {
+            cell.popover('destroy');
+        };
+        /**
          * Popover content.
          *
          * @method template

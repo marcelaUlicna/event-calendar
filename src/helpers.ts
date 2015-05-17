@@ -1,7 +1,3 @@
-/**
- * Created by Marcela on 28. 4. 2015.
- */
-
 ///<reference path="../typing/jquery.d.ts" />
 ///<reference path="common.ts" />
 

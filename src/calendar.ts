@@ -1,15 +1,12 @@
-/**
- * Created by Marcela on 28. 4. 2015.
- */
-
 ///<reference path="../typing/jquery.d.ts" />
 ///<reference path="common.ts" />
 ///<reference path="header.ts" />
 ///<reference path="months.ts" />
 ///<reference path="events.ts" />
+///<reference path="actions.ts" />
 
 /**
- * Vacation calendar plugin.
+ * Event calendar plugin.
  *
  * @module Calendar
  */
@@ -25,36 +22,44 @@ module Calendar {
      */
     export class EventCalendar {
         /**
-         * DOM element for plugin
+        * jQuery element.
          *
          * @property element
-         * @type JQuery
+         * @type {JQuery}
          */
         element: JQuery;
 
         /**
-         * Default settings
+         * Plugin settings.
          *
          * @property settings
-         * @type ISettings
+         * @type {ISettings}
          */
         settings: ISettings;
 
         /**
-         * Calendar events
+         * Calendar events.
          *
          * @property events
-         * @type Events
+         * @type {Events}
          */
         events: Events;
 
         /**
-         * Actual year of calendar
+         * Actual year.
          *
          * @property year
-         * @type number
+         * @type {number}
          */
         year: number;
+
+        /**
+         * Actions to render caledar for next or previous year.
+         *
+         * @property moveAction
+         * @type {IMoveAction}
+         */
+        moveAction: IMoveAction;
 
         constructor(element: JQuery, options: ISettings) {
             this.element = element;
@@ -66,6 +71,7 @@ module Calendar {
                 moment.locale(this.settings.locale);
             }
 
+            this.moveAction = new this.settings.moveAction();
             this.events = new Events(this.element, this.settings);
             this.events.setSelectedlYear(this.year);
 
@@ -77,7 +83,7 @@ module Calendar {
          *
          * @method defaultSettings
          * @return {ISettings} - Default settings
-         * */
+         */
         defaultSettings(): ISettings {
             return {
                 events:  [{ name: "Default" }],
@@ -87,7 +93,19 @@ module Calendar {
                     noteSentence: "Notes (only you will see this message)",
                     submitButton: "Submit",
                     deleteButton: "Delete"
-                }
+                },
+                moveAction: MoveAction
+            }
+        }
+
+        /**
+         * Calls static method to mark cells with server data.
+         *
+         * @method setEventFormat
+         */
+        setEventFormat(): void {
+            if(this.settings.data) {
+                Calendar.Events.dataEventFormat(this.settings.data, this.settings.events, this.year);
             }
         }
 
@@ -109,19 +127,44 @@ module Calendar {
                     .append(monthTables.element);
 
             wrapper.appendTo(this.element);
+
+            this.setEventFormat();
         }
 
         /**
-         * Changes the year of calendar and calls rerendering calendar view
+         * Changes the year of calendar and calls method
+         * which obtains new data for selected year.
          *
          * @method changeYear
          * @param {JQueryEventObject} e - Button object handler
          */
         changeYear(e: JQueryEventObject): void {
             var direction = $(e.target).closest(".year-direction").attr("data-direction");
-            this.year = direction === "prev" ? this.year - 1 : this.year + 1;
+
+            if(direction === "prev") {
+                this.year = this.year - 1;
+                this.moveAction
+                    .previous(this.year, this.settings.data)
+                    .always(() => this.setSelectedYear());
+            } else {
+                this.year = this.year + 1;
+                this.moveAction
+                    .next(this.year, this.settings.data)
+                    .always(() => this.setSelectedYear());
+            }
+        }
+
+        /**
+         * Sets data for selected year and calls rerendering calendar view
+         * and invokes method to mark cells according to server data.
+         *
+         * @method setSelectedYear
+         */
+        setSelectedYear(): void {
+            this.settings.data = this.moveAction.data;
             this.init();
             this.events.setSelectedlYear(this.year);
+            this.setEventFormat();
         }
     }
 }

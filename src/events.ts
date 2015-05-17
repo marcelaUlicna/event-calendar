@@ -1,7 +1,3 @@
-/**
- * Created by Marcela on 2. 5. 2015.
- */
-
 ///<reference path="../typing/jquery.d.ts" />
 ///<reference path="../typing/moment.d.ts" />
 ///<reference path="common.ts" />
@@ -23,22 +19,52 @@ module Calendar {
      * @constructor
      * @param {JQuery} element - Calendar jquery element
      * @param {ISettings} settings - Plugin settings
-     * @property {JQuery} element - Calendar jquery element
-     * @property {ISettings} settings - Plugin settings
-     * @property {IArrayIndexes} indexes - Object that persists start and end index
-     * @property {number} year - Selected year
      */
     export class Events {
+        /**
+         * jQuery element.
+         *
+         * @property element
+         * @type {JQuery}
+         */
         element: JQuery;
+
+        /**
+         * Plugin settings.
+         *
+         * @property settings
+         * @type {ISettings}
+         */
         settings: ISettings;
+
+        /**
+         * Object with start and end index. Indexes represents the number of day in year.
+         *
+         * @property indexes
+         * @type {IArrayIndexes}
+         */
         indexes: IArrayIndexes;
+
+        /**
+         * Selected year.
+         *
+         * @property year
+         * @type {number}
+         */
         year: number;
+
+        /**
+         * Modal dialog settings.
+         *
+         * @property dialogSettings
+         * @type {IModalDialog}
+         */
         dialogSettings: IModalDialog = {
             start: null,
             end: null,
             events: [],
             selectedEvent: "",
-            defaultBgColor: "green",
+            defaultBgColor: "#5CB85C",
             defaultColor: "white",
             localization: null
         };
@@ -238,11 +264,41 @@ module Calendar {
         }
 
         /**
+         * Marks specified cells with css format and adds popover
+         * in case message or note for cell is available.
+         *
+         * @method dataEventFormat
+         * @static
+         * @param {Array<IData>} data - Server data to select correct cells and apply correct css format
+         * @param {Array<IEvent>} events - List of available events
+         * @param {number} year - Actual selected year
+         */
+        static dataEventFormat(data: Array<IData>, events: Array<IEvent>, year: number): void {
+            data.forEach((item) => {
+                var date = moment(item.date);
+
+                if(date.isValid() && date.year() === year) {
+                    var listEv = events.filter(ev => ev.name.toLocaleLowerCase() === item.event.toLocaleLowerCase()),
+                        currentEvent = listEv.length ? listEv[0] : events[0],
+                        yearDay = date.dayOfYear(),
+                        cell = $('td.cell[data-year-day=' + yearDay + ']');
+
+                    cell.addClass('event-day');
+                    cell.css({ "background-color": currentEvent.backgroundColor, "color": currentEvent.color });
+                    if(item.message || item.note) {
+                        Calendar.Popover.popover(cell, item.message, item.note);
+                    }
+                }
+            });
+        }
+
+        /**
          * Resolves left mouse pressing.
          *
          * @method leftMousePressed
          * @private
          * @param {JQueryEventObject} e - Event handler object
+         * @return {boolean} - Whether the left mouse button has been pressed
          */
         private leftMousePressed(e: JQueryEventObject): boolean {
             var event = window.event;

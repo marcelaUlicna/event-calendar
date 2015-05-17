@@ -1,26 +1,7 @@
-/**
- * Created by Marcela on 29. 4. 2015.
- */
-
 ///<reference path="../typing/jquery.d.ts" />
 ///<reference path="../typing/moment.d.ts" />
 ///<reference path="common.ts" />
 ///<reference path="helpers.ts" />
-
-
-    /*
-    * moment.locale("cs-cz")
-    *
-    * moment.months()
-    * ["leden", "únor", "březen", "duben", "květen", "červen", "červenec", "srpen", "září", "říjen", "listopad", "prosinec"]
-    * ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"]
-    * ["январь", "февраль", "март", "апрель", "май", "июнь", "июль", "август", "сентябрь", "октябрь", "ноябрь", "декабрь"]
-    *
-    * moment.weekdaysMin()
-    * ["ne", "po", "út", "st", "čt", "pá", "so"]
-    * ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sá"]
-    * ["вс", "пн", "вт", "ср", "чт", "пт", "сб"]
-    * */
 
 module Calendar {
 
@@ -33,19 +14,60 @@ module Calendar {
      * @constructor
      * @param {ISettings} settings - Plugin settings
      * @param {number} year - Actual year of calendar
-     * @property {JQuery} element - Month calendars DOM element
-     * @property {ISettings} settings - Plugin settings
-     * @property {number} year - Actual year of calendar
-     * @property {Date} today - Javascript Date object
-     * @property {Array<string>} months - Array of month names
-     * @property {Array<string>} weekdays - Array of weekdays shortcuts
      */
     export class MonthCalendar {
+        /**
+         * Month calendars DOM element.
+         *
+         * @property element
+         * @type {JQuery}
+         */
         element: JQuery;
+
+        /**
+         * Plugin settings.
+         *
+         * @property settings
+         * @type {ISettings}
+         */
         settings: ISettings;
+
+        /**
+         * Selected year.
+         *
+         * @property year
+         * @type {number}
+         */
         year: number;
+
+        /**
+         * Javascript Date object represents current date.
+         *
+         * @property today
+         * @type {Date}
+         */
         today: Date = new Date();
+
+        /**
+         * Array of month names.
+         *
+         *     ["January", "February", "March", "April", "May",
+         *     "June", "July", "August", "September",
+         *     "October", "November", "December"]
+         *
+         * @property months
+         * @type {Array<string>}
+         */
         months: Array<string>;
+
+        /**
+         * Array of weekdays shortcuts.
+         *
+         *     ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+         *
+         * @property weekdays
+         * @type {Array<string>}
+         */
         weekdays: Array<string>;
 
         constructor(settings: ISettings, year: number) {
@@ -77,7 +99,7 @@ module Calendar {
          * Creates wrapper for month tables.
          *
          * @method templateCalendar
-         * @return {JQuery}
+         * @return {JQuery} - Calendar for each month
          */
         templateCalendar(): JQuery {
             var view = $("<div />").addClass("row");
@@ -96,7 +118,7 @@ module Calendar {
          *
          * @method templateTable
          * @param {number} monthId - Month index 0 - 11
-         * @return {JQuery}
+         * @return {JQuery} - Month calendar
          */
         templateTable(monthId: number): JQuery {
             var actualDate = new Date(this.year, monthId), // first day in month
@@ -144,9 +166,6 @@ module Calendar {
                         if(moment(cellDate).format("YYYY-MM-DD") === moment(this.today).format("YYYY-MM-DD")) {
                             cell.addClass("css-today").addClass("today");
                         }
-
-                        // set vacation
-                        // TODO ============
 
                         // set date number
                         cell.attr("data-year-day", moment(cellDate).dayOfYear()).text(index);

@@ -1,13 +1,11 @@
-/**
- * Created by Marcela on 28. 4. 2015.
- */
 ///<reference path="../typing/jquery.d.ts" />
 ///<reference path="common.ts" />
 ///<reference path="header.ts" />
 ///<reference path="months.ts" />
 ///<reference path="events.ts" />
+///<reference path="actions.ts" />
 /**
- * Vacation calendar plugin.
+ * Event calendar plugin.
  *
  * @module Calendar
  */
@@ -30,6 +28,7 @@ var Calendar;
             if (this.settings.locale) {
                 moment.locale(this.settings.locale);
             }
+            this.moveAction = new this.settings.moveAction();
             this.events = new Calendar.Events(this.element, this.settings);
             this.events.setSelectedlYear(this.year);
             this.element.on("click", ".year-direction", function (e) { return _this.changeYear(e); });
@@ -39,7 +38,7 @@ var Calendar;
          *
          * @method defaultSettings
          * @return {ISettings} - Default settings
-         * */
+         */
         EventCalendar.prototype.defaultSettings = function () {
             return {
                 events: [{ name: "Default" }],
@@ -49,8 +48,19 @@ var Calendar;
                     noteSentence: "Notes (only you will see this message)",
                     submitButton: "Submit",
                     deleteButton: "Delete"
-                }
+                },
+                moveAction: Calendar.MoveAction
             };
+        };
+        /**
+         * Calls static method to mark cells with server data.
+         *
+         * @method setEventFormat
+         */
+        EventCalendar.prototype.setEventFormat = function () {
+            if (this.settings.data) {
+                Calendar.Events.dataEventFormat(this.settings.data, this.settings.events, this.year);
+            }
         };
         /**
          * Initializes view with calendars.
@@ -63,18 +73,38 @@ var Calendar;
             var header = new Calendar.Header(this.year), monthTables = new Calendar.MonthCalendar(this.settings, this.year);
             var wrapper = $("<div />").addClass("calendar-wrapper").append(header.element).append(monthTables.element);
             wrapper.appendTo(this.element);
+            this.setEventFormat();
         };
         /**
-         * Changes the year of calendar and calls rerendering calendar view
+         * Changes the year of calendar and calls method
+         * which obtains new data for selected year.
          *
          * @method changeYear
          * @param {JQueryEventObject} e - Button object handler
          */
         EventCalendar.prototype.changeYear = function (e) {
+            var _this = this;
             var direction = $(e.target).closest(".year-direction").attr("data-direction");
-            this.year = direction === "prev" ? this.year - 1 : this.year + 1;
+            if (direction === "prev") {
+                this.year = this.year - 1;
+                this.moveAction.previous(this.year, this.settings.data).always(function () { return _this.setSelectedYear(); });
+            }
+            else {
+                this.year = this.year + 1;
+                this.moveAction.next(this.year, this.settings.data).always(function () { return _this.setSelectedYear(); });
+            }
+        };
+        /**
+         * Sets data for selected year and calls rerendering calendar view
+         * and invokes method to mark cells according to server data.
+         *
+         * @method setSelectedYear
+         */
+        EventCalendar.prototype.setSelectedYear = function () {
+            this.settings.data = this.moveAction.data;
             this.init();
             this.events.setSelectedlYear(this.year);
+            this.setEventFormat();
         };
         return EventCalendar;
     })();

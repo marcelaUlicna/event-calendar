@@ -1,6 +1,3 @@
-/**
- * Created by Marcela on 9. 5. 2015.
- */
 ///<reference path="../typing/jquery.d.ts" />
 ///<reference path="../typing/bootstrap.d.ts" />
 var Calendar;
@@ -52,6 +49,7 @@ var Calendar;
          *
          * @method template
          * @static
+         * @private
          * @param {string} [message] - Message text
          * @param {string} [note] - Note text for creator
          * @return {string} - Template

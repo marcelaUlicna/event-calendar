@@ -76,6 +76,21 @@ var Calendar;
             this.setEventFormat();
         };
         /**
+         * Destroys plugin and removes all event handlers.
+         *
+         * __Usage__:
+         *
+         *     $("#calendar").vacationCalendar.destroy();
+         *
+         * @method destroy
+         */
+        EventCalendar.prototype.destroy = function () {
+            this.element.removeData("jquery.vacation.calendar");
+            this.element.off();
+            this.element.unbind();
+            this.element.empty();
+        };
+        /**
          * Changes the year of calendar and calls method
          * which obtains new data for selected year.
          *
@@ -124,6 +139,9 @@ var Calendar;
             else {
                 data.init();
             }
+            $.fn.vacationCalendar.destroy = function () {
+                data.destroy();
+            };
         });
     };
     $.fn.vacationCalendar.defaults = {};

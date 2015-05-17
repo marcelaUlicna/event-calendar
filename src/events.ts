@@ -19,7 +19,7 @@ module Calendar {
      * modal dialog there is made design changes in calendar and calls
      * method which provides custom server side request.
      *
-     * @class CalendarEvents
+     * @class Events
      * @constructor
      * @param {JQuery} element - Calendar jquery element
      * @param {ISettings} settings - Plugin settings
@@ -28,7 +28,7 @@ module Calendar {
      * @property {IArrayIndexes} indexes - Object that persists start and end index
      * @property {number} year - Selected year
      */
-    export class CalendarEvents {
+    export class Events {
         element: JQuery;
         settings: ISettings;
         indexes: IArrayIndexes;

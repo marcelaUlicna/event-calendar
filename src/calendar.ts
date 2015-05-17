@@ -18,7 +18,7 @@ module Calendar {
     /**
      * Provides the base plugin class and initializes all components.
      *
-     * @class VacationCalendar
+     * @class EventCalendar
      * @constructor
      * @param {JQuery} element - DOM element for plugin
      * @param {ISettings} options - Custom options
@@ -27,13 +27,13 @@ module Calendar {
      * @property {CalendarEvents} events - Calendar events
      * @property {number} year - Actual year of calendar
      */
-    export class VacationCalendar {
+    export class EventCalendar {
         element: JQuery;
         settings: ISettings = {
             events:  [{ name: "Default" }],
             editable: true
         };
-        events: CalendarEvents;
+        events: Events;
         year: number;
 
         constructor(element: JQuery, options: ISettings) {
@@ -46,7 +46,7 @@ module Calendar {
                 moment.locale(this.settings.locale);
             }
 
-            this.events = new CalendarEvents(this.element, this.settings);
+            this.events = new Events(this.element, this.settings);
             this.events.setSelectedlYear(this.year);
 
             this.element.on("click", ".year-direction", e => this.changeYear(e));
@@ -98,7 +98,7 @@ module Calendar {
                 options = $.extend({}, $.fn.vacationCalendar.defaults, $this.data(), typeof option === 'object' && option);
 
             if(!data) {
-                $this.data("jquery.vacation.calendar", (data = new Calendar.VacationCalendar($this, options)));
+                $this.data("jquery.vacation.calendar", (data = new Calendar.EventCalendar($this, options)));
             }
 
             if (typeof option === 'string') {

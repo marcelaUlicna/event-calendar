@@ -132,6 +132,22 @@ module Calendar {
         }
 
         /**
+         * Destroys plugin and removes all event handlers.
+         *
+         * __Usage__:
+         *
+         *     $("#calendar").vacationCalendar.destroy();
+         *
+         * @method destroy
+         */
+        destroy(): void {
+            this.element.removeData("jquery.vacation.calendar");
+            this.element.off();
+            this.element.unbind();
+            this.element.empty();
+        }
+
+        /**
          * Changes the year of calendar and calls method
          * which obtains new data for selected year.
          *
@@ -188,10 +204,13 @@ module Calendar {
             } else {
                 data.init();
             }
+
+            $.fn.vacationCalendar.destroy = function(){
+                data.destroy();
+            };
         });
     };
 
-    $.fn.vacationCalendar.defaults = {
 
-    };
+    $.fn.vacationCalendar.defaults = { };
 })(jQuery);

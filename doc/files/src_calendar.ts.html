@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src\calendar.ts - Event Calendar</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.8.0pr2/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <script src="http://yui.yahooapis.com/combo?3.8.0pr2/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            <h1><a href="../index.html"><img src="../assets/css/logo.png" width="117" height="52">Event Calendar: src\calendar.ts</a></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 0.0.1</em>
+        </div>
+    </div>
+    <div class="yui3-g">
+
+        <div id="sidebar" class="yui3-u">
+            <div id="modules" class="sidebox">
+                <div class="hd">
+                    <h2 class="no-toc">Modules</h2>
+                </div>
+                <div class="bd">
+                    <ul>
+                            <li><a href="../modules/Calendar.html">Calendar</a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div id="classes" class="sidebox">
+                <div class="hd">
+                    <h2 class="no-toc">Classes</h2>
+                </div>
+                <div class="bd">
+                    <ul>
+                            <li><a href="../classes/Dialog.html">Dialog</a></li>
+                            <li><a href="../classes/EventCalendar.html">EventCalendar</a></li>
+                            <li><a href="../classes/Events.html">Events</a></li>
+                            <li><a href="../classes/Header.html">Header</a></li>
+                            <li><a href="../classes/Helpers.html">Helpers</a></li>
+                            <li><a href="../classes/ModalTemplate.html">ModalTemplate</a></li>
+                            <li><a href="../classes/MonthCalendar.html">MonthCalendar</a></li>
+                            <li><a href="../classes/MoveAction.html">MoveAction</a></li>
+                            <li><a href="../classes/Popover.html">Popover</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            
+            
+            
+            
+            <div id="fileTree" class="sidebox">
+                <div class="hd">
+                    <h2 class="no-toc">Files</h2>
+                </div>
+                <div class="bd">
+                    <ul><li>src\actions.ts/<ul></ul></li><li>src\calendar.ts/<ul></ul></li><li>src\events.ts/<ul></ul></li><li>src\header.ts/<ul></ul></li><li>src\helpers.ts/<ul></ul></li><li>src\modal.ts/<ul></ul></li><li>src\months.ts/<ul></ul></li><li>src\popover.ts/<ul></ul></li></ul>
+                </div>
+            </div>
+            
+        </div>
+
+        <div id="main" class="yui3-u">
+            <div class="content"><h4>src\calendar.ts</h4>
+
+<pre class="code prettyprint linenums">
+///&lt;reference path=&quot;../typing/jquery.d.ts&quot; /&gt;
+///&lt;reference path=&quot;common.ts&quot; /&gt;
+///&lt;reference path=&quot;header.ts&quot; /&gt;
+///&lt;reference path=&quot;months.ts&quot; /&gt;
+///&lt;reference path=&quot;events.ts&quot; /&gt;
+///&lt;reference path=&quot;actions.ts&quot; /&gt;
+
+/**
+ * Event calendar plugin.
+ *
+ * @module Calendar
+ */
+module Calendar {
+
+    /**
+     * Provides the base plugin class and initializes all components.
+     *
+     * @class EventCalendar
+     * @constructor
+     * @param {JQuery} element - DOM element for plugin
+     * @param {ISettings} options - Custom options
+     */
+    export class EventCalendar {
+        /**
+        * jQuery element.
+         *
+         * @property element
+         * @type {JQuery}
+         */
+        element: JQuery;
+
+        /**
+         * Plugin settings.
+         *
+         * @property settings
+         * @type {ISettings}
+         */
+        settings: ISettings;
+
+        /**
+         * Calendar events.
+         *
+         * @property events
+         * @type {Events}
+         */
+        events: Events;
+
+        /**
+         * Actual year.
+         *
+         * @property year
+         * @type {number}
+         */
+        year: number;
+
+        /**
+         * Actions to render caledar for next or previous year.
+         *
+         * @property moveAction
+         * @type {IMoveAction}
+         */
+        moveAction: IMoveAction;
+
+        constructor(element: JQuery, options: ISettings) {
+            this.element = element;
+            this.year = new Date().getFullYear();
+
+            this.settings = $.extend(true, this.defaultSettings(), options);
+
+            if(this.settings.locale) {
+                moment.locale(this.settings.locale);
+            }
+
+            this.moveAction = new this.settings.moveAction();
+            this.events = new Events(this.element, this.settings);
+            this.events.setSelectedlYear(this.year);
+
+            this.element.on(&quot;click&quot;, &quot;.year-direction&quot;, e =&gt; this.changeYear(e));
+        }
+
+        /**
+         * Initializes default plugin settings.
+         *
+         * @method defaultSettings
+         * @return {ISettings} - Default settings
+         */
+        defaultSettings(): ISettings {
+            return {
+                events:  [{ name: &quot;Default&quot; }],
+                editable: true,
+                localization: {
+                    messageSentence: &quot;Information (users will see this message)&quot;,
+                    noteSentence: &quot;Notes (only you will see this message)&quot;,
+                    submitButton: &quot;Submit&quot;,
+                    deleteButton: &quot;Delete&quot;
+                },
+                moveAction: MoveAction
+            }
+        }
+
+        /**
+         * Calls static method to mark cells with server data.
+         *
+         * @method setEventFormat
+         */
+        setEventFormat(): void {
+            if(this.settings.data) {
+                Calendar.Events.dataEventFormat(this.settings.data, this.settings.events, this.year);
+            }
+        }
+
+        /**
+         * Initializes view with calendars.
+         *
+         * @method init
+         */
+        init(): void {
+            //console.log(this.settings);
+            this.element.empty();
+            var header = new Header(this.year),
+                monthTables = new MonthCalendar(this.settings, this.year);
+
+            var wrapper =
+                $(&quot;&lt;div /&gt;&quot;)
+                    .addClass(&quot;calendar-wrapper&quot;)
+                    .append(header.element)
+                    .append(monthTables.element);
+
+            wrapper.appendTo(this.element);
+
+            this.setEventFormat();
+        }
+
+        /**
+         * Destroys plugin and removes all event handlers.
+         *
+         * __Usage__:
+         *
+         *     $(&quot;#calendar&quot;).vacationCalendar.destroy();
+         *
+         * @method destroy
+         */
+        destroy(): void {
+            this.element.removeData(&quot;jquery.vacation.calendar&quot;);
+            this.element.off();
+            this.element.unbind();
+            this.element.empty();
+        }
+
+        /**
+         * Changes the year of calendar and calls method
+         * which obtains new data for selected year.
+         *
+         * @method changeYear
+         * @param {JQueryEventObject} e - Button object handler
+         */
+        changeYear(e: JQueryEventObject): void {
+            var direction = $(e.target).closest(&quot;.year-direction&quot;).attr(&quot;data-direction&quot;);
+
+            if(direction === &quot;prev&quot;) {
+                this.year = this.year - 1;
+                this.moveAction
+                    .previous(this.year, this.settings.data)
+                    .always(() =&gt; this.setSelectedYear());
+            } else {
+                this.year = this.year + 1;
+                this.moveAction
+                    .next(this.year, this.settings.data)
+                    .always(() =&gt; this.setSelectedYear());
+            }
+        }
+
+        /**
+         * Sets data for selected year and calls rerendering calendar view
+         * and invokes method to mark cells according to server data.
+         *
+         * @method setSelectedYear
+         */
+        setSelectedYear(): void {
+            this.settings.data = this.moveAction.data;
+            this.init();
+            this.events.setSelectedlYear(this.year);
+            this.setEventFormat();
+        }
+    }
+}
+
+(function($){
+    $.fn.vacationCalendar = function(){
+        var option = arguments[0],
+            args = arguments;
+
+        return this.each(function(){
+            var $this = $(this),
+                data = $this.data(&quot;jquery.vacation.calendar&quot;),
+                options = $.extend({}, $.fn.vacationCalendar.defaults, $this.data(), typeof option === &#x27;object&#x27; &amp;&amp; option);
+
+            if(!data) {
+                $this.data(&quot;jquery.vacation.calendar&quot;, (data = new Calendar.EventCalendar($this, options)));
+            }
+
+            if (typeof option === &#x27;string&#x27;) {
+                data[option](args[1]);
+            } else {
+                data.init();
+            }
+
+            $.fn.vacationCalendar.destroy = function(){
+                data.destroy();
+            };
+        });
+    };
+
+
+    $.fn.vacationCalendar.defaults = { };
+})(jQuery);
+</pre>
+
+</div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/js/tabs.js"></script>
+</body>
+</html>

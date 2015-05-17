@@ -1,6 +1,3 @@
-/**
- * Created by Marcela on 28. 4. 2015.
- */
 ///<reference path="../typing/jquery.d.ts" />
 var Calendar;
 (function (Calendar) {
@@ -11,9 +8,81 @@ var Calendar;
     })(Calendar.DialogResult || (Calendar.DialogResult = {}));
     var DialogResult = Calendar.DialogResult;
 })(Calendar || (Calendar = {}));
-/**
- * Created by Marcela on 29. 4. 2015.
- */
+///<reference path="../typing/jquery.d.ts" />
+///<reference path="common.ts" />
+var Calendar;
+(function (Calendar) {
+    /**
+     * Base class for implementation of changing year by
+     * clicking on "previous" or "next" arrow. Implements
+     * `IMoveAction` interface and can be overwritten.
+     *
+     * __Example__ of implementation user's class with `next()` and `previous()` methods.
+     * Server returns new data for each year:
+     *
+     *     export class MyMoveAction extends MoveAction {
+     *       next(year: number, data?: Array<IData>): JQueryPromise<any> {
+     *           var deferred = $.Deferred();
+     *           this.getJsonData(year, deferred);
+     *           return deferred.promise();
+     *       }
+     *
+     *       previous(year: number, data?: Array<IData>): JQueryPromise<any> {
+     *           var deferred = $.Deferred();
+     *           this.getJsonData(year, deferred);
+     *           return deferred.promise();
+     *       }
+     *
+     *       private getJsonData(year: number, deferred: JQueryDeferred<any>): void {
+     *           var url = "data/events" + year + ".json";
+     *           $.ajax(url)
+     *               .done((result) => {
+     *                   this.data = result;
+     *               })
+     *               .always(() => {
+     *                   deferred.resolve();
+     *               });
+     *       }
+     *     }
+     *
+     * @class MoveAction
+     * @implements IMoveAction
+     */
+    var MoveAction = (function () {
+        function MoveAction() {
+        }
+        /**
+         * Gets data for next year.
+         *
+         * @method next
+         * @param {number} year - Selected year
+         * @param {Array<IData>} [data] - Data from settings
+         * @return {JQueryPromise<any>} - jQuery promise
+         */
+        MoveAction.prototype.next = function (year, data) {
+            var deferred = $.Deferred();
+            this.data = data;
+            deferred.resolve();
+            return deferred.promise();
+        };
+        /**
+         * Gets data for previous year.
+         *
+         * @method previous
+         * @param {number} year - Selected year
+         * @param {Array<IData>} [data] - Data from settings
+         * @return {JQueryPromise<any>} - jQuery promise
+         */
+        MoveAction.prototype.previous = function (year, data) {
+            var deferred = $.Deferred();
+            this.data = data;
+            deferred.resolve();
+            return deferred.promise();
+        };
+        return MoveAction;
+    })();
+    Calendar.MoveAction = MoveAction;
+})(Calendar || (Calendar = {}));
 ///<reference path="../typing/jquery.d.ts" />
 var Calendar;
 (function (Calendar) {
@@ -23,8 +92,7 @@ var Calendar;
      *
      * @class Header
      * @constructor
-     * @property {JQuery} element - Header DOM element
-     * @property {number} year - Actual year
+     * @param {number} year - Selected year
      */
     var Header = (function () {
         function Header(year) {
@@ -35,7 +103,7 @@ var Calendar;
          * Creates whole header elements.
          *
          * @method render
-         * @return JQuery
+         * @return JQuery - Calendar header wrapper
          */
         Header.prototype.render = function () {
             return $("<div />").addClass("row calendar-header").append(this.renderHeader());
@@ -45,7 +113,7 @@ var Calendar;
          * and title.
          *
          * @method renderHeader
-         * @return JQuery
+         * @return JQuery - Calendar header with selected year and navigation buttons
          */
         Header.prototype.renderHeader = function () {
             return $("<div />").addClass("col-md-12").append($("<div />").addClass("pull-left").append(this.renderButton("prev")).append(this.renderTitle()).append(this.renderButton("next")));
@@ -55,7 +123,7 @@ var Calendar;
          *
          * @method renderButton
          * @param {string} direction - Direction (prev or next)
-         * @return JQuery
+         * @return JQuery - Navigation button
          */
         Header.prototype.renderButton = function (direction) {
             var yearValue = direction === "prev" ? this.year - 1 : this.year + 1, iconClass = direction === "prev" ? "fa fa-chevron-left" : "fa fa-chevron-right";
@@ -65,7 +133,7 @@ var Calendar;
          * Creates year title.
          *
          * @method renderTitle
-         * @return JQuery
+         * @return JQuery - Title (selected year)
          */
         Header.prototype.renderTitle = function () {
             return $("<div />").addClass("actual-year").attr("data-year", this.year).append($("<strong />").text(this.year));
@@ -74,9 +142,6 @@ var Calendar;
     })();
     Calendar.Header = Header;
 })(Calendar || (Calendar = {}));
-/**
- * Created by Marcela on 28. 4. 2015.
- */
 ///<reference path="../typing/jquery.d.ts" />
 ///<reference path="common.ts" />
 var Calendar;
@@ -192,26 +257,10 @@ var Calendar;
     })();
     Calendar.Helpers = Helpers;
 })(Calendar || (Calendar = {}));
-/**
- * Created by Marcela on 29. 4. 2015.
- */
 ///<reference path="../typing/jquery.d.ts" />
 ///<reference path="../typing/moment.d.ts" />
 ///<reference path="common.ts" />
 ///<reference path="helpers.ts" />
-/*
-* moment.locale("cs-cz")
-*
-* moment.months()
-* ["leden", "únor", "březen", "duben", "květen", "červen", "červenec", "srpen", "září", "říjen", "listopad", "prosinec"]
-* ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"]
-* ["январь", "февраль", "март", "апрель", "май", "июнь", "июль", "август", "сентябрь", "октябрь", "ноябрь", "декабрь"]
-*
-* moment.weekdaysMin()
-* ["ne", "po", "út", "st", "čt", "pá", "so"]
-* ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sá"]
-* ["вс", "пн", "вт", "ср", "чт", "пт", "сб"]
-* */
 var Calendar;
 (function (Calendar) {
     /**
@@ -223,15 +272,15 @@ var Calendar;
      * @constructor
      * @param {ISettings} settings - Plugin settings
      * @param {number} year - Actual year of calendar
-     * @property {JQuery} element - Month calendars DOM element
-     * @property {ISettings} settings - Plugin settings
-     * @property {number} year - Actual year of calendar
-     * @property {Date} today - Javascript Date object
-     * @property {Array<string>} months - Array of month names
-     * @property {Array<string>} weekdays - Array of weekdays shortcuts
      */
     var MonthCalendar = (function () {
         function MonthCalendar(settings, year) {
+            /**
+             * Javascript Date object represents current date.
+             *
+             * @property today
+             * @type {Date}
+             */
             this.today = new Date();
             this.settings = settings;
             this.year = year;
@@ -258,7 +307,7 @@ var Calendar;
          * Creates wrapper for month tables.
          *
          * @method templateCalendar
-         * @return {JQuery}
+         * @return {JQuery} - Calendar for each month
          */
         MonthCalendar.prototype.templateCalendar = function () {
             var view = $("<div />").addClass("row");
@@ -274,7 +323,7 @@ var Calendar;
          *
          * @method templateTable
          * @param {number} monthId - Month index 0 - 11
-         * @return {JQuery}
+         * @return {JQuery} - Month calendar
          */
         MonthCalendar.prototype.templateTable = function (monthId) {
             var actualDate = new Date(this.year, monthId), weekDay = (actualDate.getDay() + 6) % 7, daysInMonth = moment(actualDate).daysInMonth(), displayDay = daysInMonth == 0; // set display first day in calendar if it is Monday
@@ -303,8 +352,6 @@ var Calendar;
                         if (moment(cellDate).format("YYYY-MM-DD") === moment(this.today).format("YYYY-MM-DD")) {
                             cell.addClass("css-today").addClass("today");
                         }
-                        // set vacation
-                        // TODO ============
                         // set date number
                         cell.attr("data-year-day", moment(cellDate).dayOfYear()).text(index);
                         // resolve month index
@@ -326,9 +373,6 @@ var Calendar;
     })();
     Calendar.MonthCalendar = MonthCalendar;
 })(Calendar || (Calendar = {}));
-/**
- * Created by Marcela on 5. 5. 2015.
- */
 ///<reference path="../typing/jquery.d.ts" />
 ///<reference path="../typing/bootstrap.d.ts" />
 ///<reference path="../typing/moment.d.ts" />
@@ -353,6 +397,13 @@ var Calendar;
      */
     var Dialog = (function () {
         function Dialog(dialogSettings) {
+            /**
+             * Dialog result from modal action.
+             *
+             * @property dialogResult
+             * @type {DialogResult}
+             * @default "DialogResult.Cancel"
+             * */
             this.dialogResult = 2 /* Cancel */;
             this.dialogSettings = dialogSettings;
             this.dialogSettings.selectedEvent = this.dialogSettings.events[0].name;
@@ -366,11 +417,15 @@ var Calendar;
          * @return {any} - Returns dictionary template
          */
         Dialog.prototype.getDictionary = function () {
+            var localization = this.dialogSettings.localization;
             return {
-                "title": "Modal title",
                 "start": moment(this.dialogSettings.start).format("LL"),
                 "end": moment(this.dialogSettings.end).format("LL"),
-                "dropdown": Calendar.ModalTemplate.dropdownTemplate(this.dialogSettings)
+                "dropdown": Calendar.ModalTemplate.dropdownTemplate(this.dialogSettings),
+                "messageSentence": localization.messageSentence,
+                "noteSentence": localization.noteSentence,
+                "submitButton": localization.submitButton,
+                "deleteButton": localization.deleteButton
             };
         };
         /**
@@ -526,18 +581,18 @@ var Calendar;
                 "           </div>",
                 "           <form>",
                 "               <div class='form-group'>",
-                "                   <div>Information (users will see this message)</div>",
+                "                   <div>{{messageSentence}}</div>",
                 "                   <input type='text' name='userMessage' class='form-control'>",
                 "               </div>",
                 "               <div class='form-group'>",
-                "                   <div>Notes (only you will see this message)</div>",
+                "                   <div>{{noteSentence}}</div>",
                 "                   <input type='text' name='privateNote' class='form-control'>",
                 "               </div>",
                 "           </form>",
                 "           <div class='row'>",
                 "               <div class='col-md-12'>",
-                "                   <button type='button' id='btnDelete' class='btn btn-default pull-left btn-action'>Delete</button>",
-                "                   <button type='button' id='btnSubmit' class='btn btn-primary pull-right btn-action'>Submit</button>",
+                "                   <button type='button' id='btnDelete' class='btn btn-default pull-left btn-action'>{{deleteButton}}</button>",
+                "                   <button type='button' id='btnSubmit' class='btn btn-primary pull-right btn-action'>{{submitButton}}</button>",
                 "               </div>",
                 "           </div>",
                 "       </div>",
@@ -586,9 +641,6 @@ var Calendar;
     })();
     Calendar.ModalTemplate = ModalTemplate;
 })(Calendar || (Calendar = {}));
-/**
- * Created by Marcela on 9. 5. 2015.
- */
 ///<reference path="../typing/jquery.d.ts" />
 ///<reference path="../typing/bootstrap.d.ts" />
 var Calendar;
@@ -626,10 +678,21 @@ var Calendar;
             });
         };
         /**
+         * Destroys popover.
+         *
+         * @method destroy
+         * @static
+         * @param {JQuery} cell - Cell element to destroy popover
+         */
+        Popover.destroy = function (cell) {
+            cell.popover('destroy');
+        };
+        /**
          * Popover content.
          *
          * @method template
          * @static
+         * @private
          * @param {string} [message] - Message text
          * @param {string} [note] - Note text for creator
          * @return {string} - Template
@@ -644,9 +707,6 @@ var Calendar;
     })();
     Calendar.Popover = Popover;
 })(Calendar || (Calendar = {}));
-/**
- * Created by Marcela on 2. 5. 2015.
- */
 ///<reference path="../typing/jquery.d.ts" />
 ///<reference path="../typing/moment.d.ts" />
 ///<reference path="common.ts" />
@@ -663,28 +723,32 @@ var Calendar;
      * modal dialog there is made design changes in calendar and calls
      * method which provides custom server side request.
      *
-     * @class CalendarEvents
+     * @class Events
      * @constructor
      * @param {JQuery} element - Calendar jquery element
      * @param {ISettings} settings - Plugin settings
-     * @property {JQuery} element - Calendar jquery element
-     * @property {ISettings} settings - Plugin settings
-     * @property {IArrayIndexes} indexes - Object that persists start and end index
-     * @property {number} year - Selected year
      */
-    var CalendarEvents = (function () {
-        function CalendarEvents(element, settings) {
+    var Events = (function () {
+        function Events(element, settings) {
             var _this = this;
+            /**
+             * Modal dialog settings.
+             *
+             * @property dialogSettings
+             * @type {IModalDialog}
+             */
             this.dialogSettings = {
                 start: null,
                 end: null,
                 events: [],
                 selectedEvent: "",
-                defaultBgColor: "green",
-                defaultColor: "white"
+                defaultBgColor: "#5CB85C",
+                defaultColor: "white",
+                localization: null
             };
             this.element = element;
             this.settings = settings;
+            this.dialogSettings.localization = this.settings.localization;
             this.dialogSettings.events = this.settings.events;
             this.dialogSettings.selectedEvent = this.settings.events[0].name;
             this.resetIndexes();
@@ -700,7 +764,7 @@ var Calendar;
          * @method setSelectedlYear
          * @param {number} year - Selected year
          */
-        CalendarEvents.prototype.setSelectedlYear = function (year) {
+        Events.prototype.setSelectedlYear = function (year) {
             this.year = year;
         };
         /**
@@ -709,7 +773,7 @@ var Calendar;
          * @method mousedown
          * @param {JQueryEventObject} e - Event handler object
          */
-        CalendarEvents.prototype.mousedown = function (e) {
+        Events.prototype.mousedown = function (e) {
             if (!this.leftMousePressed(e))
                 return;
             e.preventDefault();
@@ -727,7 +791,7 @@ var Calendar;
          * @method mouseover
          * @param {JQueryEventObject} e - Event handler object
          */
-        CalendarEvents.prototype.mouseover = function (e) {
+        Events.prototype.mouseover = function (e) {
             e.preventDefault();
             if (!this.indexes.start)
                 return;
@@ -751,7 +815,7 @@ var Calendar;
          * @method mouseup
          * @param {JQueryEventObject} e - Event handler object
          */
-        CalendarEvents.prototype.mouseup = function (e) {
+        Events.prototype.mouseup = function (e) {
             e.preventDefault();
             if (!this.indexes.start || !this.indexes.end)
                 return;
@@ -766,7 +830,7 @@ var Calendar;
          *
          * @method showModal
          */
-        CalendarEvents.prototype.showModal = function () {
+        Events.prototype.showModal = function () {
             var _this = this;
             var modal = new Calendar.Dialog(this.dialogSettings);
             modal.show().then(function (result) {
@@ -786,7 +850,7 @@ var Calendar;
          * @method removeSelection
          *
          */
-        CalendarEvents.prototype.removeSelection = function () {
+        Events.prototype.removeSelection = function () {
             this.element.find("td").removeClass("selected-day");
             this.resetIndexes();
             this.dialogSettings.personalNote = null;
@@ -799,7 +863,7 @@ var Calendar;
          *
          * @method submitChanges
          */
-        CalendarEvents.prototype.submitChanges = function () {
+        Events.prototype.submitChanges = function () {
             // user implementation
             this.applyEventFormat();
         };
@@ -809,7 +873,7 @@ var Calendar;
          *
          * @method deleteItems
          */
-        CalendarEvents.prototype.deleteItems = function () {
+        Events.prototype.deleteItems = function () {
             // user implementation
             this.removeEventFormat();
         };
@@ -821,7 +885,7 @@ var Calendar;
          *
          * @method applyEventFormat
          */
-        CalendarEvents.prototype.applyEventFormat = function () {
+        Events.prototype.applyEventFormat = function () {
             var _this = this;
             var selectedEvent = this.dialogSettings.events.filter(function (item) { return item.name === _this.dialogSettings.selectedEvent; }), oneEvent = selectedEvent[0], bgr = oneEvent["backgroundColor"] || this.dialogSettings.defaultBgColor, color = oneEvent["color"] || this.dialogSettings.defaultColor, message = this.dialogSettings.message || null, note = this.settings.editable && this.dialogSettings.personalNote ? this.dialogSettings.personalNote : null, eventRange = Calendar.Helpers.ArrayRange(this.indexes.start, this.indexes.end);
             eventRange.forEach(function (item) {
@@ -834,15 +898,41 @@ var Calendar;
             });
         };
         /**
-         * Removes css styling and attribute `title` from selected cells.
+         * Removes css styling and attribute `title` from selected cells
+         * and destroys popover with messages.
          *
          * @method removeEventFormat
          */
-        CalendarEvents.prototype.removeEventFormat = function () {
+        Events.prototype.removeEventFormat = function () {
             var eventRange = Calendar.Helpers.ArrayRange(this.indexes.start, this.indexes.end);
             eventRange.forEach(function (item) {
                 var cell = $('td.cell[data-year-day=' + item + ']');
                 cell.css({ "background-color": "", "color": "" });
+                cell.removeAttr("title");
+                Calendar.Popover.destroy(cell);
+            });
+        };
+        /**
+         * Marks specified cells with css format and adds popover
+         * in case message or note for cell is available.
+         *
+         * @method dataEventFormat
+         * @static
+         * @param {Array<IData>} data - Server data to select correct cells and apply correct css format
+         * @param {Array<IEvent>} events - List of available events
+         * @param {number} year - Actual selected year
+         */
+        Events.dataEventFormat = function (data, events, year) {
+            data.forEach(function (item) {
+                var date = moment(item.date);
+                if (date.isValid() && date.year() === year) {
+                    var listEv = events.filter(function (ev) { return ev.name.toLocaleLowerCase() === item.event.toLocaleLowerCase(); }), currentEvent = listEv.length ? listEv[0] : events[0], yearDay = date.dayOfYear(), cell = $('td.cell[data-year-day=' + yearDay + ']');
+                    cell.addClass('event-day');
+                    cell.css({ "background-color": currentEvent.backgroundColor, "color": currentEvent.color });
+                    if (item.message || item.note) {
+                        Calendar.Popover.popover(cell, item.message, item.note);
+                    }
+                }
             });
         };
         /**
@@ -851,8 +941,9 @@ var Calendar;
          * @method leftMousePressed
          * @private
          * @param {JQueryEventObject} e - Event handler object
+         * @return {boolean} - Whether the left mouse button has been pressed
          */
-        CalendarEvents.prototype.leftMousePressed = function (e) {
+        Events.prototype.leftMousePressed = function (e) {
             var event = window.event;
             var button = e.which || event.button;
             return button === 1;
@@ -864,23 +955,21 @@ var Calendar;
          * @method resetIndexes
          * @private
          */
-        CalendarEvents.prototype.resetIndexes = function () {
+        Events.prototype.resetIndexes = function () {
             this.indexes = { start: null, end: null };
         };
-        return CalendarEvents;
+        return Events;
     })();
-    Calendar.CalendarEvents = CalendarEvents;
+    Calendar.Events = Events;
 })(Calendar || (Calendar = {}));
-/**
- * Created by Marcela on 28. 4. 2015.
- */
 ///<reference path="../typing/jquery.d.ts" />
 ///<reference path="common.ts" />
 ///<reference path="header.ts" />
 ///<reference path="months.ts" />
 ///<reference path="events.ts" />
+///<reference path="actions.ts" />
 /**
- * Vacation calendar plugin.
+ * Event calendar plugin.
  *
  * @module Calendar
  */
@@ -889,59 +978,116 @@ var Calendar;
     /**
      * Provides the base plugin class and initializes all components.
      *
-     * @class VacationCalendar
+     * @class EventCalendar
      * @constructor
      * @param {JQuery} element - DOM element for plugin
      * @param {ISettings} options - Custom options
-     * @property {JQuery} element - DOM element for plugin
-     * @property {ISettings} settings - Default settings
-     * @property {CalendarEvents} events - Calendar events
-     * @property {number} year - Actual year of calendar
      */
-    var VacationCalendar = (function () {
-        function VacationCalendar(element, options) {
+    var EventCalendar = (function () {
+        function EventCalendar(element, options) {
             var _this = this;
-            this.settings = {
-                events: [{ name: "Default" }],
-                editable: true
-            };
             this.element = element;
             this.year = new Date().getFullYear();
-            this.settings = $.extend(true, this.settings, options);
+            this.settings = $.extend(true, this.defaultSettings(), options);
             if (this.settings.locale) {
                 moment.locale(this.settings.locale);
             }
-            this.events = new Calendar.CalendarEvents(this.element, this.settings);
+            this.moveAction = new this.settings.moveAction();
+            this.events = new Calendar.Events(this.element, this.settings);
             this.events.setSelectedlYear(this.year);
             this.element.on("click", ".year-direction", function (e) { return _this.changeYear(e); });
         }
+        /**
+         * Initializes default plugin settings.
+         *
+         * @method defaultSettings
+         * @return {ISettings} - Default settings
+         */
+        EventCalendar.prototype.defaultSettings = function () {
+            return {
+                events: [{ name: "Default" }],
+                editable: true,
+                localization: {
+                    messageSentence: "Information (users will see this message)",
+                    noteSentence: "Notes (only you will see this message)",
+                    submitButton: "Submit",
+                    deleteButton: "Delete"
+                },
+                moveAction: Calendar.MoveAction
+            };
+        };
+        /**
+         * Calls static method to mark cells with server data.
+         *
+         * @method setEventFormat
+         */
+        EventCalendar.prototype.setEventFormat = function () {
+            if (this.settings.data) {
+                Calendar.Events.dataEventFormat(this.settings.data, this.settings.events, this.year);
+            }
+        };
         /**
          * Initializes view with calendars.
          *
          * @method init
          */
-        VacationCalendar.prototype.init = function () {
+        EventCalendar.prototype.init = function () {
             //console.log(this.settings);
             this.element.empty();
             var header = new Calendar.Header(this.year), monthTables = new Calendar.MonthCalendar(this.settings, this.year);
             var wrapper = $("<div />").addClass("calendar-wrapper").append(header.element).append(monthTables.element);
             wrapper.appendTo(this.element);
+            this.setEventFormat();
         };
         /**
-         * Changes the year of calendar and calls rerendering calendar view
+         * Destroys plugin and removes all event handlers.
+         *
+         * __Usage__:
+         *
+         *     $("#calendar").vacationCalendar.destroy();
+         *
+         * @method destroy
+         */
+        EventCalendar.prototype.destroy = function () {
+            this.element.removeData("jquery.vacation.calendar");
+            this.element.off();
+            this.element.unbind();
+            this.element.empty();
+        };
+        /**
+         * Changes the year of calendar and calls method
+         * which obtains new data for selected year.
          *
          * @method changeYear
          * @param {JQueryEventObject} e - Button object handler
          */
-        VacationCalendar.prototype.changeYear = function (e) {
+        EventCalendar.prototype.changeYear = function (e) {
+            var _this = this;
             var direction = $(e.target).closest(".year-direction").attr("data-direction");
-            this.year = direction === "prev" ? this.year - 1 : this.year + 1;
+            if (direction === "prev") {
+                this.year = this.year - 1;
+                this.moveAction.previous(this.year, this.settings.data).always(function () { return _this.setSelectedYear(); });
+            }
+            else {
+                this.year = this.year + 1;
+                this.moveAction.next(this.year, this.settings.data).always(function () { return _this.setSelectedYear(); });
+            }
+        };
+        /**
+         * Sets data for selected year and calls rerendering calendar view
+         * and invokes method to mark cells according to server data.
+         *
+         * @method setSelectedYear
+         */
+        EventCalendar.prototype.setSelectedYear = function () {
+            this.settings.data = this.moveAction.data;
             this.init();
             this.events.setSelectedlYear(this.year);
+            this.setEventFormat();
         };
-        return VacationCalendar;
+        return EventCalendar;
     })();
-    Calendar.VacationCalendar = VacationCalendar;
+    Calendar.EventCalendar = EventCalendar;
 })(Calendar || (Calendar = {}));
 (function ($) {
     $.fn.vacationCalendar = function () {
@@ -949,7 +1095,7 @@ var Calendar;
         return this.each(function () {
             var $this = $(this), data = $this.data("jquery.vacation.calendar"), options = $.extend({}, $.fn.vacationCalendar.defaults, $this.data(), typeof option === 'object' && option);
             if (!data) {
-                $this.data("jquery.vacation.calendar", (data = new Calendar.VacationCalendar($this, options)));
+                $this.data("jquery.vacation.calendar", (data = new Calendar.EventCalendar($this, options)));
             }
             if (typeof option === 'string') {
                 data[option](args[1]);
@@ -957,6 +1103,9 @@ var Calendar;
             else {
                 data.init();
             }
+            $.fn.vacationCalendar.destroy = function () {
+                data.destroy();
+            };
         });
     };
     $.fn.vacationCalendar.defaults = {};

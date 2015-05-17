@@ -1,14 +1,15 @@
 YUI.add("yuidoc-meta", function(Y) {
    Y.YUIDoc = { meta: {
     "classes": [
-        "CalendarEvents",
         "Dialog",
+        "EventCalendar",
+        "Events",
         "Header",
         "Helpers",
         "ModalTemplate",
         "MonthCalendar",
-        "Popover",
-        "VacationCalendar"
+        "MoveAction",
+        "Popover"
     ],
     "modules": [
         "Calendar"
@@ -17,7 +18,7 @@ YUI.add("yuidoc-meta", function(Y) {
         {
             "displayName": "Calendar",
             "name": "Calendar",
-            "description": "Vacation calendar plugin."
+            "description": "Event calendar plugin."
         }
     ]
 } };

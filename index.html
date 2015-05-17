@@ -11,45 +11,106 @@
 </head>
 <body>
 <div class="container">
-    <div class="navbar-collapse collapse" style="border-bottom: 1px solid #ccc;">
+    <div class="navbar-collapse collapse" style="margin-bottom: 10px; border-bottom: 1px solid #ccc;">
         <ul class="nav navbar-nav">
             <li><h2>Event calendar</h2></li>
         </ul>
-        <div class="navbar-right" style="margin-top: 20px;">
-            <ul class="nav navbar-nav">
-                <li>
-                    <a href="doc/out/index.html" target="_blank">Documentation</a>
-                </li>
-            </ul>
-        </div>
     </div>
 
 
     <div>
-        <div id="calendar"></div>
+		<div role="tabpanel">
+
+		  <!-- Nav tabs -->
+		  <ul id="myTab" class="nav nav-tabs" role="tablist">
+			<li role="presentation" class="active"><a href="#calendar" aria-controls="calendar" role="tab" data-toggle="tab">Calendar</a></li>
+			<li role="presentation"><a href="#advance" aria-controls="advance" role="tab" data-toggle="tab">Advance calendar</a></li>
+			<li role="presentation"><a href="#localization" aria-controls="localization" role="tab" data-toggle="tab">Localization</a></li>
+			<li role="presentation"><a href="#server" aria-controls="server" role="tab" data-toggle="tab">Server data</a></li>
+			<li role="presentation"><a href="#documentation" aria-controls="documentation" role="tab" data-toggle="tab">Documentation</a></li>
+		  </ul>
+
+		  <!-- Tab panes -->
+		  <div class="tab-content">
+			<div role="tabpanel" class="tab-pane active" id="calendar">
+				<p class="active-Tab-content">
+					<div class="calendarNote pull-right"><a href="#" id="config">See configuration</a></div>
+					<div id="eventCalendar"></div>
+				</p>
+			</div>
+		  </div>
+
+		</div>
     </div>
 
+</div>
+
+<div class="modal fade modalConfig">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Configuration</h4>
+      </div>
+      <div class="modal-body">
+        <div id="calendarTab" class="modalCode" style="display: none;"><pre>$("#eventCalendar").vacationCalendar();</pre></div>
+		<div id="advanceTab" class="modalCode" style="display: none;">
+			<pre>
+$("#eventCalendar").vacationCalendar({
+	events: [
+		{name: "Vacation", backgroundColor: "#5CB85C"},
+		{name: "Available", backgroundColor: "#5BC0DE"},
+		{name: "Business trip", backgroundColor: "#EC971F"},
+		{name: "Unavailable", backgroundColor: "#D9534F"},
+		{name: "Other event"}
+	]
+});
+</pre>
+		</div>
+		<div id="localizationTab" class="modalCode" style="display: none;">
+			<pre>
+$("#eventCalendar").vacationCalendar({
+	events: [
+		{name: "Dovolená", backgroundColor: "#5CB85C"},
+		{name: "Dostupný", backgroundColor: "#5BC0DE"},
+		{name: "Pracovní schůzka", backgroundColor: "#EC971F"},
+		{name: "Zaneprázdněný", backgroundColor: "#D9534F"},
+		{name: "Jiná událost"}
+	],
+	locale: "cs",
+	localization: {
+		messageSentence: "Informace (uživatel uvidí tuto zprávu)",
+		noteSentence: "Poznámka (pouze pro vás)",
+		submitButton: "Odeslat",
+		deleteButton: "Vymazat"
+	}
+});
+</pre>
+		</div>
+		<div id="serverTab" class="modalCode" style="display: none;">
+			<pre>
+$("#eventCalendar").vacationCalendar({
+	data: data,
+	events: [
+		{name: "Vacation", backgroundColor: "#5CB85C"},
+		{name: "Available", backgroundColor: "#5BC0DE"},
+		{name: "Business trip", backgroundColor: "#EC971F"},
+		{name: "Unavailable", backgroundColor: "#D9534F"},
+		{name: "Other event"}
+	]
+})
+;</pre>
+		</div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script src="assets/js/jquery.min.js"></script>
 <script src="assets/js/bootstrap.min.js"></script>
 <script src="assets/js/moment-with-locales.min.js"></script>
 <script src="assets/app/event-calendar.js"></script>
+<script src="app.js"></script>
 
-<script type="text/javascript">
-    $(function() {
-        // Handler for .ready() called.
-        $("#calendar").vacationCalendar({
-            events: [
-                { name: "Vacation", backgroundColor: "green", color: "white"},
-                { name: "Available", backgroundColor: "blue", color: "white"},
-                { name: "Business trip", backgroundColor: "orange" },
-                { name: "Unavailable", backgroundColor: "red", color: "white"},
-                { name: "Other" }
-            ],
-            locale: "cs"
-        });
-    });
-</script>
 </body>
 </html>

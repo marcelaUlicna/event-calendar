@@ -62,11 +62,6 @@ gulp.task('connect', function () {
     });
 });
 
-// yuidoc
-gulp.task('doc', function(){
-    run('yuidoc -c yuidoc.json').exec();
-});
-
 // watch
 gulp.task('watch', function(){
     gulp.watch('src/*.js', ['typescript']);
@@ -78,5 +73,9 @@ gulp.task('default', function(){
     sequence('fonts', 'js', 'css', 'typescript', 'less');
 });
 
+// yuidoc
+gulp.task('doc', function(){
+    run('yuidoc -c yuidoc.json').exec();
+});
 
 

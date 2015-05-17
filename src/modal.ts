@@ -1,7 +1,3 @@
-/**
- * Created by Marcela on 5. 5. 2015.
- */
-
 ///<reference path="../typing/jquery.d.ts" />
 ///<reference path="../typing/bootstrap.d.ts" />
 ///<reference path="../typing/moment.d.ts" />
@@ -26,11 +22,37 @@ module Calendar {
      * @property {DialogResult} [dialogResult=DialogResult.Cancel] - Result of dialog event
      */
     export class Dialog {
-
+        /**
+         * Modal dialog settings.
+         *
+         * @property dialogSettings
+         * @type {IModalDialog}
+         */
         dialogSettings: IModalDialog;
+
+        /**
+         * Dictionary with placeholders and values for rendering template.
+         *
+         * @property templateDictionary
+         * @type { [key: string]: any }
+         */
         templateDictionary: { [key: string]: any };
+
+        /**
+         * Modal dialog.
+         *
+         * @property modal
+         * @type {JQuery}
+         */
         modal: JQuery;
 
+        /**
+         * Dialog result from modal action.
+         *
+         * @property dialogResult
+         * @type {DialogResult}
+         * @default "DialogResult.Cancel"
+         * */
         dialogResult: DialogResult = DialogResult.Cancel;
 
         constructor(dialogSettings: IModalDialog) {

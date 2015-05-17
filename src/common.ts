@@ -1,7 +1,3 @@
-/**
- * Created by Marcela on 28. 4. 2015.
- */
-
 ///<reference path="../typing/jquery.d.ts" />
 
 module Calendar {
@@ -10,6 +6,8 @@ module Calendar {
         editable: boolean;
         localization: ILocalization;
         locale?: string;
+        data?: Array<IData>;
+        moveAction?: any;
     }
 
     export interface ILocalization {
@@ -17,6 +15,20 @@ module Calendar {
         noteSentence: string;
         submitButton: string;
         deleteButton: string;
+    }
+
+    export interface IData {
+        date: string;
+        event: string;
+        message: string;
+        note: string;
+    }
+
+    export interface IMoveAction {
+        data: Array<IData>;
+
+        next(year: number, data?: Array<IData>): JQueryPromise<any>;
+        previous(year: number, data?: Array<IData>): JQueryPromise<any>;
     }
 
     export interface IEvent {

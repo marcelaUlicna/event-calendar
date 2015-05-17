@@ -1,7 +1,3 @@
-/**
- * Created by Marcela on 29. 4. 2015.
- */
-
 ///<reference path="../typing/jquery.d.ts" />
 
 module Calendar {
@@ -12,11 +8,23 @@ module Calendar {
      *
      * @class Header
      * @constructor
-     * @property {JQuery} element - Header DOM element
-     * @property {number} year - Actual year
+     * @param {number} year - Selected year
      */
     export class Header {
+        /**
+         * jQuery element.
+         *
+         * @property element
+         * @type {JQuery}
+         */
         element: JQuery;
+
+        /**
+         * Selected year.
+         *
+         * @property year
+         * @type {number}
+         */
         year: number;
 
         constructor(year: number){
@@ -28,7 +36,7 @@ module Calendar {
          * Creates whole header elements.
          *
          * @method render
-         * @return JQuery
+         * @return JQuery - Calendar header wrapper
          */
         render(): JQuery {
             return $("<div />")
@@ -41,7 +49,7 @@ module Calendar {
          * and title.
          *
          * @method renderHeader
-         * @return JQuery
+         * @return JQuery - Calendar header with selected year and navigation buttons
          */
         renderHeader(): JQuery {
             return $("<div />")
@@ -58,7 +66,7 @@ module Calendar {
          *
          * @method renderButton
          * @param {string} direction - Direction (prev or next)
-         * @return JQuery
+         * @return JQuery - Navigation button
          */
         renderButton(direction: string): JQuery {
             var yearValue = direction === "prev" ? this.year - 1 : this.year + 1,
@@ -78,7 +86,7 @@ module Calendar {
          * Creates year title.
          *
          * @method renderTitle
-         * @return JQuery
+         * @return JQuery - Title (selected year)
          */
         renderTitle(): JQuery {
             return $("<div />")

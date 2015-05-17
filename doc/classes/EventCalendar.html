@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>EventCalendar - Event Calendar</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.8.0pr2/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <script src="http://yui.yahooapis.com/combo?3.8.0pr2/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            <h1><a href="../index.html"><img src="../assets/css/logo.png" width="117" height="52">Event Calendar: EventCalendar</a></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 0.0.1</em>
+        </div>
+    </div>
+    <div class="yui3-g">
+
+        <div id="sidebar" class="yui3-u">
+            <div id="modules" class="sidebox">
+                <div class="hd">
+                    <h2 class="no-toc">Modules</h2>
+                </div>
+                <div class="bd">
+                    <ul>
+                            <li><a href="../modules/Calendar.html">Calendar</a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div id="classes" class="sidebox">
+                <div class="hd">
+                    <h2 class="no-toc">Classes</h2>
+                </div>
+                <div class="bd">
+                    <ul>
+                            <li><a href="../classes/Dialog.html">Dialog</a></li>
+                            <li><a href="../classes/EventCalendar.html">EventCalendar</a></li>
+                            <li><a href="../classes/Events.html">Events</a></li>
+                            <li><a href="../classes/Header.html">Header</a></li>
+                            <li><a href="../classes/Helpers.html">Helpers</a></li>
+                            <li><a href="../classes/ModalTemplate.html">ModalTemplate</a></li>
+                            <li><a href="../classes/MonthCalendar.html">MonthCalendar</a></li>
+                            <li><a href="../classes/MoveAction.html">MoveAction</a></li>
+                            <li><a href="../classes/Popover.html">Popover</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div id="methods-on-page" class="sidebox on-page">
+                <div class="hd">
+                    <h2 class="no-toc">Methods On Page</h2>
+                </div>
+                <div class="bd">
+                    <ul>
+                            <li><a href="#methods_changeYear">changeYear</a></li>
+                            <li><a href="#methods_defaultSettings">defaultSettings</a></li>
+                            <li><a href="#methods_init">init</a></li>
+                            <li><a href="#methods_setEventFormat">setEventFormat</a></li>
+                            <li><a href="#methods_setSelectedYear">setSelectedYear</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            
+            
+            
+            <div id="fileTree" class="sidebox">
+                <div class="hd">
+                    <h2 class="no-toc">Files</h2>
+                </div>
+                <div class="bd">
+                    <ul><li>src\actions.ts/<ul></ul></li><li>src\calendar.ts/<ul></ul></li><li>src\events.ts/<ul></ul></li><li>src\header.ts/<ul></ul></li><li>src\helpers.ts/<ul></ul></li><li>src\modal.ts/<ul></ul></li><li>src\months.ts/<ul></ul></li><li>src\popover.ts/<ul></ul></li></ul>
+                </div>
+            </div>
+            
+        </div>
+
+        <div id="main" class="yui3-u">
+            <div class="content"><h4>Class EventCalendar</h4>
+<span class="foundat">Class defined in: <a href="../files/src_calendar.ts.html#l15"><code>src\calendar.ts:15</code></a></span>
+<div class="intro"><p>Provides the base plugin class and initializes all components.</p>
+</div>
+
+<a name="methods_EventCalendar"></a>
+<div class="method item">
+     <strong class="name"><code>EventCalendar</code></strong>( <code>element, options </code> ) 
+    <br>
+    <span class="foundat">
+        
+        <a href="../files/src_calendar.ts.html#l15"><code>src\calendar.ts:15</code></a>
+    </span><br>
+    
+    <strong>Parameters:</strong>
+    <ul class="params">
+        <li>
+            <code>element</code> <strong>&lt;JQuery&gt;</strong>
+        <ul>
+<li>DOM element for plugin</li>
+</ul>
+
+        </li>
+        <li>
+            <code>options</code> <strong>&lt;ISettings&gt;</strong>
+        <ul>
+<li>Custom options</li>
+</ul>
+
+        </li>
+    </ul>
+</div>
+
+<div id="classdocs">
+    <ul>
+        <li><a href="#methods">Methods</a></li>
+        <li><a href="#props">Properties</a></li>
+    </ul>
+    <div>
+            <div id="methods">
+<a name="methods_changeYear"></a>
+<div class="method item">
+     <strong class="name"><code>changeYear</code></strong>( <code>e </code> ) 
+    <br>
+    <span class="foundat">
+        
+        <a href="../files/src_calendar.ts.html#l134"><code>src\calendar.ts:134</code></a>
+    </span><br>
+    <p>Changes the year of calendar and calls method
+which obtains new data for selected year.</p>
+
+    <strong>Parameters:</strong>
+    <ul class="params">
+        <li>
+            <code>e</code> <strong>&lt;JQueryEventObject&gt;</strong>
+        <ul>
+<li>Button object handler</li>
+</ul>
+
+        </li>
+    </ul>
+</div>
+<a name="methods_defaultSettings"></a>
+<div class="method item">
+    ISettings <strong class="name"><code>defaultSettings</code></strong>( <code>  </code> ) 
+    <br>
+    <span class="foundat">
+        
+        <a href="../files/src_calendar.ts.html#l81"><code>src\calendar.ts:81</code></a>
+    </span><br>
+    <p>Initializes default plugin settings.</p>
+
+    <br><div class="returns"><strong>Returns:</strong> &lt;ISettings&gt; <ul>
+<li>Default settings</li>
+</ul>
+</div>
+</div>
+<a name="methods_init"></a>
+<div class="method item">
+     <strong class="name"><code>init</code></strong>( <code>  </code> ) 
+    <br>
+    <span class="foundat">
+        
+        <a href="../files/src_calendar.ts.html#l112"><code>src\calendar.ts:112</code></a>
+    </span><br>
+    <p>Initializes view with calendars.</p>
+
+</div>
+<a name="methods_setEventFormat"></a>
+<div class="method item">
+     <strong class="name"><code>setEventFormat</code></strong>( <code>  </code> ) 
+    <br>
+    <span class="foundat">
+        
+        <a href="../files/src_calendar.ts.html#l101"><code>src\calendar.ts:101</code></a>
+    </span><br>
+    <p>Calls static method to mark cells with server data.</p>
+
+</div>
+<a name="methods_setSelectedYear"></a>
+<div class="method item">
+     <strong class="name"><code>setSelectedYear</code></strong>( <code>  </code> ) 
+    <br>
+    <span class="foundat">
+        
+        <a href="../files/src_calendar.ts.html#l157"><code>src\calendar.ts:157</code></a>
+    </span><br>
+    <p>Sets data for selected year and calls rerendering calendar view
+and invokes method to mark cells according to server data.</p>
+
+</div>
+            </div>
+            <div id="props">
+                <a name="props_element"></a>
+                <div class="props item">
+                    <code>element</code> &lt;<strong>JQuery</strong>&gt;<br>
+                    <span class="foundat"><a href="../files/src_calendar.ts.html#l24"><code>src\calendar.ts:24</code></a></span>
+                    <p>jQuery element.</p>
+                
+                </div>
+                <a name="props_events"></a>
+                <div class="props item">
+                    <code>events</code> &lt;<strong><a href="../classes/Events.html" class="crosslink">Events</a></strong>&gt;<br>
+                    <span class="foundat"><a href="../files/src_calendar.ts.html#l40"><code>src\calendar.ts:40</code></a></span>
+                    <p>Calendar events.</p>
+                
+                </div>
+                <a name="props_moveAction"></a>
+                <div class="props item">
+                    <code>moveAction</code> &lt;<strong>IMoveAction</strong>&gt;<br>
+                    <span class="foundat"><a href="../files/src_calendar.ts.html#l56"><code>src\calendar.ts:56</code></a></span>
+                    <p>Actions to render caledar for next or previous year.</p>
+                
+                </div>
+                <a name="props_settings"></a>
+                <div class="props item">
+                    <code>settings</code> &lt;<strong>ISettings</strong>&gt;<br>
+                    <span class="foundat"><a href="../files/src_calendar.ts.html#l32"><code>src\calendar.ts:32</code></a></span>
+                    <p>Plugin settings.</p>
+                
+                </div>
+                <a name="props_year"></a>
+                <div class="props item">
+                    <code>year</code> &lt;<strong><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></strong>&gt;<br>
+                    <span class="foundat"><a href="../files/src_calendar.ts.html#l48"><code>src\calendar.ts:48</code></a></span>
+                    <p>Actual year.</p>
+                
+                </div>
+            </div>
+    </div>
+</div>
+</div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/js/tabs.js"></script>
+</body>
+</html>

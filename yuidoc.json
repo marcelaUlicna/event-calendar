@@ -1,11 +1,13 @@
 {
-  "name": "Documentation of Event Calendar",
+  "name": "Event Calendar",
   "description": "A javaScript plugin written in TypeScript",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "url": "http://marcelaulicna.github.io/event-calendar",
   "options": {
     "linkNatives": "true",
-    "paths": "dist/app",
-    "outdir": "doc"
+    "extension": ".ts",
+    "paths": "src/",
+    "outdir": "doc",
+    "themedir": "node_modules/yuidocjs/themes/simple"
   }
 }

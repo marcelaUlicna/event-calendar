@@ -1,0 +1,1269 @@
+{
+    "project": {
+        "name": "Event Calendar",
+        "description": "A javaScript plugin written in TypeScript",
+        "version": "0.0.1",
+        "url": "http://marcelaulicna.github.io/event-calendar"
+    },
+    "files": {
+        "src\\actions.ts": {
+            "name": "src\\actions.ts",
+            "modules": {},
+            "classes": {
+                "MoveAction": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\calendar.ts": {
+            "name": "src\\calendar.ts",
+            "modules": {
+                "Calendar": 1
+            },
+            "classes": {
+                "EventCalendar": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\events.ts": {
+            "name": "src\\events.ts",
+            "modules": {},
+            "classes": {
+                "Events": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\header.ts": {
+            "name": "src\\header.ts",
+            "modules": {},
+            "classes": {
+                "Header": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\helpers.ts": {
+            "name": "src\\helpers.ts",
+            "modules": {},
+            "classes": {
+                "Helpers": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\modal.ts": {
+            "name": "src\\modal.ts",
+            "modules": {},
+            "classes": {
+                "Dialog": 1,
+                "ModalTemplate": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\months.ts": {
+            "name": "src\\months.ts",
+            "modules": {},
+            "classes": {
+                "MonthCalendar": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\popover.ts": {
+            "name": "src\\popover.ts",
+            "modules": {},
+            "classes": {
+                "Popover": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {
+        "Calendar": {
+            "name": "Calendar",
+            "submodules": {},
+            "classes": {
+                "MoveAction": 1,
+                "EventCalendar": 1,
+                "Events": 1,
+                "Header": 1,
+                "Helpers": 1,
+                "Dialog": 1,
+                "ModalTemplate": 1,
+                "MonthCalendar": 1,
+                "Popover": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "src\\popover.ts",
+            "line": 6,
+            "description": "Event calendar plugin."
+        }
+    },
+    "classes": {
+        "MoveAction": {
+            "name": "MoveAction",
+            "shortname": "MoveAction",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Calendar",
+            "file": "src\\actions.ts",
+            "line": 6,
+            "description": "Base class for implementation of changing year by\nclicking on \"previous\" or \"next\" arrow. Implements\n`IMoveAction` interface and can be overwritten.\n\n__Example__ of implementation user's class with `next()` and `previous()` methods.\nServer returns new data for each year:\n\n    export class MyMoveAction extends MoveAction {\n      next(year: number, data?: Array<IData>): JQueryPromise<any> {\n          var deferred = $.Deferred();\n          this.getJsonData(year, deferred);\n          return deferred.promise();\n      }\n\n      previous(year: number, data?: Array<IData>): JQueryPromise<any> {\n          var deferred = $.Deferred();\n          this.getJsonData(year, deferred);\n          return deferred.promise();\n      }\n\n      private getJsonData(year: number, deferred: JQueryDeferred<any>): void {\n          var url = \"data/events\" + year + \".json\";\n          $.ajax(url)\n              .done((result) => {\n                  this.data = result;\n              })\n              .always(() => {\n                  deferred.resolve();\n              });\n      }\n    }",
+            "implements": "IMoveAction"
+        },
+        "EventCalendar": {
+            "name": "EventCalendar",
+            "shortname": "EventCalendar",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Calendar",
+            "namespace": "",
+            "file": "src\\calendar.ts",
+            "line": 15,
+            "description": "Provides the base plugin class and initializes all components.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "element",
+                    "description": "- DOM element for plugin",
+                    "type": "JQuery"
+                },
+                {
+                    "name": "options",
+                    "description": "- Custom options",
+                    "type": "ISettings"
+                }
+            ]
+        },
+        "Events": {
+            "name": "Events",
+            "shortname": "Events",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Calendar",
+            "namespace": "",
+            "file": "src\\events.ts",
+            "line": 10,
+            "description": "Implements mouse event handlers and provides selected range\nof days indexes and sets selected class. Show modal dialog with\ncustom setting when user can select one event and type message\nfor other person and/or note to himself. After receiving response from\nmodal dialog there is made design changes in calendar and calls\nmethod which provides custom server side request.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "element",
+                    "description": "- Calendar jquery element",
+                    "type": "JQuery"
+                },
+                {
+                    "name": "settings",
+                    "description": "- Plugin settings",
+                    "type": "ISettings"
+                }
+            ]
+        },
+        "Header": {
+            "name": "Header",
+            "shortname": "Header",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Calendar",
+            "namespace": "",
+            "file": "src\\header.ts",
+            "line": 5,
+            "description": "Renders header of plugin. Contains actual year and navigation\nto previous and next year.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "year",
+                    "description": "- Selected year",
+                    "type": "Number"
+                }
+            ]
+        },
+        "Helpers": {
+            "name": "Helpers",
+            "shortname": "Helpers",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Calendar",
+            "namespace": "",
+            "file": "src\\helpers.ts",
+            "line": 6,
+            "description": "This provides various helpers."
+        },
+        "Dialog": {
+            "name": "Dialog",
+            "shortname": "Dialog",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Calendar",
+            "namespace": "",
+            "file": "src\\modal.ts",
+            "line": 9,
+            "description": "Implements modal dialog which contains selected start and end date,\ncomponent with events to be selected and inputs where user can type\nsome message for other person and/or note for himself. There is available\nboth Submit and Delete button and the cross for closing dialog without\napplying any changes.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "dialogSettings",
+                    "description": "- Modal dialog settings",
+                    "type": "IModalDialog"
+                }
+            ],
+            "itemtype": "property",
+            "type": "IModalDialog"
+        },
+        "ModalTemplate": {
+            "name": "ModalTemplate",
+            "shortname": "ModalTemplate",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Calendar",
+            "namespace": "",
+            "file": "src\\modal.ts",
+            "line": 216,
+            "description": "Static class which contains templates for modal dialog",
+            "static": 1
+        },
+        "MonthCalendar": {
+            "name": "MonthCalendar",
+            "shortname": "MonthCalendar",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Calendar",
+            "namespace": "",
+            "file": "src\\months.ts",
+            "line": 8,
+            "description": "Provides rendering month calendars, marks specified events by\ncustom colors, displays tooltip for each event both personal and\nto other users. Sets Monday as the first day of week.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "settings",
+                    "description": "- Plugin settings",
+                    "type": "ISettings"
+                },
+                {
+                    "name": "year",
+                    "description": "- Actual year of calendar",
+                    "type": "Number"
+                }
+            ]
+        },
+        "Popover": {
+            "name": "Popover",
+            "shortname": "Popover",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Calendar",
+            "namespace": "",
+            "file": "src\\popover.ts",
+            "line": 6,
+            "description": "Implements bootstrap popover for each cell with any event.\nShows both message for other people and personal note if it is available.\nIt is triggered by hover.",
+            "static": 1
+        }
+    },
+    "classitems": [
+        {
+            "file": "src\\actions.ts",
+            "line": 45,
+            "description": "Gets data for next year.",
+            "itemtype": "method",
+            "name": "next",
+            "params": [
+                {
+                    "name": "year",
+                    "description": "- Selected year",
+                    "type": "Number"
+                },
+                {
+                    "name": "data",
+                    "description": "- Data from settings",
+                    "type": "Array<IData>",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "- jQuery promise",
+                "type": "JQueryPromise<any>"
+            },
+            "class": "MoveAction"
+        },
+        {
+            "file": "src\\actions.ts",
+            "line": 60,
+            "description": "Gets data for previous year.",
+            "itemtype": "method",
+            "name": "previous",
+            "params": [
+                {
+                    "name": "year",
+                    "description": "- Selected year",
+                    "type": "Number"
+                },
+                {
+                    "name": "data",
+                    "description": "- Data from settings",
+                    "type": "Array<IData>",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "- jQuery promise",
+                "type": "JQueryPromise<any>"
+            },
+            "class": "MoveAction"
+        },
+        {
+            "file": "src\\calendar.ts",
+            "line": 24,
+            "description": "jQuery element.",
+            "itemtype": "property",
+            "name": "element",
+            "type": "{JQuery}",
+            "class": "EventCalendar",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\calendar.ts",
+            "line": 32,
+            "description": "Plugin settings.",
+            "itemtype": "property",
+            "name": "settings",
+            "type": "{ISettings}",
+            "class": "EventCalendar",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\calendar.ts",
+            "line": 40,
+            "description": "Calendar events.",
+            "itemtype": "property",
+            "name": "events",
+            "type": "{Events}",
+            "class": "EventCalendar",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\calendar.ts",
+            "line": 48,
+            "description": "Actual year.",
+            "itemtype": "property",
+            "name": "year",
+            "type": "{number}",
+            "class": "EventCalendar",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\calendar.ts",
+            "line": 56,
+            "description": "Actions to render caledar for next or previous year.",
+            "itemtype": "property",
+            "name": "moveAction",
+            "type": "{IMoveAction}",
+            "class": "EventCalendar",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\calendar.ts",
+            "line": 81,
+            "description": "Initializes default plugin settings.",
+            "itemtype": "method",
+            "name": "defaultSettings",
+            "return": {
+                "description": "- Default settings",
+                "type": "ISettings"
+            },
+            "class": "EventCalendar",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\calendar.ts",
+            "line": 101,
+            "description": "Calls static method to mark cells with server data.",
+            "itemtype": "method",
+            "name": "setEventFormat",
+            "class": "EventCalendar",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\calendar.ts",
+            "line": 112,
+            "description": "Initializes view with calendars.",
+            "itemtype": "method",
+            "name": "init",
+            "class": "EventCalendar",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\calendar.ts",
+            "line": 134,
+            "description": "Changes the year of calendar and calls method\nwhich obtains new data for selected year.",
+            "itemtype": "method",
+            "name": "changeYear",
+            "params": [
+                {
+                    "name": "e",
+                    "description": "- Button object handler",
+                    "type": "JQueryEventObject"
+                }
+            ],
+            "class": "EventCalendar",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\calendar.ts",
+            "line": 157,
+            "description": "Sets data for selected year and calls rerendering calendar view\nand invokes method to mark cells according to server data.",
+            "itemtype": "method",
+            "name": "setSelectedYear",
+            "class": "EventCalendar",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\events.ts",
+            "line": 24,
+            "description": "jQuery element.",
+            "itemtype": "property",
+            "name": "element",
+            "type": "{JQuery}",
+            "class": "Events",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\events.ts",
+            "line": 32,
+            "description": "Plugin settings.",
+            "itemtype": "property",
+            "name": "settings",
+            "type": "{ISettings}",
+            "class": "Events",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\events.ts",
+            "line": 40,
+            "description": "Object with start and end index. Indexes represents the number of day in year.",
+            "itemtype": "property",
+            "name": "indexes",
+            "type": "{IArrayIndexes}",
+            "class": "Events",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\events.ts",
+            "line": 48,
+            "description": "Selected year.",
+            "itemtype": "property",
+            "name": "year",
+            "type": "{number}",
+            "class": "Events",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\events.ts",
+            "line": 56,
+            "description": "Modal dialog settings.",
+            "itemtype": "property",
+            "name": "dialogSettings",
+            "type": "{IModalDialog}",
+            "class": "Events",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\events.ts",
+            "line": 87,
+            "description": "Sets selected year to local variable.",
+            "itemtype": "method",
+            "name": "setSelectedlYear",
+            "params": [
+                {
+                    "name": "year",
+                    "description": "- Selected year",
+                    "type": "Number"
+                }
+            ],
+            "class": "Events",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\events.ts",
+            "line": 97,
+            "description": "Implements mousedown event. Sets start index and adds selected class to actual cell.",
+            "itemtype": "method",
+            "name": "mousedown",
+            "params": [
+                {
+                    "name": "e",
+                    "description": "- Event handler object",
+                    "type": "JQueryEventObject"
+                }
+            ],
+            "class": "Events",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\events.ts",
+            "line": 117,
+            "description": "Implements mouseover event. Sets end index, calculates range of selected cells\nand adds selected class to all cells according to calculated range.",
+            "itemtype": "method",
+            "name": "mouseover",
+            "params": [
+                {
+                    "name": "e",
+                    "description": "- Event handler object",
+                    "type": "JQueryEventObject"
+                }
+            ],
+            "class": "Events",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\events.ts",
+            "line": 147,
+            "description": "Implements mouseup event. Sets end index, calculates start and end dates\nfrom indexes and calls modal dialog to enter personal event. At the end resets start and end indexes.",
+            "itemtype": "method",
+            "name": "mouseup",
+            "params": [
+                {
+                    "name": "e",
+                    "description": "- Event handler object",
+                    "type": "JQueryEventObject"
+                }
+            ],
+            "class": "Events",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\events.ts",
+            "line": 166,
+            "description": "Displays modal dialog with settings and action and handlers events \"Submit\" or \"Delete\"\nbased on clicked button. After that calls removing selection styling.",
+            "itemtype": "method",
+            "name": "showModal",
+            "class": "Events",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\events.ts",
+            "line": 186,
+            "description": "Removes class `selected-day` used for marking selection and calls `resetIndexes()`.",
+            "itemtype": "method",
+            "name": "removeSelection",
+            "class": "Events",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\events.ts",
+            "line": 200,
+            "description": "Submit action. Applies css style for selected event on client side.\nCalls `TODO: Submit server implementation` for server side implementation.",
+            "itemtype": "method",
+            "name": "submitChanges",
+            "class": "Events",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\events.ts",
+            "line": 211,
+            "description": "Delete action. Remove css style on client side.\nCalls `TODO: Delete server implementation` for server side implementation.",
+            "itemtype": "method",
+            "name": "deleteItems",
+            "class": "Events",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\events.ts",
+            "line": 223,
+            "description": "Sets css styling to each cell in range of selected indexes according to\nselected event and its properties (background color, color), sets title\nif any of messages is typed. Adds class `event-day` to each cell and initializes\npopover with messages.",
+            "itemtype": "method",
+            "name": "applyEventFormat",
+            "class": "Events",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\events.ts",
+            "line": 250,
+            "description": "Removes css styling and attribute `title` from selected cells\nand destroys popover with messages.",
+            "itemtype": "method",
+            "name": "removeEventFormat",
+            "class": "Events",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\events.ts",
+            "line": 266,
+            "description": "Marks specified cells with css format and adds popover\nin case message or note for cell is available.",
+            "itemtype": "method",
+            "name": "dataEventFormat",
+            "static": 1,
+            "params": [
+                {
+                    "name": "data",
+                    "description": "- Server data to select correct cells and apply correct css format",
+                    "type": "Array<IData>"
+                },
+                {
+                    "name": "events",
+                    "description": "- List of available events",
+                    "type": "Array<IEvent>"
+                },
+                {
+                    "name": "year",
+                    "description": "- Actual selected year",
+                    "type": "Number"
+                }
+            ],
+            "class": "Events",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\events.ts",
+            "line": 295,
+            "description": "Resolves left mouse pressing.",
+            "itemtype": "method",
+            "name": "leftMousePressed",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "e",
+                    "description": "- Event handler object",
+                    "type": "JQueryEventObject"
+                }
+            ],
+            "return": {
+                "description": "- Whether the left mouse button has been pressed",
+                "type": "Boolean"
+            },
+            "class": "Events",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\events.ts",
+            "line": 309,
+            "description": "Remove values from `this.index` property after `mouseup` event\nto use for other selection.",
+            "itemtype": "method",
+            "name": "resetIndexes",
+            "access": "private",
+            "tagname": "",
+            "class": "Events",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\header.ts",
+            "line": 14,
+            "description": "jQuery element.",
+            "itemtype": "property",
+            "name": "element",
+            "type": "{JQuery}",
+            "class": "Header",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\header.ts",
+            "line": 22,
+            "description": "Selected year.",
+            "itemtype": "property",
+            "name": "year",
+            "type": "{number}",
+            "class": "Header",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\header.ts",
+            "line": 35,
+            "description": "Creates whole header elements.",
+            "itemtype": "method",
+            "name": "render",
+            "return": {
+                "description": "JQuery - Calendar header wrapper"
+            },
+            "class": "Header",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\header.ts",
+            "line": 47,
+            "description": "Creates main header element and appends navigation buttons\nand title.",
+            "itemtype": "method",
+            "name": "renderHeader",
+            "return": {
+                "description": "JQuery - Calendar header with selected year and navigation buttons"
+            },
+            "class": "Header",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\header.ts",
+            "line": 64,
+            "description": "Creates navigation button.",
+            "itemtype": "method",
+            "name": "renderButton",
+            "params": [
+                {
+                    "name": "direction",
+                    "description": "- Direction (prev or next)",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "JQuery - Navigation button"
+            },
+            "class": "Header",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\header.ts",
+            "line": 85,
+            "description": "Creates year title.",
+            "itemtype": "method",
+            "name": "renderTitle",
+            "return": {
+                "description": "JQuery - Title (selected year)"
+            },
+            "class": "Header",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\helpers.ts",
+            "line": 13,
+            "description": "Utility that creates new array according to specified values (`from` and `to`).\nIf there is the specified input array, the result will contain elements\nfrom this array, otherwise there will be a sequence of integers in the range\nof each of the given values.\n\nThis is an __example__ of usage `ArrayRange` method\n\n    var array = [1, 2, 4, 5, 6, 8, 9, 21, 22, 45],\n        from = 2,\n        to = 10;\n\n    Calendar.Helpers.ArrayRange(2, 10, array);\n    // => [2, 4, 5, 6, 8, 9]\n\n    // example of unsorted array\n    Calendar.Helpers.ArrayRange(2, 10, [1, 6, 2, 5, 6, 7, 4, 5]);\n    // => [2, 4, 5, 6, 7]\n\n    // example without input array\n    Calendar.Helpers.ArrayRange(2, 10);\n    // => [2, 3, 4, 5, 6, 7, 8, 9, 10]",
+            "itemtype": "method",
+            "name": "ArrayRange",
+            "static": 1,
+            "params": [
+                {
+                    "name": "from",
+                    "description": "- Start value",
+                    "type": "Number"
+                },
+                {
+                    "name": "to",
+                    "description": "- End value",
+                    "type": "Number"
+                },
+                {
+                    "name": "array",
+                    "description": "- Input array",
+                    "type": "Array<number>",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "- Array of integers",
+                "type": "Array<number>"
+            },
+            "class": "Helpers",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\helpers.ts",
+            "line": 65,
+            "description": "Provides the correct order of start and end indexes",
+            "itemtype": "method",
+            "name": "ArrayIndexes",
+            "static": 1,
+            "params": [
+                {
+                    "name": "indexes",
+                    "description": "- Object with start and end value",
+                    "type": "IArrayIndexes"
+                }
+            ],
+            "return": {
+                "description": "- Correct start and end index",
+                "type": "IArrayIndexes"
+            },
+            "class": "Helpers",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\helpers.ts",
+            "line": 83,
+            "description": "Capitalizes the first letter of the text.",
+            "itemtype": "method",
+            "name": "CapitalizeFirstLetter",
+            "static": 1,
+            "params": [
+                {
+                    "name": "text",
+                    "description": "- Text",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "- Text with capitalized first char",
+                "type": "String"
+            },
+            "class": "Helpers",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\helpers.ts",
+            "line": 95,
+            "description": "Renders template - replaces placeholders in template with values from dictionary.",
+            "itemtype": "method",
+            "name": "RenderTemplate",
+            "static": 1,
+            "params": [
+                {
+                    "name": "template",
+                    "description": "- Given template",
+                    "type": "String"
+                },
+                {
+                    "name": "dict",
+                    "description": "- Dictionary with keys and values",
+                    "type": "[key: string]: any"
+                }
+            ],
+            "return": {
+                "description": "- Template",
+                "type": "String"
+            },
+            "class": "Helpers",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\modal.ts",
+            "line": 25,
+            "description": "Modal dialog settings.",
+            "itemtype": "property",
+            "name": "dialogSettings",
+            "type": "{IModalDialog}",
+            "class": "Dialog",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\modal.ts",
+            "line": 33,
+            "description": "Dictionary with placeholders and values for rendering template.",
+            "itemtype": "property",
+            "name": "templateDictionary",
+            "type": "{ [key: string]: any }",
+            "class": "Dialog",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\modal.ts",
+            "line": 41,
+            "description": "Modal dialog.",
+            "itemtype": "property",
+            "name": "modal",
+            "type": "{JQuery}",
+            "class": "Dialog",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\modal.ts",
+            "line": 49,
+            "description": "Dialog result from modal action.",
+            "itemtype": "property",
+            "name": "dialogResult",
+            "type": "{DialogResult}",
+            "default": "\"DialogResult.Cancel\"",
+            "class": "Dialog",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\modal.ts",
+            "line": 64,
+            "description": "Fills `templateDictionary` with keys and its values.",
+            "itemtype": "method",
+            "name": "getDictionary",
+            "access": "private",
+            "tagname": "",
+            "return": {
+                "description": "- Returns dictionary template",
+                "type": "Any"
+            },
+            "class": "Dialog",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\modal.ts",
+            "line": 85,
+            "description": "Renders modal dialog and binds all necessary events. After closing modal dialog\nit is removed from DOM.",
+            "itemtype": "method",
+            "name": "show",
+            "return": {
+                "description": "- Returns promise from modal dialog with dialog result",
+                "type": "JQueryPromise<DialogResult>"
+            },
+            "class": "Dialog",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\modal.ts",
+            "line": 109,
+            "description": "Resolves button click from dialog and calls appropriate method.",
+            "itemtype": "method",
+            "name": "click",
+            "params": [
+                {
+                    "name": "e",
+                    "description": "- Button object handler",
+                    "type": "JQueryEventObject"
+                }
+            ],
+            "class": "Dialog",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\modal.ts",
+            "line": 120,
+            "description": "jQuery keyup() event for enter and escape key.\nEnter key confirms dialog and escape key closes dialog\nwithout changes.",
+            "itemtype": "method",
+            "name": "modalKeyup",
+            "params": [
+                {
+                    "name": "e",
+                    "description": "- Key event handler",
+                    "type": "JQueryEventObject"
+                }
+            ],
+            "class": "Dialog",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\modal.ts",
+            "line": 137,
+            "description": "Sets dialogResult to `DialogResult.Submit`.",
+            "itemtype": "method",
+            "name": "btnSubmit",
+            "params": [
+                {
+                    "name": "e",
+                    "description": "- Button object handler",
+                    "type": "JQueryEventObject"
+                }
+            ],
+            "class": "Dialog",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\modal.ts",
+            "line": 148,
+            "description": "Sets dialogResult to `DialogResult.Delete`.",
+            "itemtype": "method",
+            "name": "btnDelete",
+            "params": [
+                {
+                    "name": "e",
+                    "description": "- Button object handler",
+                    "type": "JQueryEventObject"
+                }
+            ],
+            "class": "Dialog",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\modal.ts",
+            "line": 159,
+            "description": "Sets dialogResult to `DialogResult.Cancel`.",
+            "itemtype": "method",
+            "name": "btnClose",
+            "params": [
+                {
+                    "name": "e",
+                    "description": "- Button object handler",
+                    "type": "JQueryEventObject"
+                }
+            ],
+            "class": "Dialog",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\modal.ts",
+            "line": 170,
+            "description": "Closes modal dialog.",
+            "itemtype": "method",
+            "name": "close",
+            "class": "Dialog",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\modal.ts",
+            "line": 179,
+            "description": "Applies changes after selecting some event from list component,\nsaves selected item to `dialogSettings` property and\nsets selected item to main button to reflect actual item.",
+            "itemtype": "method",
+            "name": "selectChange",
+            "params": [
+                {
+                    "name": "e",
+                    "description": "- Selected item event handler",
+                    "type": "JQueryEventObject"
+                }
+            ],
+            "class": "Dialog",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\modal.ts",
+            "line": 199,
+            "description": "Saves input text to `dialogSettings` property.",
+            "itemtype": "method",
+            "name": "messageChanged",
+            "params": [
+                {
+                    "name": "e",
+                    "description": "- Input event handler",
+                    "type": "JQueryEventObject"
+                }
+            ],
+            "class": "Dialog",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\modal.ts",
+            "line": 239,
+            "description": "Whole modal dialog html template.",
+            "itemtype": "method",
+            "name": "template",
+            "static": 1,
+            "return": {
+                "description": "- Returns template",
+                "type": "String"
+            },
+            "class": "ModalTemplate",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\modal.ts",
+            "line": 285,
+            "description": "Template for dropdown component with events.",
+            "itemtype": "method",
+            "name": "dropdownTemplate",
+            "static": 1,
+            "params": [
+                {
+                    "name": "dialogSettings",
+                    "description": "- Modal dialog settings",
+                    "type": "IModalDialog"
+                }
+            ],
+            "return": {
+                "description": "- Returns partial template",
+                "type": "String"
+            },
+            "class": "ModalTemplate",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\months.ts",
+            "line": 19,
+            "description": "Month calendars DOM element.",
+            "itemtype": "property",
+            "name": "element",
+            "type": "{JQuery}",
+            "class": "MonthCalendar",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\months.ts",
+            "line": 27,
+            "description": "Plugin settings.",
+            "itemtype": "property",
+            "name": "settings",
+            "type": "{ISettings}",
+            "class": "MonthCalendar",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\months.ts",
+            "line": 35,
+            "description": "Selected year.",
+            "itemtype": "property",
+            "name": "year",
+            "type": "{number}",
+            "class": "MonthCalendar",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\months.ts",
+            "line": 43,
+            "description": "Javascript Date object represents current date.",
+            "itemtype": "property",
+            "name": "today",
+            "type": "{Date}",
+            "class": "MonthCalendar",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\months.ts",
+            "line": 51,
+            "description": "Array of month names.\n\n    [\"January\", \"February\", \"March\", \"April\", \"May\",\n    \"June\", \"July\", \"August\", \"September\",\n    \"October\", \"November\", \"December\"]",
+            "itemtype": "property",
+            "name": "months",
+            "type": "{Array<string>}",
+            "class": "MonthCalendar",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\months.ts",
+            "line": 63,
+            "description": "Array of weekdays shortcuts.\n\n    [\"Sun\", \"Mon\", \"Tue\", \"Wed\", \"Thu\", \"Fri\", \"Sat\"]",
+            "itemtype": "property",
+            "name": "weekdays",
+            "type": "{Array<string>}",
+            "class": "MonthCalendar",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\months.ts",
+            "line": 88,
+            "description": "Capitalizes the first letter of the month and weekdays names.",
+            "itemtype": "method",
+            "name": "capitalize",
+            "class": "MonthCalendar",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\months.ts",
+            "line": 98,
+            "description": "Creates wrapper for month tables.",
+            "itemtype": "method",
+            "name": "templateCalendar",
+            "return": {
+                "description": "- Calendar for each month",
+                "type": "JQuery"
+            },
+            "class": "MonthCalendar",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\months.ts",
+            "line": 115,
+            "description": "Creates table for month represented by month index,\nmarks weekdays and events.",
+            "itemtype": "method",
+            "name": "templateTable",
+            "params": [
+                {
+                    "name": "monthId",
+                    "description": "- Month index 0 - 11",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "- Month calendar",
+                "type": "JQuery"
+            },
+            "class": "MonthCalendar",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\popover.ts",
+            "line": 18,
+            "description": "Initializes popover for cell element.",
+            "itemtype": "method",
+            "name": "popover",
+            "static": 1,
+            "params": [
+                {
+                    "name": "cell",
+                    "description": "- Cell element to apply popover",
+                    "type": "JQuery"
+                },
+                {
+                    "name": "message",
+                    "description": "- Message text",
+                    "type": "String",
+                    "optional": true
+                },
+                {
+                    "name": "note",
+                    "description": "- Note text for creator",
+                    "type": "String",
+                    "optional": true
+                }
+            ],
+            "class": "Popover",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\popover.ts",
+            "line": 39,
+            "description": "Destroys popover.",
+            "itemtype": "method",
+            "name": "destroy",
+            "static": 1,
+            "params": [
+                {
+                    "name": "cell",
+                    "description": "- Cell element to destroy popover",
+                    "type": "JQuery"
+                }
+            ],
+            "class": "Popover",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\popover.ts",
+            "line": 50,
+            "description": "Popover content.",
+            "itemtype": "method",
+            "name": "template",
+            "static": 1,
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "message",
+                    "description": "- Message text",
+                    "type": "String",
+                    "optional": true
+                },
+                {
+                    "name": "note",
+                    "description": "- Note text for creator",
+                    "type": "String",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "- Template",
+                "type": "String"
+            },
+            "class": "Popover",
+            "module": "Calendar"
+        }
+    ],
+    "warnings": [
+        {
+            "message": "unknown tag: implements",
+            "line": " src\\actions.ts:6"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src\\modal.ts:85"
+        }
+    ]
+}

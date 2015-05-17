@@ -1,6 +1,3 @@
-/**
- * Created by Marcela on 5. 5. 2015.
- */
 ///<reference path="../typing/jquery.d.ts" />
 ///<reference path="../typing/bootstrap.d.ts" />
 ///<reference path="../typing/moment.d.ts" />
@@ -25,6 +22,13 @@ var Calendar;
      */
     var Dialog = (function () {
         function Dialog(dialogSettings) {
+            /**
+             * Dialog result from modal action.
+             *
+             * @property dialogResult
+             * @type {DialogResult}
+             * @default "DialogResult.Cancel"
+             * */
             this.dialogResult = 2 /* Cancel */;
             this.dialogSettings = dialogSettings;
             this.dialogSettings.selectedEvent = this.dialogSettings.events[0].name;

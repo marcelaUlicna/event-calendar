@@ -1,6 +1,3 @@
-/**
- * Created by Marcela on 2. 5. 2015.
- */
 ///<reference path="../typing/jquery.d.ts" />
 ///<reference path="../typing/moment.d.ts" />
 ///<reference path="common.ts" />
@@ -21,20 +18,22 @@ var Calendar;
      * @constructor
      * @param {JQuery} element - Calendar jquery element
      * @param {ISettings} settings - Plugin settings
-     * @property {JQuery} element - Calendar jquery element
-     * @property {ISettings} settings - Plugin settings
-     * @property {IArrayIndexes} indexes - Object that persists start and end index
-     * @property {number} year - Selected year
      */
     var Events = (function () {
         function Events(element, settings) {
             var _this = this;
+            /**
+             * Modal dialog settings.
+             *
+             * @property dialogSettings
+             * @type {IModalDialog}
+             */
             this.dialogSettings = {
                 start: null,
                 end: null,
                 events: [],
                 selectedEvent: "",
-                defaultBgColor: "green",
+                defaultBgColor: "#5CB85C",
                 defaultColor: "white",
                 localization: null
             };
@@ -205,11 +204,35 @@ var Calendar;
             });
         };
         /**
+         * Marks specified cells with css format and adds popover
+         * in case message or note for cell is available.
+         *
+         * @method dataEventFormat
+         * @static
+         * @param {Array<IData>} data - Server data to select correct cells and apply correct css format
+         * @param {Array<IEvent>} events - List of available events
+         * @param {number} year - Actual selected year
+         */
+        Events.dataEventFormat = function (data, events, year) {
+            data.forEach(function (item) {
+                var date = moment(item.date);
+                if (date.isValid() && date.year() === year) {
+                    var listEv = events.filter(function (ev) { return ev.name.toLocaleLowerCase() === item.event.toLocaleLowerCase(); }), currentEvent = listEv.length ? listEv[0] : events[0], yearDay = date.dayOfYear(), cell = $('td.cell[data-year-day=' + yearDay + ']');
+                    cell.addClass('event-day');
+                    cell.css({ "background-color": currentEvent.backgroundColor, "color": currentEvent.color });
+                    if (item.message || item.note) {
+                        Calendar.Popover.popover(cell, item.message, item.note);
+                    }
+                }
+            });
+        };
+        /**
          * Resolves left mouse pressing.
          *
          * @method leftMousePressed
          * @private
          * @param {JQueryEventObject} e - Event handler object
+         * @return {boolean} - Whether the left mouse button has been pressed
          */
         Events.prototype.leftMousePressed = function (e) {
             var event = window.event;

@@ -33,28 +33,9 @@
 <script src="dist/js/moment-with-locales.min.js"></script>
 <script src="dist/app/event-calendar.js"></script>
 
-<script type="text/javascript">
-    $(function() {
-        // Handler for .ready() called.
-        $("#calendar").vacationCalendar({
-            events: [
-                { name: "Vacation", backgroundColor: "green", color: "white"},
-                { name: "Available", backgroundColor: "blue", color: "white"},
-                { name: "Business trip", backgroundColor: "orange" },
-                { name: "Unavailable", backgroundColor: "red", color: "white"},
-                { name: "Other" }
-            ],
-            locale: "cs",
-            localization: {
-                messageSentence: "Informace (uživatel uvidí tuto zprávu)",
-                noteSentence: "Poznámka (pouze pro vás)",
-                submitButton: "Odeslat",
-                deleteButton: "Vymazat"
-            }
-        });
+<!--custom actions-->
+<!--<script src="custom/MyActions.js"></script>-->
+<script src="app.js"></script>
 
-        //$("#calendar").vacationCalendar();
-    });
-</script>
 </body>
 </html>

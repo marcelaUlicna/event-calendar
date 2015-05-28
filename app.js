@@ -1,3 +1,6 @@
+/* global Calendar */
+/* global $ */
+
 $(function(){
    var events = [];
 
@@ -26,8 +29,8 @@ $(function(){
                 noteSentence: "Poznámka (pouze pro vás)",
                 submitButton: "Odeslat",
                 deleteButton: "Vymazat"
-            }
-            //moveAction: Calendar.MyMoveAction
+            },
+            moveAction: Calendar.MyMoveAction
         });
 
     }

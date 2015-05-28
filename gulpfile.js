@@ -64,7 +64,7 @@ gulp.task('connect', function () {
 
 // watch
 gulp.task('watch', function(){
-    gulp.watch('src/*.js', ['typescript']);
+    gulp.watch('src/*.ts', ['typescript']);
     gulp.watch('src/less/calendar.css', ['less']);
 });
 

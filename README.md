@@ -31,7 +31,7 @@ An event-calendar plugin provides simple and well-arranged calendar view with cu
   `gulp dev`
 
 ## Options
-There is a brief list of plugin options. All properties are optional. For usage see particular examples in section [Usage](https://github.com/marcelaUlicna/event-calendar/blob/master/README.md#usage).
+There is a brief list of plugin options. All properties are optional. For usage see particular examples in section [Usage](https://github.com/marcelaUlicna/event-calendar/blob/master/README.md#use-options).
 
 - `events` - List of defined events to use in calendar
 - `data` - json object that contains data for displaying then in calendar

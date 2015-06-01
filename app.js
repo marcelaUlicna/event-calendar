@@ -14,7 +14,7 @@ $(function(){
         });
 
     function calendar () {
-        $("#calendar").vacationCalendar({
+        $("#calendar").eventCalendar({
             data: events,
             events: [
                 {name: "Vacation", backgroundColor: "#5CB85C"},
@@ -30,7 +30,7 @@ $(function(){
                 submitButton: "Odeslat",
                 deleteButton: "Vymazat"
             },
-            moveAction: Calendar.MyMoveAction
+            //moveAction: Calendar.MyMoveAction
         });
 
     }

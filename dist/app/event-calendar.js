@@ -451,6 +451,7 @@ var Calendar;
         };
         Events.prototype.applyEventFormat = function () {
             var _this = this;
+            this.indexes = Calendar.Helpers.ArrayIndexes(this.indexes);
             var selectedEvent = this.dialogSettings.events.filter(function (item) { return item.name === _this.dialogSettings.selectedEvent; }), oneEvent = selectedEvent[0], bgr = oneEvent["backgroundColor"] || this.dialogSettings.defaultBgColor, color = oneEvent["color"] || this.dialogSettings.defaultColor, message = this.dialogSettings.message || null, note = this.settings.editable && this.dialogSettings.personalNote ? this.dialogSettings.personalNote : null, eventRange = Calendar.Helpers.ArrayRange(this.indexes.start, this.indexes.end);
             eventRange.forEach(function (item) {
                 var cell = $('td.cell[data-year-day=' + item + ']');
@@ -565,12 +566,12 @@ var Calendar;
     Calendar.EventCalendar = EventCalendar;
 })(Calendar || (Calendar = {}));
 (function ($) {
-    $.fn.vacationCalendar = function () {
+    $.fn.eventCalendar = function () {
         var option = arguments[0], args = arguments;
         return this.each(function () {
-            var $this = $(this), data = $this.data("jquery.vacation.calendar"), options = $.extend({}, $.fn.vacationCalendar.defaults, $this.data(), typeof option === 'object' && option);
+            var $this = $(this), data = $this.data("jquery.event.calendar"), options = $.extend({}, $.fn.eventCalendar.defaults, $this.data(), typeof option === 'object' && option);
             if (!data) {
-                $this.data("jquery.vacation.calendar", (data = new Calendar.EventCalendar($this, options)));
+                $this.data("jquery.event.calendar", (data = new Calendar.EventCalendar($this, options)));
             }
             if (typeof option === 'string') {
                 data[option](args[1]);
@@ -578,10 +579,10 @@ var Calendar;
             else {
                 data.init();
             }
-            $.fn.vacationCalendar.destroy = function () {
+            $.fn.eventCalendar.destroy = function () {
                 data.destroy();
             };
         });
     };
-    $.fn.vacationCalendar.defaults = {};
+    $.fn.eventCalendar.defaults = {};
 })(jQuery);

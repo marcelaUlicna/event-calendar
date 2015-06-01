@@ -4,6 +4,7 @@ var gulp = require('gulp'),
     less =require('gulp-less'),
     sequence = require('run-sequence'),
     connect = require('gulp-connect'),
+    merge = require('merge2'),
     run = require('gulp-run');
 
 // javascripts
@@ -11,10 +12,27 @@ gulp.task('typescript', function(){
     var tsResult = gulp.src(['typing/*.d.ts', 'src/*.ts'])
                         .pipe(ts({
                             noExternalResolve: true,
+                            removeComments: true,
                             out: 'event-calendar.js'
                         }));
 
     return tsResult.js.pipe(gulp.dest('dist/app'));
+});
+
+// include definition file
+gulp.task('tsdef', function(){
+    var tsResult = gulp.src(['typing/*.d.ts', 'src/*.ts'])
+                        .pipe(ts({
+                            declarationFiles: true,
+                            removeComments: true,
+                            noExternalResolve: true,
+                            out: 'event-calendar.js'
+                        }));
+
+    return merge([
+        tsResult.dts.pipe(gulp.dest('def')),
+        tsResult.js.pipe(gulp.dest('dist/app'))
+    ]);
 });
 
 gulp.task('js', function(){

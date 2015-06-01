@@ -229,6 +229,7 @@ module Calendar {
          * @method applyEventFormat
          */
         applyEventFormat(): void {
+            this.indexes = Calendar.Helpers.ArrayIndexes(this.indexes);
             var selectedEvent = this.dialogSettings.events.filter((item) => item.name === this.dialogSettings.selectedEvent),
                 oneEvent = selectedEvent[0],
                 bgr = oneEvent["backgroundColor"] || this.dialogSettings.defaultBgColor,

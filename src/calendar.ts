@@ -186,17 +186,17 @@ module Calendar {
 }
 
 (function($){
-    $.fn.vacationCalendar = function(){
+    $.fn.eventCalendar = function(){
         var option = arguments[0],
             args = arguments;
 
         return this.each(function(){
             var $this = $(this),
-                data = $this.data("jquery.vacation.calendar"),
-                options = $.extend({}, $.fn.vacationCalendar.defaults, $this.data(), typeof option === 'object' && option);
+                data = $this.data("jquery.event.calendar"),
+                options = $.extend({}, $.fn.eventCalendar.defaults, $this.data(), typeof option === 'object' && option);
 
             if(!data) {
-                $this.data("jquery.vacation.calendar", (data = new Calendar.EventCalendar($this, options)));
+                $this.data("jquery.event.calendar", (data = new Calendar.EventCalendar($this, options)));
             }
 
             if (typeof option === 'string') {
@@ -205,12 +205,12 @@ module Calendar {
                 data.init();
             }
 
-            $.fn.vacationCalendar.destroy = function(){
+            $.fn.eventCalendar.destroy = function(){
                 data.destroy();
             };
         });
     };
 
 
-    $.fn.vacationCalendar.defaults = { };
+    $.fn.eventCalendar.defaults = { };
 })(jQuery);

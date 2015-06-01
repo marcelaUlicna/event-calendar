@@ -57,14 +57,14 @@ There is a brief list of plugin options. All properties are optional. For usage 
     <script src="dist/app/event-calendar.js"></script>
     ```
     
-#### Basic usage:
+#### Basic usage
 Bellow is a minimal plugin initialization without options. It is fully functional client side component which contains one default event. You can choose the range of dates in calendar, fill both message and personal note in modal dialog and mark selected cell by clicking on `Submit` button or delete previously marked events.
 
 ```javascript
 $("#calendar").eventCalendar();
 ```
 
-#### Use options:
+#### Use options
 In this example there are a few custom events. Object `events` contains five items where `name` property is required and properties `backgroundColor` and `color` are optional and define background and fore colors of specified cell in calendar. It can be in any of valid css color format.
 ```javascript
 $("#calendar").eventCalendar({

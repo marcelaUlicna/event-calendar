@@ -110,7 +110,7 @@ module Calendar {
             if(!index) return;
 
             $('td.cell').removeClass('selected-day');
-            this.indexes = {start: Number(index), end: Number(index)};
+            this.indexes = { start: Number(index), end: Number(index) };
             cellElement.addClass('selected-day');
         }
 
@@ -199,25 +199,36 @@ module Calendar {
 
         /**
          * Submit action. Applies css style for selected event on client side.
-         * Calls `TODO: Submit server implementation` for server side implementation.
+         * Calls 'Submit server implementation` for server side implementation.
          *
          * @method submitChanges
          */
         submitChanges(): void {
-            // user implementation
             this.applyEventFormat();
+            var data = this.createEventData();
+            
+            if(this.settings.submitData.process) {
+                this.settings.submitData.process(data);
+            } else {
+                this.settings.submitData.apply(null, data);
+            }
         }
 
         /**
          * Delete action. Remove css style on client side.
-         * Calls `TODO: Delete server implementation` for server side implementation.
+         * Calls `Delete server implementation` for server side implementation.
          *
          * @method deleteItems
          */
         deleteItems(): void {
-            // user implementation
             this.removeEventFormat();
-
+            var data = this.createEventData();
+            
+            if(this.settings.deleteData.process) {
+                this.settings.deleteData.process(data);
+            } else {
+                this.settings.deleteData.apply(null, data);
+            }
         }
 
         /**
@@ -316,6 +327,33 @@ module Calendar {
          */
         private resetIndexes(): void {
             this.indexes = { start: null, end: null };
+        }
+        
+        /**
+         * Creates array of IData object based on start and end indexes.
+         * 
+         * @method createEventData
+         * @private
+         * @return {Array<IData>} - IData object array
+         */
+        private createEventData(): Array<IData> {
+            var data: Array<IData> = [];
+            var eventRange = Calendar.Helpers.ArrayRange(this.indexes.start, this.indexes.end),
+                event = this.dialogSettings.selectedEvent,
+                message = this.dialogSettings.message,
+                note = this.dialogSettings.personalNote;
+            
+            eventRange.forEach((element) => {
+                var date = moment([this.year]).dayOfYear(element);
+                data.push({
+                    date: date.toDate(),
+                    event: event,
+                    message: message,
+                    note: note
+                });
+            });
+            
+            return data;
         }
     }
 }

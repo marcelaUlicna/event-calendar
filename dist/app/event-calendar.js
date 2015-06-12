@@ -11,14 +11,9 @@ var Calendar;
 (function (Calendar) {
     var MoveAction = (function () {
         function MoveAction() {
+            this._name = "MoveAction";
         }
-        MoveAction.prototype.next = function (year, data) {
-            var deferred = $.Deferred();
-            this.data = data;
-            deferred.resolve();
-            return deferred.promise();
-        };
-        MoveAction.prototype.previous = function (year, data) {
+        MoveAction.prototype.move = function (year, data) {
             var deferred = $.Deferred();
             this.data = data;
             deferred.resolve();
@@ -27,6 +22,16 @@ var Calendar;
         return MoveAction;
     })();
     Calendar.MoveAction = MoveAction;
+    var PostDataAction = (function () {
+        function PostDataAction() {
+            this._name = "PostDataAction";
+        }
+        PostDataAction.prototype.process = function (data) {
+            this.data = data;
+        };
+        return PostDataAction;
+    })();
+    Calendar.PostDataAction = PostDataAction;
 })(Calendar || (Calendar = {}));
 var Calendar;
 (function (Calendar) {
@@ -445,9 +450,23 @@ var Calendar;
         };
         Events.prototype.submitChanges = function () {
             this.applyEventFormat();
+            var data = this.createEventData();
+            if (this.settings.submitData.process) {
+                this.settings.submitData.process(data);
+            }
+            else {
+                this.settings.submitData.apply(null, data);
+            }
         };
         Events.prototype.deleteItems = function () {
             this.removeEventFormat();
+            var data = this.createEventData();
+            if (this.settings.deleteData.process) {
+                this.settings.deleteData.process(data);
+            }
+            else {
+                this.settings.deleteData.apply(null, data);
+            }
         };
         Events.prototype.applyEventFormat = function () {
             var _this = this;
@@ -492,6 +511,21 @@ var Calendar;
         Events.prototype.resetIndexes = function () {
             this.indexes = { start: null, end: null };
         };
+        Events.prototype.createEventData = function () {
+            var _this = this;
+            var data = [];
+            var eventRange = Calendar.Helpers.ArrayRange(this.indexes.start, this.indexes.end), event = this.dialogSettings.selectedEvent, message = this.dialogSettings.message, note = this.dialogSettings.personalNote;
+            eventRange.forEach(function (element) {
+                var date = moment([_this.year]).dayOfYear(element);
+                data.push({
+                    date: date.toDate(),
+                    event: event,
+                    message: message,
+                    note: note
+                });
+            });
+            return data;
+        };
         return Events;
     })();
     Calendar.Events = Events;
@@ -507,7 +541,7 @@ var Calendar;
             if (this.settings.locale) {
                 moment.locale(this.settings.locale);
             }
-            this.moveAction = new this.settings.moveAction();
+            this.moveAction = this.settings.moveAction;
             this.events = new Calendar.Events(this.element, this.settings);
             this.events.setSelectedlYear(this.year);
             this.element.on("click", ".year-direction", function (e) { return _this.changeYear(e); });
@@ -522,7 +556,9 @@ var Calendar;
                     submitButton: "Submit",
                     deleteButton: "Delete"
                 },
-                moveAction: Calendar.MoveAction
+                moveAction: new Calendar.MoveAction(),
+                submitData: new Calendar.PostDataAction(),
+                deleteData: new Calendar.PostDataAction()
             };
         };
         EventCalendar.prototype.setEventFormat = function () {
@@ -546,13 +582,12 @@ var Calendar;
         EventCalendar.prototype.changeYear = function (e) {
             var _this = this;
             var direction = $(e.target).closest(".year-direction").attr("data-direction");
-            if (direction === "prev") {
-                this.year = this.year - 1;
-                this.moveAction.previous(this.year, this.settings.data).always(function () { return _this.setSelectedYear(); });
+            this.year = direction === "prev" ? this.year - 1 : this.year + 1;
+            if (this.moveAction.move) {
+                this.moveAction.move(this.year, this.settings.data).always(function () { return _this.setSelectedYear(); });
             }
             else {
-                this.year = this.year + 1;
-                this.moveAction.next(this.year, this.settings.data).always(function () { return _this.setSelectedYear(); });
+                this.moveAction.call(null, this.year);
             }
         };
         EventCalendar.prototype.setSelectedYear = function () {

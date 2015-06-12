@@ -9,6 +9,8 @@ declare module Calendar {
         locale?: string;
         data?: Array<IData>;
         moveAction?: any;
+        submitData?: any;
+        deleteData: any;
     }
     interface ILocalization {
         messageSentence: string;
@@ -17,15 +19,18 @@ declare module Calendar {
         deleteButton: string;
     }
     interface IData {
-        date: string;
+        date: Date;
         event: string;
         message: string;
         note: string;
     }
     interface IMoveAction {
         data: Array<IData>;
-        next(year: number, data?: Array<IData>): JQueryPromise<any>;
-        previous(year: number, data?: Array<IData>): JQueryPromise<any>;
+        move(year: number, data?: Array<IData>): JQueryPromise<any>;
+    }
+    interface ICalendarAction {
+        data: Array<IData>;
+        process(data: Array<IData>): void;
     }
     interface IEvent {
         name: string;
@@ -55,9 +60,14 @@ declare module Calendar {
 }
 declare module Calendar {
     class MoveAction implements IMoveAction {
+        private _name;
         data: Array<IData>;
-        next(year: number, data?: Array<IData>): JQueryPromise<any>;
-        previous(year: number, data?: Array<IData>): JQueryPromise<any>;
+        move(year: number, data?: Array<IData>): JQueryPromise<any>;
+    }
+    class PostDataAction implements ICalendarAction {
+        private _name;
+        data: Array<IData>;
+        process(data: Array<IData>): void;
     }
 }
 declare module Calendar {
@@ -152,6 +162,7 @@ declare module Calendar {
         static dataEventFormat(data: Array<IData>, events: Array<IEvent>, year: number): void;
         private leftMousePressed(e);
         private resetIndexes();
+        private createEventData();
     }
 }
 declare module Calendar {
@@ -160,7 +171,7 @@ declare module Calendar {
         settings: ISettings;
         events: Events;
         year: number;
-        moveAction: IMoveAction;
+        moveAction: any;
         constructor(element: JQuery, options: ISettings);
         defaultSettings(): ISettings;
         setEventFormat(): void;

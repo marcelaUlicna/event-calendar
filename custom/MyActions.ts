@@ -7,13 +7,7 @@
 
 module Calendar {
     export class MyMoveAction extends MoveAction {
-        next(year: number, data?: Array<IData>): JQueryPromise<any> {
-            var deferred = $.Deferred();
-            this.getJsonData(year, deferred);
-            return deferred.promise();
-        }
-
-        previous(year: number, data?: Array<IData>): JQueryPromise<any> {
+        move(year: number, data?: Array<IData>): JQueryPromise<any> {
             var deferred = $.Deferred();
             this.getJsonData(year, deferred);
             return deferred.promise();

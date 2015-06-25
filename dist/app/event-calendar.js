@@ -490,7 +490,7 @@ var Calendar;
                 Calendar.Popover.destroy(cell);
             });
         };
-        Events.dataEventFormat = function (data, events, year) {
+        Events.dataEventFormat = function (data, events, year, showNOte) {
             data.forEach(function (item) {
                 var date = moment(item.date);
                 if (date.isValid() && date.year() === year) {
@@ -498,7 +498,7 @@ var Calendar;
                     cell.addClass('event-day');
                     cell.css({ "background-color": currentEvent.backgroundColor, "color": currentEvent.color });
                     if (item.message || item.note) {
-                        Calendar.Popover.popover(cell, item.message, item.note);
+                        Calendar.Popover.popover(cell, item.message, showNOte ? item.note : null);
                     }
                 }
             });
@@ -563,7 +563,7 @@ var Calendar;
         };
         EventCalendar.prototype.setEventFormat = function () {
             if (this.settings.data) {
-                Calendar.Events.dataEventFormat(this.settings.data, this.settings.events, this.year);
+                Calendar.Events.dataEventFormat(this.settings.data, this.settings.events, this.year, this.settings.editable);
             }
         };
         EventCalendar.prototype.init = function () {

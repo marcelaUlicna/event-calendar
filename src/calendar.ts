@@ -107,7 +107,7 @@ module Calendar {
          */
         setEventFormat(): void {
             if(this.settings.data) {
-                Calendar.Events.dataEventFormat(this.settings.data, this.settings.events, this.year);
+                Calendar.Events.dataEventFormat(this.settings.data, this.settings.events, this.year, this.settings.editable);
             }
         }
 

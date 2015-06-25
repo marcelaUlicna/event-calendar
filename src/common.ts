@@ -7,8 +7,8 @@ module Calendar {
         localization: ILocalization;
         locale?: string;
         data?: Array<IData>;
-        moveAction?: any;
-        submitData?: any;
+        moveAction: any;
+        submitData: any;
         deleteData: any;
     }
 

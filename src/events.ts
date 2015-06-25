@@ -285,7 +285,7 @@ module Calendar {
          * @param {Array<IEvent>} events - List of available events
          * @param {number} year - Actual selected year
          */
-        static dataEventFormat(data: Array<IData>, events: Array<IEvent>, year: number): void {
+        static dataEventFormat(data: Array<IData>, events: Array<IEvent>, year: number, showNOte: boolean): void {
             data.forEach((item) => {
                 var date = moment(item.date);
 
@@ -298,7 +298,7 @@ module Calendar {
                     cell.addClass('event-day');
                     cell.css({ "background-color": currentEvent.backgroundColor, "color": currentEvent.color });
                     if(item.message || item.note) {
-                        Calendar.Popover.popover(cell, item.message, item.note);
+                        Calendar.Popover.popover(cell, item.message, showNOte ? item.note : null);
                     }
                 }
             });

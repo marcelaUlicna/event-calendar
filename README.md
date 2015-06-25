@@ -38,9 +38,9 @@ There is a brief list of plugin options. All properties are optional. For usage 
 - `locale` - Locale according to `momentjs` library, it is used for localization of month names and week days abbreviations
 - `localization` - Object that contains custom labels for calendar modal dialog
 - `editable` - Boolean, default true. Items in calendar can be added and deleted, both messages are visible on tooltip. If it is set to `false`, component is read-only and tooltip shows only user message.
-- `moveAction` - typescript class or javascript function. Renders calendar for previous and next year. More info in section.
-- `submitData` - typescript class or javascript function. Selected data for submitting to server. More info in section.
-- `deleteData` - typescript class or javascript function. Selected data for deleting on server. More info in section.
+- `moveAction` - typescript class or javascript function. Renders calendar for previous and next year. More info in [Calendar functions](https://github.com/marcelaUlicna/event-calendar/blob/master/README.md#calendar-functions) section.
+- `submitData` - typescript class or javascript function. Selected data for submitting to server. More info in [Calendar functions](https://github.com/marcelaUlicna/event-calendar/blob/master/README.md#calendar-functions) section.
+- `deleteData` - typescript class or javascript function. Selected data for deleting on server. More info in [Calendar functions](https://github.com/marcelaUlicna/event-calendar/blob/master/README.md#calendar-functions) section.
 
 
 ## Usage

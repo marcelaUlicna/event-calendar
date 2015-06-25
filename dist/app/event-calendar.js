@@ -574,7 +574,7 @@ var Calendar;
             this.setEventFormat();
         };
         EventCalendar.prototype.destroy = function () {
-            this.element.removeData("jquery.vacation.calendar");
+            this.element.removeData("jquery.event.calendar");
             this.element.off();
             this.element.unbind();
             this.element.empty();
@@ -587,11 +587,15 @@ var Calendar;
                 this.moveAction.move(this.year, this.settings.data).always(function () { return _this.setSelectedYear(); });
             }
             else {
-                this.moveAction.call(null, this.year);
+                $.when(this.moveAction.call(null, this.year)).done(function (result) {
+                    _this.setSelectedYear(result);
+                }).fail(function () {
+                    _this.setSelectedYear();
+                });
             }
         };
-        EventCalendar.prototype.setSelectedYear = function () {
-            this.settings.data = this.moveAction.data;
+        EventCalendar.prototype.setSelectedYear = function (newData) {
+            this.settings.data = newData ? newData : this.moveAction.data;
             this.init();
             this.events.setSelectedlYear(this.year);
             this.setEventFormat();

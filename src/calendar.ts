@@ -137,12 +137,12 @@ module Calendar {
          *
          * __Usage__:
          *
-         *     $("#calendar").vacationCalendar.destroy();
+         *     $("#calendar").eventCalendar.destroy();
          *
          * @method destroy
          */
         destroy(): void {
-            this.element.removeData("jquery.vacation.calendar");
+            this.element.removeData("jquery.event.calendar");
             this.element.off();
             this.element.unbind();
             this.element.empty();
@@ -164,8 +164,14 @@ module Calendar {
                     .move(this.year, this.settings.data)
                     .always(() => this.setSelectedYear());
             } else {
-                this.moveAction.call(null, this.year);
-            }
+                $.when(this.moveAction.call(null, this.year))
+                    .done((result) => {
+                        this.setSelectedYear(result);
+                    })
+                    .fail(() => {
+                        this.setSelectedYear();
+                    });
+                }
         }
 
         /**
@@ -174,8 +180,8 @@ module Calendar {
          *
          * @method setSelectedYear
          */
-        setSelectedYear(): void {
-            this.settings.data = this.moveAction.data;
+        setSelectedYear(newData?: Array<IData>): void {
+            this.settings.data = newData ? newData : this.moveAction.data;
             this.init();
             this.events.setSelectedlYear(this.year);
             this.setEventFormat();

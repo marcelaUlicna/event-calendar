@@ -7,7 +7,9 @@ module Calendar {
         localization: ILocalization;
         locale?: string;
         data?: Array<IData>;
-        moveAction?: any;
+        moveAction: any;
+        submitData: any;
+        deleteData: any;
     }
 
     export interface ILocalization {
@@ -18,7 +20,7 @@ module Calendar {
     }
 
     export interface IData {
-        date: string;
+        date: Date;
         event: string;
         message: string;
         note: string;
@@ -26,9 +28,12 @@ module Calendar {
 
     export interface IMoveAction {
         data: Array<IData>;
-
-        next(year: number, data?: Array<IData>): JQueryPromise<any>;
-        previous(year: number, data?: Array<IData>): JQueryPromise<any>;
+        move(year: number, data?: Array<IData>): JQueryPromise<any>;
+    }
+    
+    export interface ICalendarAction {
+        data: Array<IData>;
+        process(data: Array<IData>): void;
     }
 
     export interface IEvent {

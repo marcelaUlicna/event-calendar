@@ -8,17 +8,11 @@ module Calendar {
      * clicking on "previous" or "next" arrow. Implements
      * `IMoveAction` interface and can be overwritten.
      *
-     * __Example__ of implementation user's class with `next()` and `previous()` methods.
+     * __Example__ of implementation user's class with `move()` method.
      * Server returns new data for each year:
      *
      *     export class MyMoveAction extends MoveAction {
-     *       next(year: number, data?: Array<IData>): JQueryPromise<any> {
-     *           var deferred = $.Deferred();
-     *           this.getJsonData(year, deferred);
-     *           return deferred.promise();
-     *       }
-     *
-     *       previous(year: number, data?: Array<IData>): JQueryPromise<any> {
+     *       move(year: number, data?: Array<IData>): JQueryPromise<any> {
      *           var deferred = $.Deferred();
      *           this.getJsonData(year, deferred);
      *           return deferred.promise();
@@ -40,37 +34,57 @@ module Calendar {
      * @implements IMoveAction
      */
     export class MoveAction implements IMoveAction {
+        private _name: string = "MoveAction";
+        
+        /**
+         * @property data
+         * @type {Array<IData>}
+         */
         data: Array<IData>;
-
-        /**
-         * Gets data for next year.
+        
+         /**
+         * Gets data for new year.
          *
-         * @method next
+         * @method move
          * @param {number} year - Selected year
          * @param {Array<IData>} [data] - Data from settings
          * @return {JQueryPromise<any>} - jQuery promise
          */
-        next(year: number, data?: Array<IData>): JQueryPromise<any> {
+        move(year: number, data?: Array<IData>): JQueryPromise<any> {
             var deferred = $.Deferred();
             this.data = data;
             deferred.resolve();
             return deferred.promise();
         }
-
+    }
+    
+    /**
+     * Base class for implementation of submiting and deleting
+     * data. Implements `ICalendarAction` interface and
+     * can be overwritten. Contains one method `process(data: Array<IData>)`
+     * whose parameter has array of IData objects that can be
+     * sent to server (save or delete method).
+     * 
+     * @class PostDataAction
+     * @implements ICalendarAction
+     */
+    export class PostDataAction implements ICalendarAction {
+        private _name: string = "PostDataAction";
+        
         /**
-         * Gets data for previous year.
-         *
-         * @method previous
-         * @param {number} year - Selected year
-         * @param {Array<IData>} [data] - Data from settings
-         * @return {JQueryPromise<any>} - jQuery promise
+         * @property data
+         * @type {Array<IData>}
          */
-        previous(year: number, data?: Array<IData>): JQueryPromise<any> {
-            var deferred = $.Deferred();
+        data: Array<IData>;
+        
+        /**
+         * Privides submiting or deleting functionality.
+         * 
+         * @method process
+         * @param {Array<IData>} data - Range of selected objects
+         */
+        process(data: Array<IData>): void {
             this.data = data;
-            deferred.resolve();
-            return deferred.promise();
         }
-
     }
 }

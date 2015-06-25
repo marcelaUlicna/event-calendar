@@ -57,9 +57,9 @@ module Calendar {
          * Actions to render caledar for next or previous year.
          *
          * @property moveAction
-         * @type {IMoveAction}
+         * @type {any}
          */
-        moveAction: IMoveAction;
+        moveAction: any;
 
         constructor(element: JQuery, options: ISettings) {
             this.element = element;
@@ -71,7 +71,7 @@ module Calendar {
                 moment.locale(this.settings.locale);
             }
 
-            this.moveAction = new this.settings.moveAction();
+            this.moveAction = this.settings.moveAction;
             this.events = new Events(this.element, this.settings);
             this.events.setSelectedlYear(this.year);
 
@@ -94,7 +94,9 @@ module Calendar {
                     submitButton: "Submit",
                     deleteButton: "Delete"
                 },
-                moveAction: MoveAction
+                moveAction: new MoveAction(),
+                submitData: new PostDataAction(),
+                deleteData: new PostDataAction()
             }
         }
 
@@ -105,7 +107,7 @@ module Calendar {
          */
         setEventFormat(): void {
             if(this.settings.data) {
-                Calendar.Events.dataEventFormat(this.settings.data, this.settings.events, this.year);
+                Calendar.Events.dataEventFormat(this.settings.data, this.settings.events, this.year, this.settings.editable);
             }
         }
 
@@ -115,7 +117,6 @@ module Calendar {
          * @method init
          */
         init(): void {
-            //console.log(this.settings);
             this.element.empty();
             var header = new Header(this.year),
                 monthTables = new MonthCalendar(this.settings, this.year);
@@ -156,17 +157,14 @@ module Calendar {
          */
         changeYear(e: JQueryEventObject): void {
             var direction = $(e.target).closest(".year-direction").attr("data-direction");
-
-            if(direction === "prev") {
-                this.year = this.year - 1;
+            this.year = direction === "prev" ? this.year - 1 : this.year + 1;
+                
+            if(this.moveAction.move) {
                 this.moveAction
-                    .previous(this.year, this.settings.data)
+                    .move(this.year, this.settings.data)
                     .always(() => this.setSelectedYear());
             } else {
-                this.year = this.year + 1;
-                this.moveAction
-                    .next(this.year, this.settings.data)
-                    .always(() => this.setSelectedYear());
+                this.moveAction.call(null, this.year);
             }
         }
 

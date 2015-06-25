@@ -49,6 +49,7 @@
                             <li><a href="../classes/MonthCalendar.html">MonthCalendar</a></li>
                             <li><a href="../classes/MoveAction.html">MoveAction</a></li>
                             <li><a href="../classes/Popover.html">Popover</a></li>
+                            <li><a href="../classes/PostDataAction.html">PostDataAction</a></li>
                     </ul>
                 </div>
             </div>
@@ -82,17 +83,11 @@ module Calendar {
      * clicking on &quot;previous&quot; or &quot;next&quot; arrow. Implements
      * &#x60;IMoveAction&#x60; interface and can be overwritten.
      *
-     * __Example__ of implementation user&#x27;s class with &#x60;next()&#x60; and &#x60;previous()&#x60; methods.
+     * __Example__ of implementation user&#x27;s class with &#x60;move()&#x60; method.
      * Server returns new data for each year:
      *
      *     export class MyMoveAction extends MoveAction {
-     *       next(year: number, data?: Array&lt;IData&gt;): JQueryPromise&lt;any&gt; {
-     *           var deferred = $.Deferred();
-     *           this.getJsonData(year, deferred);
-     *           return deferred.promise();
-     *       }
-     *
-     *       previous(year: number, data?: Array&lt;IData&gt;): JQueryPromise&lt;any&gt; {
+     *       move(year: number, data?: Array&lt;IData&gt;): JQueryPromise&lt;any&gt; {
      *           var deferred = $.Deferred();
      *           this.getJsonData(year, deferred);
      *           return deferred.promise();
@@ -114,38 +109,58 @@ module Calendar {
      * @implements IMoveAction
      */
     export class MoveAction implements IMoveAction {
+        private _name: string = &quot;MoveAction&quot;;
+        
+        /**
+         * @property data
+         * @type {Array&lt;IData&gt;}
+         */
         data: Array&lt;IData&gt;;
-
-        /**
-         * Gets data for next year.
+        
+         /**
+         * Gets data for new year.
          *
-         * @method next
+         * @method move
          * @param {number} year - Selected year
          * @param {Array&lt;IData&gt;} [data] - Data from settings
          * @return {JQueryPromise&lt;any&gt;} - jQuery promise
          */
-        next(year: number, data?: Array&lt;IData&gt;): JQueryPromise&lt;any&gt; {
+        move(year: number, data?: Array&lt;IData&gt;): JQueryPromise&lt;any&gt; {
             var deferred = $.Deferred();
             this.data = data;
             deferred.resolve();
             return deferred.promise();
         }
-
+    }
+    
+    /**
+     * Base class for implementation of submiting and deleting
+     * data. Implements &#x60;ICalendarAction&#x60; interface and
+     * can be overwritten. Contains one method &#x60;process(data: Array&lt;IData&gt;)&#x60;
+     * whose parameter has array of IData objects that can be
+     * sent to server (save or delete method).
+     * 
+     * @class PostDataAction
+     * @implements ICalendarAction
+     */
+    export class PostDataAction implements ICalendarAction {
+        private _name: string = &quot;PostDataAction&quot;;
+        
         /**
-         * Gets data for previous year.
-         *
-         * @method previous
-         * @param {number} year - Selected year
-         * @param {Array&lt;IData&gt;} [data] - Data from settings
-         * @return {JQueryPromise&lt;any&gt;} - jQuery promise
+         * @property data
+         * @type {Array&lt;IData&gt;}
          */
-        previous(year: number, data?: Array&lt;IData&gt;): JQueryPromise&lt;any&gt; {
-            var deferred = $.Deferred();
+        data: Array&lt;IData&gt;;
+        
+        /**
+         * Privides submiting or deleting functionality.
+         * 
+         * @method process
+         * @param {Array&lt;IData&gt;} data - Range of selected objects
+         */
+        process(data: Array&lt;IData&gt;): void {
             this.data = data;
-            deferred.resolve();
-            return deferred.promise();
         }
-
     }
 }
 </pre>

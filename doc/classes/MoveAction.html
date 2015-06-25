@@ -49,6 +49,7 @@
                             <li><a href="../classes/MonthCalendar.html">MonthCalendar</a></li>
                             <li><a href="../classes/MoveAction.html">MoveAction</a></li>
                             <li><a href="../classes/Popover.html">Popover</a></li>
+                            <li><a href="../classes/PostDataAction.html">PostDataAction</a></li>
                     </ul>
                 </div>
             </div>
@@ -59,8 +60,7 @@
                 </div>
                 <div class="bd">
                     <ul>
-                            <li><a href="#methods_next">next</a></li>
-                            <li><a href="#methods_previous">previous</a></li>
+                            <li><a href="#methods_move">move</a></li>
                     </ul>
                 </div>
             </div>
@@ -85,16 +85,10 @@
 <div class="intro"><p>Base class for implementation of changing year by
 clicking on &quot;previous&quot; or &quot;next&quot; arrow. Implements
 <code>IMoveAction</code> interface and can be overwritten.</p>
-<p><strong>Example</strong> of implementation user's class with <code>next()</code> and <code>previous()</code> methods.
+<p><strong>Example</strong> of implementation user's class with <code>move()</code> method.
 Server returns new data for each year:</p>
 <pre class="code prettyprint"><code>export class MyMoveAction extends MoveAction {
-  next(year: number, data?: Array&lt;IData&gt;): JQueryPromise&lt;any&gt; {
-      var deferred = $.Deferred();
-      this.getJsonData(year, deferred);
-      return deferred.promise();
-  }
-
-  previous(year: number, data?: Array&lt;IData&gt;): JQueryPromise&lt;any&gt; {
+  move(year: number, data?: Array&lt;IData&gt;): JQueryPromise&lt;any&gt; {
       var deferred = $.Deferred();
       this.getJsonData(year, deferred);
       return deferred.promise();
@@ -117,18 +111,19 @@ Server returns new data for each year:</p>
 <div id="classdocs">
     <ul>
         <li><a href="#methods">Methods</a></li>
+        <li><a href="#props">Properties</a></li>
     </ul>
     <div>
             <div id="methods">
-<a name="methods_next"></a>
+<a name="methods_move"></a>
 <div class="method item">
-    JQueryPromise<any> <strong class="name"><code>next</code></strong>( <code>year, [data] </code> ) 
+    JQueryPromise<any> <strong class="name"><code>move</code></strong>( <code>year, [data] </code> ) 
     <br>
     <span class="foundat">
         
         <a href="../files/src_actions.ts.html#l45"><code>src\actions.ts:45</code></a>
     </span><br>
-    <p>Gets data for next year.</p>
+    <p>Gets data for new year.</p>
 
     <strong>Parameters:</strong>
     <ul class="params">
@@ -152,38 +147,14 @@ Server returns new data for each year:</p>
 </ul>
 </div>
 </div>
-<a name="methods_previous"></a>
-<div class="method item">
-    JQueryPromise<any> <strong class="name"><code>previous</code></strong>( <code>year, [data] </code> ) 
-    <br>
-    <span class="foundat">
-        
-        <a href="../files/src_actions.ts.html#l60"><code>src\actions.ts:60</code></a>
-    </span><br>
-    <p>Gets data for previous year.</p>
-
-    <strong>Parameters:</strong>
-    <ul class="params">
-        <li>
-            <code>year</code> <strong>&lt;<a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a>&gt;</strong>
-        <ul>
-<li>Selected year</li>
-</ul>
-
-        </li>
-        <li>
-            <code>[data]</code> <strong>&lt;Array<IData>&gt;</strong>
-        <ul>
-<li>Data from settings</li>
-</ul>
-
-        </li>
-    </ul>
-    <br><div class="returns"><strong>Returns:</strong> &lt;JQueryPromise<any>&gt; <ul>
-<li>jQuery promise</li>
-</ul>
-</div>
-</div>
+            </div>
+            <div id="props">
+                <a name="props_data"></a>
+                <div class="props item">
+                    <code>data</code> &lt;<strong>Array<IData></strong>&gt;<br>
+                    <span class="foundat"><a href="../files/src_actions.ts.html#l39"><code>src\actions.ts:39</code></a></span>
+                    
+                </div>
             </div>
     </div>
 </div>

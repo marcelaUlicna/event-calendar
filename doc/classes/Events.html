@@ -49,6 +49,7 @@
                             <li><a href="../classes/MonthCalendar.html">MonthCalendar</a></li>
                             <li><a href="../classes/MoveAction.html">MoveAction</a></li>
                             <li><a href="../classes/Popover.html">Popover</a></li>
+                            <li><a href="../classes/PostDataAction.html">PostDataAction</a></li>
                     </ul>
                 </div>
             </div>
@@ -60,6 +61,7 @@
                 <div class="bd">
                     <ul>
                             <li><a href="#methods_applyEventFormat">applyEventFormat</a></li>
+                            <li><a href="#methods_createEventData">createEventData</a></li>
                             <li><a href="#methods_dataEventFormat">dataEventFormat</a></li>
                             <li><a href="#methods_deleteItems">deleteItems</a></li>
                             <li><a href="#methods_leftMousePressed">leftMousePressed</a></li>
@@ -142,7 +144,7 @@ method which provides custom server side request.</p>
     <br>
     <span class="foundat">
         
-        <a href="../files/src_events.ts.html#l223"><code>src\events.ts:223</code></a>
+        <a href="../files/src_events.ts.html#l234"><code>src\events.ts:234</code></a>
     </span><br>
     <p>Sets css styling to each cell in range of selected indexes according to
 selected event and its properties (background color, color), sets title
@@ -150,13 +152,28 @@ if any of messages is typed. Adds class <code>event-day</code> to each cell and 
 popover with messages.</p>
 
 </div>
+<a name="methods_createEventData"></a>
+<div class="method item private">
+    Array<IData> <strong class="name"><code>createEventData</code></strong>( <code>  </code> ) <em><code>&#x2F;* private method *&#x2F;</code></em>
+    <br>
+    <span class="foundat">
+        
+        <a href="../files/src_events.ts.html#l332"><code>src\events.ts:332</code></a>
+    </span><br>
+    <p>Creates array of IData object based on start and end indexes.</p>
+
+    <br><div class="returns"><strong>Returns:</strong> &lt;Array<IData>&gt; <ul>
+<li>IData object array</li>
+</ul>
+</div>
+</div>
 <a name="methods_dataEventFormat"></a>
 <div class="method item">
      <strong class="name"><code>dataEventFormat</code></strong>( <code>data, events, year </code> ) 
     <br>
     <span class="foundat">
         
-        <a href="../files/src_events.ts.html#l266"><code>src\events.ts:266</code></a>
+        <a href="../files/src_events.ts.html#l278"><code>src\events.ts:278</code></a>
     </span><br>
     <p>Marks specified cells with css format and adds popover
 in case message or note for cell is available.</p>
@@ -192,10 +209,10 @@ in case message or note for cell is available.</p>
     <br>
     <span class="foundat">
         
-        <a href="../files/src_events.ts.html#l211"><code>src\events.ts:211</code></a>
+        <a href="../files/src_events.ts.html#l217"><code>src\events.ts:217</code></a>
     </span><br>
     <p>Delete action. Remove css style on client side.
-Calls <code>TODO: Delete server implementation</code> for server side implementation.</p>
+Calls <code>Delete server implementation</code> for server side implementation.</p>
 
 </div>
 <a name="methods_leftMousePressed"></a>
@@ -204,7 +221,7 @@ Calls <code>TODO: Delete server implementation</code> for server side implementa
     <br>
     <span class="foundat">
         
-        <a href="../files/src_events.ts.html#l295"><code>src\events.ts:295</code></a>
+        <a href="../files/src_events.ts.html#l307"><code>src\events.ts:307</code></a>
     </span><br>
     <p>Resolves left mouse pressing.</p>
 
@@ -294,7 +311,7 @@ from indexes and calls modal dialog to enter personal event. At the end resets s
     <br>
     <span class="foundat">
         
-        <a href="../files/src_events.ts.html#l250"><code>src\events.ts:250</code></a>
+        <a href="../files/src_events.ts.html#l262"><code>src\events.ts:262</code></a>
     </span><br>
     <p>Removes css styling and attribute <code>title</code> from selected cells
 and destroys popover with messages.</p>
@@ -317,7 +334,7 @@ and destroys popover with messages.</p>
     <br>
     <span class="foundat">
         
-        <a href="../files/src_events.ts.html#l309"><code>src\events.ts:309</code></a>
+        <a href="../files/src_events.ts.html#l321"><code>src\events.ts:321</code></a>
     </span><br>
     <p>Remove values from <code>this.index</code> property after <code>mouseup</code> event
 to use for other selection.</p>
@@ -365,7 +382,7 @@ based on clicked button. After that calls removing selection styling.</p>
         <a href="../files/src_events.ts.html#l200"><code>src\events.ts:200</code></a>
     </span><br>
     <p>Submit action. Applies css style for selected event on client side.
-Calls <code>TODO: Submit server implementation</code> for server side implementation.</p>
+Calls 'Submit server implementation` for server side implementation.</p>
 
 </div>
             </div>

@@ -10,7 +10,8 @@
             "name": "src\\actions.ts",
             "modules": {},
             "classes": {
-                "MoveAction": 1
+                "MoveAction": 1,
+                "PostDataAction": 1
             },
             "fors": {},
             "namespaces": {}
@@ -88,6 +89,7 @@
             "submodules": {},
             "classes": {
                 "MoveAction": 1,
+                "PostDataAction": 1,
                 "EventCalendar": 1,
                 "Events": 1,
                 "Header": 1,
@@ -117,8 +119,22 @@
             "module": "Calendar",
             "file": "src\\actions.ts",
             "line": 6,
-            "description": "Base class for implementation of changing year by\nclicking on \"previous\" or \"next\" arrow. Implements\n`IMoveAction` interface and can be overwritten.\n\n__Example__ of implementation user's class with `next()` and `previous()` methods.\nServer returns new data for each year:\n\n    export class MyMoveAction extends MoveAction {\n      next(year: number, data?: Array<IData>): JQueryPromise<any> {\n          var deferred = $.Deferred();\n          this.getJsonData(year, deferred);\n          return deferred.promise();\n      }\n\n      previous(year: number, data?: Array<IData>): JQueryPromise<any> {\n          var deferred = $.Deferred();\n          this.getJsonData(year, deferred);\n          return deferred.promise();\n      }\n\n      private getJsonData(year: number, deferred: JQueryDeferred<any>): void {\n          var url = \"data/events\" + year + \".json\";\n          $.ajax(url)\n              .done((result) => {\n                  this.data = result;\n              })\n              .always(() => {\n                  deferred.resolve();\n              });\n      }\n    }",
+            "description": "Base class for implementation of changing year by\nclicking on \"previous\" or \"next\" arrow. Implements\n`IMoveAction` interface and can be overwritten.\n\n__Example__ of implementation user's class with `move()` method.\nServer returns new data for each year:\n\n    export class MyMoveAction extends MoveAction {\n      move(year: number, data?: Array<IData>): JQueryPromise<any> {\n          var deferred = $.Deferred();\n          this.getJsonData(year, deferred);\n          return deferred.promise();\n      }\n\n      private getJsonData(year: number, deferred: JQueryDeferred<any>): void {\n          var url = \"data/events\" + year + \".json\";\n          $.ajax(url)\n              .done((result) => {\n                  this.data = result;\n              })\n              .always(() => {\n                  deferred.resolve();\n              });\n      }\n    }",
             "implements": "IMoveAction"
+        },
+        "PostDataAction": {
+            "name": "PostDataAction",
+            "shortname": "PostDataAction",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Calendar",
+            "file": "src\\actions.ts",
+            "line": 61,
+            "description": "Base class for implementation of submiting and deleting\ndata. Implements `ICalendarAction` interface and\ncan be overwritten. Contains one method `process(data: Array<IData>)`\nwhose parameter has array of IData objects that can be\nsent to server (save or delete method).",
+            "implements": "ICalendarAction"
         },
         "EventCalendar": {
             "name": "EventCalendar",
@@ -295,10 +311,18 @@
     "classitems": [
         {
             "file": "src\\actions.ts",
+            "line": 39,
+            "itemtype": "property",
+            "name": "data",
+            "type": "{Array<IData>}",
+            "class": "MoveAction"
+        },
+        {
+            "file": "src\\actions.ts",
             "line": 45,
-            "description": "Gets data for next year.",
+            "description": "Gets data for new year.",
             "itemtype": "method",
-            "name": "next",
+            "name": "move",
             "params": [
                 {
                     "name": "year",
@@ -320,28 +344,26 @@
         },
         {
             "file": "src\\actions.ts",
-            "line": 60,
-            "description": "Gets data for previous year.",
+            "line": 74,
+            "itemtype": "property",
+            "name": "data",
+            "type": "{Array<IData>}",
+            "class": "PostDataAction"
+        },
+        {
+            "file": "src\\actions.ts",
+            "line": 80,
+            "description": "Privides submiting or deleting functionality.",
             "itemtype": "method",
-            "name": "previous",
+            "name": "process",
             "params": [
                 {
-                    "name": "year",
-                    "description": "- Selected year",
-                    "type": "Number"
-                },
-                {
                     "name": "data",
-                    "description": "- Data from settings",
-                    "type": "Array<IData>",
-                    "optional": true
+                    "description": "- Range of selected objects",
+                    "type": "Array<IData>"
                 }
             ],
-            "return": {
-                "description": "- jQuery promise",
-                "type": "JQueryPromise<any>"
-            },
-            "class": "MoveAction"
+            "class": "PostDataAction"
         },
         {
             "file": "src\\calendar.ts",
@@ -389,7 +411,7 @@
             "description": "Actions to render caledar for next or previous year.",
             "itemtype": "property",
             "name": "moveAction",
-            "type": "{IMoveAction}",
+            "type": "{any}",
             "class": "EventCalendar",
             "module": "Calendar"
         },
@@ -408,7 +430,7 @@
         },
         {
             "file": "src\\calendar.ts",
-            "line": 101,
+            "line": 103,
             "description": "Calls static method to mark cells with server data.",
             "itemtype": "method",
             "name": "setEventFormat",
@@ -417,7 +439,7 @@
         },
         {
             "file": "src\\calendar.ts",
-            "line": 112,
+            "line": 114,
             "description": "Initializes view with calendars.",
             "itemtype": "method",
             "name": "init",
@@ -426,8 +448,8 @@
         },
         {
             "file": "src\\calendar.ts",
-            "line": 134,
-            "description": "Destroys plugin and removes all event handlers.\n\n__Usage__:\n\n    $(\"#calendar\").vacationCalendar.destroy();",
+            "line": 135,
+            "description": "Destroys plugin and removes all event handlers.\n\n__Usage__:\n\n    $(\"#calendar\").eventCalendar.destroy();",
             "itemtype": "method",
             "name": "destroy",
             "class": "EventCalendar",
@@ -435,7 +457,7 @@
         },
         {
             "file": "src\\calendar.ts",
-            "line": 150,
+            "line": 151,
             "description": "Changes the year of calendar and calls method\nwhich obtains new data for selected year.",
             "itemtype": "method",
             "name": "changeYear",
@@ -451,7 +473,7 @@
         },
         {
             "file": "src\\calendar.ts",
-            "line": 173,
+            "line": 171,
             "description": "Sets data for selected year and calls rerendering calendar view\nand invokes method to mark cells according to server data.",
             "itemtype": "method",
             "name": "setSelectedYear",
@@ -593,7 +615,7 @@
         {
             "file": "src\\events.ts",
             "line": 200,
-            "description": "Submit action. Applies css style for selected event on client side.\nCalls `TODO: Submit server implementation` for server side implementation.",
+            "description": "Submit action. Applies css style for selected event on client side.\nCalls 'Submit server implementation` for server side implementation.",
             "itemtype": "method",
             "name": "submitChanges",
             "class": "Events",
@@ -601,8 +623,8 @@
         },
         {
             "file": "src\\events.ts",
-            "line": 211,
-            "description": "Delete action. Remove css style on client side.\nCalls `TODO: Delete server implementation` for server side implementation.",
+            "line": 217,
+            "description": "Delete action. Remove css style on client side.\nCalls `Delete server implementation` for server side implementation.",
             "itemtype": "method",
             "name": "deleteItems",
             "class": "Events",
@@ -610,7 +632,7 @@
         },
         {
             "file": "src\\events.ts",
-            "line": 223,
+            "line": 234,
             "description": "Sets css styling to each cell in range of selected indexes according to\nselected event and its properties (background color, color), sets title\nif any of messages is typed. Adds class `event-day` to each cell and initializes\npopover with messages.",
             "itemtype": "method",
             "name": "applyEventFormat",
@@ -619,7 +641,7 @@
         },
         {
             "file": "src\\events.ts",
-            "line": 250,
+            "line": 262,
             "description": "Removes css styling and attribute `title` from selected cells\nand destroys popover with messages.",
             "itemtype": "method",
             "name": "removeEventFormat",
@@ -628,7 +650,7 @@
         },
         {
             "file": "src\\events.ts",
-            "line": 266,
+            "line": 278,
             "description": "Marks specified cells with css format and adds popover\nin case message or note for cell is available.",
             "itemtype": "method",
             "name": "dataEventFormat",
@@ -655,7 +677,7 @@
         },
         {
             "file": "src\\events.ts",
-            "line": 295,
+            "line": 307,
             "description": "Resolves left mouse pressing.",
             "itemtype": "method",
             "name": "leftMousePressed",
@@ -677,12 +699,27 @@
         },
         {
             "file": "src\\events.ts",
-            "line": 309,
+            "line": 321,
             "description": "Remove values from `this.index` property after `mouseup` event\nto use for other selection.",
             "itemtype": "method",
             "name": "resetIndexes",
             "access": "private",
             "tagname": "",
+            "class": "Events",
+            "module": "Calendar"
+        },
+        {
+            "file": "src\\events.ts",
+            "line": 332,
+            "description": "Creates array of IData object based on start and end indexes.",
+            "itemtype": "method",
+            "name": "createEventData",
+            "access": "private",
+            "tagname": "",
+            "return": {
+                "description": "- IData object array",
+                "type": "Array<IData>"
+            },
             "class": "Events",
             "module": "Calendar"
         },
@@ -1269,6 +1306,10 @@
         {
             "message": "unknown tag: implements",
             "line": " src\\actions.ts:6"
+        },
+        {
+            "message": "unknown tag: implements",
+            "line": " src\\actions.ts:61"
         },
         {
             "message": "replacing incorrect tag: returns with return",

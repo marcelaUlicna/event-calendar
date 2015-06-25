@@ -49,6 +49,7 @@
                             <li><a href="../classes/MonthCalendar.html">MonthCalendar</a></li>
                             <li><a href="../classes/MoveAction.html">MoveAction</a></li>
                             <li><a href="../classes/Popover.html">Popover</a></li>
+                            <li><a href="../classes/PostDataAction.html">PostDataAction</a></li>
                     </ul>
                 </div>
             </div>
@@ -130,7 +131,7 @@
     <br>
     <span class="foundat">
         
-        <a href="../files/src_calendar.ts.html#l150"><code>src\calendar.ts:150</code></a>
+        <a href="../files/src_calendar.ts.html#l151"><code>src\calendar.ts:151</code></a>
     </span><br>
     <p>Changes the year of calendar and calls method
 which obtains new data for selected year.</p>
@@ -167,11 +168,11 @@ which obtains new data for selected year.</p>
     <br>
     <span class="foundat">
         
-        <a href="../files/src_calendar.ts.html#l134"><code>src\calendar.ts:134</code></a>
+        <a href="../files/src_calendar.ts.html#l135"><code>src\calendar.ts:135</code></a>
     </span><br>
     <p>Destroys plugin and removes all event handlers.</p>
 <p><strong>Usage</strong>:</p>
-<pre class="code prettyprint"><code>$(&quot;#calendar&quot;).vacationCalendar.destroy();</code></pre>
+<pre class="code prettyprint"><code>$(&quot;#calendar&quot;).eventCalendar.destroy();</code></pre>
 
 </div>
 <a name="methods_init"></a>
@@ -180,7 +181,7 @@ which obtains new data for selected year.</p>
     <br>
     <span class="foundat">
         
-        <a href="../files/src_calendar.ts.html#l112"><code>src\calendar.ts:112</code></a>
+        <a href="../files/src_calendar.ts.html#l114"><code>src\calendar.ts:114</code></a>
     </span><br>
     <p>Initializes view with calendars.</p>
 
@@ -191,7 +192,7 @@ which obtains new data for selected year.</p>
     <br>
     <span class="foundat">
         
-        <a href="../files/src_calendar.ts.html#l101"><code>src\calendar.ts:101</code></a>
+        <a href="../files/src_calendar.ts.html#l103"><code>src\calendar.ts:103</code></a>
     </span><br>
     <p>Calls static method to mark cells with server data.</p>
 
@@ -202,7 +203,7 @@ which obtains new data for selected year.</p>
     <br>
     <span class="foundat">
         
-        <a href="../files/src_calendar.ts.html#l173"><code>src\calendar.ts:173</code></a>
+        <a href="../files/src_calendar.ts.html#l171"><code>src\calendar.ts:171</code></a>
     </span><br>
     <p>Sets data for selected year and calls rerendering calendar view
 and invokes method to mark cells according to server data.</p>
@@ -226,7 +227,7 @@ and invokes method to mark cells according to server data.</p>
                 </div>
                 <a name="props_moveAction"></a>
                 <div class="props item">
-                    <code>moveAction</code> &lt;<strong>IMoveAction</strong>&gt;<br>
+                    <code>moveAction</code> &lt;<strong>Any</strong>&gt;<br>
                     <span class="foundat"><a href="../files/src_calendar.ts.html#l56"><code>src\calendar.ts:56</code></a></span>
                     <p>Actions to render caledar for next or previous year.</p>
                 

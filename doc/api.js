@@ -9,7 +9,8 @@ YUI.add("yuidoc-meta", function(Y) {
         "ModalTemplate",
         "MonthCalendar",
         "MoveAction",
-        "Popover"
+        "Popover",
+        "PostDataAction"
     ],
     "modules": [
         "Calendar"

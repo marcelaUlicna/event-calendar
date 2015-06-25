@@ -49,6 +49,7 @@
                             <li><a href="../classes/MonthCalendar.html">MonthCalendar</a></li>
                             <li><a href="../classes/MoveAction.html">MoveAction</a></li>
                             <li><a href="../classes/Popover.html">Popover</a></li>
+                            <li><a href="../classes/PostDataAction.html">PostDataAction</a></li>
                     </ul>
                 </div>
             </div>
@@ -184,7 +185,7 @@ module Calendar {
             if(!index) return;
 
             $(&#x27;td.cell&#x27;).removeClass(&#x27;selected-day&#x27;);
-            this.indexes = {start: Number(index), end: Number(index)};
+            this.indexes = { start: Number(index), end: Number(index) };
             cellElement.addClass(&#x27;selected-day&#x27;);
         }
 
@@ -273,25 +274,36 @@ module Calendar {
 
         /**
          * Submit action. Applies css style for selected event on client side.
-         * Calls &#x60;TODO: Submit server implementation&#x60; for server side implementation.
+         * Calls &#x27;Submit server implementation&#x60; for server side implementation.
          *
          * @method submitChanges
          */
         submitChanges(): void {
-            // user implementation
             this.applyEventFormat();
+            var data = this.createEventData();
+            
+            if(this.settings.submitData.process) {
+                this.settings.submitData.process(data);
+            } else {
+                this.settings.submitData.apply(null, data);
+            }
         }
 
         /**
          * Delete action. Remove css style on client side.
-         * Calls &#x60;TODO: Delete server implementation&#x60; for server side implementation.
+         * Calls &#x60;Delete server implementation&#x60; for server side implementation.
          *
          * @method deleteItems
          */
         deleteItems(): void {
-            // user implementation
             this.removeEventFormat();
-
+            var data = this.createEventData();
+            
+            if(this.settings.deleteData.process) {
+                this.settings.deleteData.process(data);
+            } else {
+                this.settings.deleteData.apply(null, data);
+            }
         }
 
         /**
@@ -303,6 +315,7 @@ module Calendar {
          * @method applyEventFormat
          */
         applyEventFormat(): void {
+            this.indexes = Calendar.Helpers.ArrayIndexes(this.indexes);
             var selectedEvent = this.dialogSettings.events.filter((item) =&gt; item.name === this.dialogSettings.selectedEvent),
                 oneEvent = selectedEvent[0],
                 bgr = oneEvent[&quot;backgroundColor&quot;] || this.dialogSettings.defaultBgColor,
@@ -347,7 +360,7 @@ module Calendar {
          * @param {Array&lt;IEvent&gt;} events - List of available events
          * @param {number} year - Actual selected year
          */
-        static dataEventFormat(data: Array&lt;IData&gt;, events: Array&lt;IEvent&gt;, year: number): void {
+        static dataEventFormat(data: Array&lt;IData&gt;, events: Array&lt;IEvent&gt;, year: number, showNOte: boolean): void {
             data.forEach((item) =&gt; {
                 var date = moment(item.date);
 
@@ -360,7 +373,7 @@ module Calendar {
                     cell.addClass(&#x27;event-day&#x27;);
                     cell.css({ &quot;background-color&quot;: currentEvent.backgroundColor, &quot;color&quot;: currentEvent.color });
                     if(item.message || item.note) {
-                        Calendar.Popover.popover(cell, item.message, item.note);
+                        Calendar.Popover.popover(cell, item.message, showNOte ? item.note : null);
                     }
                 }
             });
@@ -389,6 +402,33 @@ module Calendar {
          */
         private resetIndexes(): void {
             this.indexes = { start: null, end: null };
+        }
+        
+        /**
+         * Creates array of IData object based on start and end indexes.
+         * 
+         * @method createEventData
+         * @private
+         * @return {Array&lt;IData&gt;} - IData object array
+         */
+        private createEventData(): Array&lt;IData&gt; {
+            var data: Array&lt;IData&gt; = [];
+            var eventRange = Calendar.Helpers.ArrayRange(this.indexes.start, this.indexes.end),
+                event = this.dialogSettings.selectedEvent,
+                message = this.dialogSettings.message,
+                note = this.dialogSettings.personalNote;
+            
+            eventRange.forEach((element) =&gt; {
+                var date = moment([this.year]).dayOfYear(element);
+                data.push({
+                    date: date.toDate(),
+                    event: event,
+                    message: message,
+                    note: note
+                });
+            });
+            
+            return data;
         }
     }
 }

@@ -49,6 +49,7 @@
                             <li><a href="../classes/MonthCalendar.html">MonthCalendar</a></li>
                             <li><a href="../classes/MoveAction.html">MoveAction</a></li>
                             <li><a href="../classes/Popover.html">Popover</a></li>
+                            <li><a href="../classes/PostDataAction.html">PostDataAction</a></li>
                     </ul>
                 </div>
             </div>
@@ -131,9 +132,9 @@ module Calendar {
          * Actions to render caledar for next or previous year.
          *
          * @property moveAction
-         * @type {IMoveAction}
+         * @type {any}
          */
-        moveAction: IMoveAction;
+        moveAction: any;
 
         constructor(element: JQuery, options: ISettings) {
             this.element = element;
@@ -145,7 +146,7 @@ module Calendar {
                 moment.locale(this.settings.locale);
             }
 
-            this.moveAction = new this.settings.moveAction();
+            this.moveAction = this.settings.moveAction;
             this.events = new Events(this.element, this.settings);
             this.events.setSelectedlYear(this.year);
 
@@ -168,7 +169,9 @@ module Calendar {
                     submitButton: &quot;Submit&quot;,
                     deleteButton: &quot;Delete&quot;
                 },
-                moveAction: MoveAction
+                moveAction: new MoveAction(),
+                submitData: new PostDataAction(),
+                deleteData: new PostDataAction()
             }
         }
 
@@ -179,7 +182,7 @@ module Calendar {
          */
         setEventFormat(): void {
             if(this.settings.data) {
-                Calendar.Events.dataEventFormat(this.settings.data, this.settings.events, this.year);
+                Calendar.Events.dataEventFormat(this.settings.data, this.settings.events, this.year, this.settings.editable);
             }
         }
 
@@ -189,7 +192,6 @@ module Calendar {
          * @method init
          */
         init(): void {
-            //console.log(this.settings);
             this.element.empty();
             var header = new Header(this.year),
                 monthTables = new MonthCalendar(this.settings, this.year);
@@ -210,12 +212,12 @@ module Calendar {
          *
          * __Usage__:
          *
-         *     $(&quot;#calendar&quot;).vacationCalendar.destroy();
+         *     $(&quot;#calendar&quot;).eventCalendar.destroy();
          *
          * @method destroy
          */
         destroy(): void {
-            this.element.removeData(&quot;jquery.vacation.calendar&quot;);
+            this.element.removeData(&quot;jquery.event.calendar&quot;);
             this.element.off();
             this.element.unbind();
             this.element.empty();
@@ -230,17 +232,14 @@ module Calendar {
          */
         changeYear(e: JQueryEventObject): void {
             var direction = $(e.target).closest(&quot;.year-direction&quot;).attr(&quot;data-direction&quot;);
-
-            if(direction === &quot;prev&quot;) {
-                this.year = this.year - 1;
+            this.year = direction === &quot;prev&quot; ? this.year - 1 : this.year + 1;
+                
+            if(this.moveAction.move) {
                 this.moveAction
-                    .previous(this.year, this.settings.data)
+                    .move(this.year, this.settings.data)
                     .always(() =&gt; this.setSelectedYear());
             } else {
-                this.year = this.year + 1;
-                this.moveAction
-                    .next(this.year, this.settings.data)
-                    .always(() =&gt; this.setSelectedYear());
+                this.moveAction.call(null, this.year);
             }
         }
 
@@ -260,17 +259,17 @@ module Calendar {
 }
 
 (function($){
-    $.fn.vacationCalendar = function(){
+    $.fn.eventCalendar = function(){
         var option = arguments[0],
             args = arguments;
 
         return this.each(function(){
             var $this = $(this),
-                data = $this.data(&quot;jquery.vacation.calendar&quot;),
-                options = $.extend({}, $.fn.vacationCalendar.defaults, $this.data(), typeof option === &#x27;object&#x27; &amp;&amp; option);
+                data = $this.data(&quot;jquery.event.calendar&quot;),
+                options = $.extend({}, $.fn.eventCalendar.defaults, $this.data(), typeof option === &#x27;object&#x27; &amp;&amp; option);
 
             if(!data) {
-                $this.data(&quot;jquery.vacation.calendar&quot;, (data = new Calendar.EventCalendar($this, options)));
+                $this.data(&quot;jquery.event.calendar&quot;, (data = new Calendar.EventCalendar($this, options)));
             }
 
             if (typeof option === &#x27;string&#x27;) {
@@ -279,14 +278,14 @@ module Calendar {
                 data.init();
             }
 
-            $.fn.vacationCalendar.destroy = function(){
+            $.fn.eventCalendar.destroy = function(){
                 data.destroy();
             };
         });
     };
 
 
-    $.fn.vacationCalendar.defaults = { };
+    $.fn.eventCalendar.defaults = { };
 })(jQuery);
 </pre>
 

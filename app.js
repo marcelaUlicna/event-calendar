@@ -1,3 +1,6 @@
+/* global moment */
+/* global $ */
+
 $(function(){
 
 	var configSelector = "calendarTab";
@@ -8,7 +11,7 @@ $(function(){
 	$('#myTab a').click(function (e) {
 		  e.preventDefault();
 		  var tab = $(this).attr("aria-controls");
-		  $("#eventCalendar").vacationCalendar.destroy();
+		  $("#eventCalendar").eventCalendar.destroy();
 		  $(".calendarNote").show();
 		  
 		  switch(tab) {
@@ -45,12 +48,12 @@ $(function(){
 
 	function CalendarScr () {
 		moment.locale("en");
-		$("#eventCalendar").vacationCalendar();
+		$("#eventCalendar").eventCalendar();
 	}
 
     function AdvanceCalendar () {
         moment.locale("en");
-		$("#eventCalendar").vacationCalendar({
+		$("#eventCalendar").eventCalendar({
             events: [
                 {name: "Vacation", backgroundColor: "#5CB85C"},
                 {name: "Available", backgroundColor: "#5BC0DE"},
@@ -62,7 +65,7 @@ $(function(){
     }
 	
 	function LocalizedCalendar () {
-		$("#eventCalendar").vacationCalendar({
+		$("#eventCalendar").eventCalendar({
             events: [
                 {name: "Dovolená", backgroundColor: "#5CB85C"},
                 {name: "Dostupný", backgroundColor: "#5BC0DE"},
@@ -91,7 +94,7 @@ $(function(){
 				data = result;
 			})
 			.always(function(){
-				$("#eventCalendar").vacationCalendar({
+				$("#eventCalendar").eventCalendar({
 					data: data,
 					events: [
 						{name: "Vacation", backgroundColor: "#5CB85C"},

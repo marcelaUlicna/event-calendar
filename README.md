@@ -37,6 +37,10 @@ There is a brief list of plugin options. All properties are optional. For usage 
 - `data` - json object that contains data for displaying then in calendar
 - `locale` - Locale according to `momentjs` library, it is used for localization of month names and week days abbreviations
 - `localization` - Object that contains custom labels for calendar modal dialog
+- `editable` - Boolean, default true. Items in calendar can be added and deleted, both messages are visible on tooltip. If it is set to `false`, component is read-only and tooltip shows only user message.
+- `moveAction` - typescript class or javascript function. Renders calendar for previous and next year. More info in [Calendar functions](https://github.com/marcelaUlicna/event-calendar/blob/master/README.md#calendar-functions) section.
+- `submitData` - typescript class or javascript function. Selected data for submitting to server. More info in [Calendar functions](https://github.com/marcelaUlicna/event-calendar/blob/master/README.md#calendar-functions) section.
+- `deleteData` - typescript class or javascript function. Selected data for deleting on server. More info in [Calendar functions](https://github.com/marcelaUlicna/event-calendar/blob/master/README.md#calendar-functions) section.
 
 
 ## Usage
@@ -129,6 +133,36 @@ $("#calendar").eventCalendar({
     ]
 });
 ```
+
+#### Calendar functions
+Plugin has implemented three function for server handling.
+
+__moveAction__ function (*in progress*)
+
+This function provides rendering calendar for previous or next year. It can be implemented with javascript or typescript class.
+- javascript (*in progress*)
+- typescript:
+  - extends class `MoveAction`
+  - implement method `move(year: number, data?: Array<IData>): JQueryPromise<any>`
+  - usage example: `moveAction: new Calendar.MyMoveAction()`
+
+
+__submitData__ and __deleteData__ functions
+
+Parameter contains array of `data` object. It can be implemented with javascript or typescript.
+- javascript:
+  - `submitData: function (params) {}`
+  - `deleteData: function (params) {}`
+  - object has following properties:
+      - date: Date
+      - event: string
+      - message: string
+      - note: string
+- typescript:
+  - extends `PostDataAction`
+  - implement method `process(data: Array<IData>): void`
+  - usage example: `submitData: new Calendar.MySubmitMethod()`
+  - usage example: `deleteData: new Calendar.MyDeleteMethod()`
 
 #### Localization
 Plugin supports localization utilizing `momentjs` library. See available locales on github https://github.com/moment/moment/tree/master/locale . To use locale, add property `locale` to options. If you want also localized calendar dialog, add another property `localization` with corresponding sentences. Both properties can be used independently so, for instance, default labels on calendar dialog can be overwritten with custom labels by using property `localization`.

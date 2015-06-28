@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+    
+    <head>
+        <!-- META -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Optimize mobile viewport -->
+        <title>Event calendar</title>
+        <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="lib/bootstrap/css/font-awesome.min.css" rel="stylesheet">
+        <link href="lib/app/calendar.css" rel="stylesheet">
+    </head>
+    
+    <body>
+        <div class="container">
+            <div class="navbar-collapse collapse" style="border-bottom: 1px solid #ccc;">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <h2>Event calendar</h2>
+                    </li>
+                </ul>
+                <div class="navbar-right navbar-buttons" style="margin-top: 20px;">
+                    <a href="index.html" rel="tooltip" class="btn btn-default btn-sm" style="border-radius: 50%;" data-toggle="tooltip" data-placement="bottom"
+                    title="Home page"><i class="glyphicon glyphicon-home"></i></a>
+                </div>
+            </div>
+            <div>
+                <div id="calendar"></div>
+            </div>
+        </div>
+        <script src="lib/bootstrap/js/jquery.min.js"></script>
+        <script src="lib/bootstrap/js/bootstrap.min.js"></script>
+        <script src="lib/bootstrap/js/moment-with-locales.min.js"></script>
+        <script src="lib/app/event-calendar.js"></script>
+        <script src="app.js"></script>
+    </body>
+
+</html>

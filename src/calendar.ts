@@ -69,6 +69,8 @@ module Calendar {
 
             if(this.settings.locale) {
                 moment.locale(this.settings.locale);
+            } else {
+                moment.locale("en");
             }
 
             this.moveAction = this.settings.moveAction;

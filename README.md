@@ -32,7 +32,7 @@ An event-calendar plugin provides simple and well-arranged calendar view with cu
 There is a brief list of plugin options. All properties are optional. For usage see particular examples in section [Usage](https://github.com/marcelaUlicna/event-calendar/blob/master/README.md#use-options).
 
 - `events` - List of defined events to use in calendar
-- `data` - json object that contains data for displaying then in calendar
+- `data` - json object that contains data for displaying them in calendar
 - `locale` - Locale according to `momentjs` library, it is used for localization of month names and week days abbreviations
 - `localization` - Object that contains custom labels for calendar modal dialog
 - `editable` - Boolean, default true. Items in calendar can be added and deleted, both messages are visible on tooltip. If it is set to `false`, component is read-only and tooltip shows only user message.
@@ -199,4 +199,4 @@ $("#calendar").eventCalendar({
 ```
 
 #### Note
-In `server` folder there is an example of saving data to database.
+In `server` folder there is an example of saving data to database as well as javascript implementation of methods `moveAction`, `submitData` and `deleteData`.

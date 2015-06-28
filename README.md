@@ -1,11 +1,9 @@
 # Event Calendar
 Event Calendar - TypeScript plugin
 
-*In progress*
-
 Demo and documentation are published at http://marcelaulicna.github.io/event-calendar .
 
-An event-calendar plugin provides simple and well-arranged calendar view with custom events and messages for users colleagues or for himself.
+An event-calendar plugin provides simple and well-arranged calendar view with custom events and messages for user's colleagues or for himself. It shows all year calendar divided after months. Selecting dates is managed by clicking and dragging the day number on this schedule, after releasing the mouse button additional informations can be written in modal dialog. Plugin also supports connection to server, for example for saving events to database.
 
 ## How to install
 
@@ -100,7 +98,7 @@ Plugin accepts data in json format. It is convenient if you have saved some reco
 
 __Properties of a single object__
 
-`date` - date in `YYYY/MM/DD` format
+`date` - javascript Date object or valid date string which can be passed to `moment` function
 
 `event` - event name which matches with `events` object in options. In case there is not event with given name, first event will be used instead for corresponding date in calendar
 
@@ -135,14 +133,28 @@ $("#calendar").eventCalendar({
 ```
 
 #### Calendar functions
-Plugin has implemented three function for server handling.
+Plugin has implemented three functions for server handling.
 
-__moveAction__ function (*in progress*)
+__moveAction__ function
 
-This function provides rendering calendar for previous or next year. It can be implemented with javascript or typescript class.
-- javascript (*in progress*)
+This function provides rendering calendar for previous or next year. Plugin has implemented jquery promise and waits for callback. It can be implemented with javascript or typescript class.
+- javascript:
+  - `moveAction: function (year) {}`
+  - example:
+  
+    ```javascript
+    moveAction: function (year) {
+        return $.ajax("/api/events/" + year)
+          .done(function (result) {
+             return result;
+           })
+          .fail(function (err) {
+             return err;
+          });
+    }
+    ```
 - typescript:
-  - extends class `MoveAction`
+  - extend class `MoveAction`
   - implement method `move(year: number, data?: Array<IData>): JQueryPromise<any>`
   - usage example: `moveAction: new Calendar.MyMoveAction()`
 
@@ -153,13 +165,13 @@ Parameter contains array of `data` object. It can be implemented with javascript
 - javascript:
   - `submitData: function (params) {}`
   - `deleteData: function (params) {}`
-  - object has following properties:
+  - single object in `params` has following properties:
       - date: Date
       - event: string
       - message: string
       - note: string
 - typescript:
-  - extends `PostDataAction`
+  - extend `PostDataAction`
   - implement method `process(data: Array<IData>): void`
   - usage example: `submitData: new Calendar.MySubmitMethod()`
   - usage example: `deleteData: new Calendar.MyDeleteMethod()`
@@ -170,11 +182,11 @@ Plugin supports localization utilizing `momentjs` library. See available locales
 ```javascript
 $("#calendar").eventCalendar({
     events: [
-      {name: "Vacation", backgroundColor: "#5CB85C", color: "white"},
-      {name: "Available", backgroundColor: "#5BC0DE"},
-      {name: "Business trip", backgroundColor: "#EC971F"},
-      {name: "Unavailable", backgroundColor: "#D9534F"},
-      {name: "Other"}
+      {name: "Dovolená", backgroundColor: "#5CB85C", color: "white"},
+      {name: "K dispozici", backgroundColor: "#5BC0DE"},
+      {name: "Služební cesta", backgroundColor: "#EC971F"},
+      {name: "Nedostupný", backgroundColor: "#D9534F"},
+      {name: "Jiná událost"}
     ],
     locale: "cs",
     localization: {
@@ -186,3 +198,5 @@ $("#calendar").eventCalendar({
 });
 ```
 
+#### Note
+In `server` folder there is an example of saving data to database.

@@ -1,0 +1,11 @@
+{
+  "name"         : "node-calendar",
+  "version"      : "0.0.0",
+  "description"  : "Event calendar - node application.",
+  "main"         : "server.js",
+  "author"       : "Marcela",
+  "dependencies" : {
+    "express"    : "~3.4.4",
+    "mongoose"   : "~3.6.2"
+  }
+}

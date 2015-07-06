@@ -47,7 +47,6 @@ There is a brief list of plugin options. All properties are optional. For usage 
 
    ```html
    <link href="dist/css/bootstrap.min.css" rel="stylesheet">
-   <link href="dist/css/font-awesome.min.css" rel="stylesheet">
    <link href="dist/app/calendar.css" rel="stylesheet">
    ```
 2. Add javascript references:

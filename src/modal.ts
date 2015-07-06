@@ -69,11 +69,19 @@ module Calendar {
          * @return {any} - Returns dictionary template
          */
         private getDictionary(): any {
-            var localization = this.dialogSettings.localization;
+            var localization = this.dialogSettings.localization,
+                startDate = moment(this.dialogSettings.start),
+                endDate = moment(this.dialogSettings.end),
+                title = "";
+                
+            if(startDate.format("YYYY-MM-DD") === endDate.format("YYYY-MM-DD")) {
+                title = startDate.format("LL");
+            } else {
+                title = startDate.format("LL") + " - " + endDate.format("LL");
+            }
 
             return {
-                "start": moment(this.dialogSettings.start).format("LL"),
-                "end":  moment(this.dialogSettings.end).format("LL"),
+                "title": title,
                 "dropdown": Calendar.ModalTemplate.dropdownTemplate(this.dialogSettings),
                 "messageSentence": localization.messageSentence,
                 "noteSentence": localization.noteSentence,
@@ -95,7 +103,7 @@ module Calendar {
             this.modal = $(Calendar.Helpers.RenderTemplate(Calendar.ModalTemplate.template(), this.templateDictionary)).appendTo($("body"));
             this.modal.modal();
             this.modal.on("click", ".modal-body .dropdown-menu li", (e) => this.selectChange(e));
-            this.modal.on("change", "input", (e) => this.messageChanged(e));
+            this.modal.on("change", "textarea", (e) => this.messageChanged(e));
             this.modal.on("click", ".modal-body .btn-action", (e) => this.click(e));
             this.modal.on("keyup", (e) => this.modalKeyup(e));
             this.modal.on("hidden.bs.modal", () => {
@@ -190,10 +198,9 @@ module Calendar {
             this.dialogSettings.selectedEvent = li.attr("data-value");
 
             var html = li.find("a").html(),
-                faIndex = html.indexOf("<i class"),
-                htmlWithCaret = html.slice(0, faIndex) + " <span class='caret pull-right'></span>" + html.slice(faIndex);
+                carret = "<span class='caret pull-right'></span>";
 
-            $(".calendar-modal .dropdown-toggle").html(htmlWithCaret);
+            $(".calendar-modal .dropdown-toggle").html(html + carret);
         }
 
         /**
@@ -203,12 +210,12 @@ module Calendar {
          * @param {JQueryEventObject} e - Input event handler
          */
         messageChanged(e:JQueryEventObject): void {
-            var input = $(e.target);
+            var area = $(e.target);
 
-            if(input.attr("name") === "userMessage") {
-                this.dialogSettings.message = input.val();
+            if(area.attr("name") === "userMessage") {
+                this.dialogSettings.message = area.val();
             } else {
-                this.dialogSettings.personalNote = input.val();
+                this.dialogSettings.personalNote = area.val();
             }
         }
     }
@@ -224,9 +231,9 @@ module Calendar {
         private static dropdownButton: string = [
             "<div class='btn-group' role='group'>",
             "   <button type='button' class='btn btn-default dropdown-toggle' data-toggle='dropdown' aria-expanded='false'>",
+            "   <span class='list-square' style='color: {{backgroundColor}};'></span>",
             "       {{value}}",
             "       <span class='caret pull-right'></span>",
-            "       <i class='fa fa-square pull-right' style='color: {{backgroundColor}}'></i>",
             "   </button>",
             "   <ul class='dropdown-menu' role='menu'>",
             "       {{dropdownlist}}",
@@ -234,7 +241,7 @@ module Calendar {
             "</div>"
         ].join("\n");
 
-        private static dropdownList: string = "<li data-value='{{value}}'><a href='#'>{{value}}<i class='fa fa-square pull-right' style='color: {{backgroundColor}};'></i></a></li>";
+        private static dropdownList: string = "<li data-value='{{value}}'><a href='#'><span class='list-square' style='color: {{backgroundColor}};'></span> {{value}}</a></li>";
 
         /**
          * Whole modal dialog html template.
@@ -246,27 +253,24 @@ module Calendar {
         static template(): string {
             return  [
                 "<div class='modal calendar-modal' tabindex='-1' role='dialog' aria-hidden='true'>",
-                "  <div class='modal-dialog modal-sm'>",
+                "  <div class='modal-dialog'>",
                 "    <div class='modal-content'>",
                 "       <div class='modal-header'  style='border-bottom: none;'>",
                 "           <button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>",
+                "           <h4 class='modal-title'>{{title}}</h4>",
                 "       </div>",
                 "       <div class='modal-body' style='padding-top: 0;'>",
-                "           <div class='row' style='padding-bottom: 15px;'>",
-                "               <div class='col-md-12'><i class='fa fa-calendar-o'></i> {{start}}</div>",
-                "               <div class='col-md-12'><i class='fa fa-calendar-o'></i> {{end}}</div>",
-                "           </div>",
                 "           <div class='row' style='padding-bottom: 15px;'>",
                 "               <div class='col-md-12'>{{dropdown}}</div>",
                 "           </div>",
                 "           <form>",
                 "               <div class='form-group'>",
                 "                   <div>{{messageSentence}}</div>",
-                "                   <input type='text' name='userMessage' class='form-control'>",
+                "                   <textarea name='userMessage' class='form-control' rows='3'></textarea>",
                 "               </div>",
                 "               <div class='form-group'>",
                 "                   <div>{{noteSentence}}</div>",
-                "                   <input type='text' name='privateNote' class='form-control'>",
+                "                   <textarea name='privateNote' class='form-control' rows='3'></textarea>",
                 "               </div>",
                 "           </form>",
                 "           <div class='row'>",

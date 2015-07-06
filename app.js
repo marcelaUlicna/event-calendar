@@ -23,12 +23,15 @@ $(function(){
                 {name: "Unavailable", backgroundColor: "#D9534F"},
                 {name: "Other"}
             ],
-            locale: "cs",
-            localization: {
-                messageSentence: "Informace (uživatel uvidí tuto zprávu)",
-                noteSentence: "Poznámka (pouze pro vás)",
-                submitButton: "Odeslat",
-                deleteButton: "Vymazat"
+            moveAction: function (params) {
+                var url = "data/events" + params + ".json";
+                return $.ajax(url)
+                    .done(function(result) {
+                        return result;
+                    })
+                    .fail(function() {
+                        return null;
+                    });
             }
         });
 
@@ -46,6 +49,18 @@ $(function(){
  * 3. javascript
  *    - moveAction: function(param) {}
  *    - param contains new year
+ * 
+ * Example:
+ * moveAction: function (params) {
+ *      var url = "data/events" + params + ".json";
+ *      return $.ajax(url)
+ *          .done(function(result) {
+ *              return result;
+ *          })
+ *          .fail(function() {
+ *              return null;
+ *          });
+ * }
  * 
  * Submit and delete request
  * =========================

@@ -1,9 +1,12 @@
 {
-  "name"         : "node-calendar",
-  "version"      : "0.0.0",
-  "description"  : "Event calendar - node application.",
-  "main"         : "server.js",
+  "name"         : "event-calendar",
+  "version"      : "0.0.1",
+  "description"  : "Event calendar - typescript application.",
   "author"       : "Marcela",
+  "repository"   :  { 
+    "type"       : "git",
+    "url"        : "https://github.com/marcelaUlicna/event-calendar.git"
+  },
   "dependencies" : {
     "express"    : "~3.4.4",
     "mongoose"   : "~3.6.2"

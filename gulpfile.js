@@ -55,19 +55,9 @@ gulp.task('less', function(){
 
 gulp.task('css', function(){
     return gulp.src([
-                    'node_modules/bootstrap/dist/css/bootstrap.min.css',
-                    'node_modules/font-awesome/css/font-awesome.min.css'
+                    'node_modules/bootstrap/dist/css/bootstrap.min.css'
                 ])
                 .pipe(gulp.dest('dist/css'));
-});
-
-// fonts
-gulp.task('fonts', function(){
-    return gulp.src([
-                    'node_modules/font-awesome/fonts/*',
-                    'node_modules/bootstrap/fonts/*'
-                ])
-               .pipe(gulp.dest('dist/fonts'));
 });
 
 // server
@@ -83,12 +73,12 @@ gulp.task('connect', function () {
 // watch
 gulp.task('watch', function(){
     gulp.watch('src/*.ts', ['typescript']);
-    gulp.watch('src/less/calendar.css', ['less']);
+    gulp.watch('src/less/calendar.less', ['less']);
 });
 
-gulp.task('dev', ['fonts', 'js', 'css', 'typescript', 'less', 'connect', 'watch']);
+gulp.task('dev', ['js', 'css', 'typescript', 'less', 'connect', 'watch']);
 gulp.task('default', function(){
-    sequence('fonts', 'js', 'css', 'typescript', 'less');
+    sequence('js', 'css', 'typescript', 'less');
 });
 
 // yuidoc

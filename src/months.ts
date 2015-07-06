@@ -162,13 +162,18 @@ module Calendar {
                         if(cellDateIndex === 6 || cellDateIndex === 0) {
                             cell.addClass("weekend");
                         }
-                        // set today
-                        if(moment(cellDate).format("YYYY-MM-DD") === moment(this.today).format("YYYY-MM-DD")) {
-                            cell.addClass("css-today").addClass("today");
-                        }
 
                         // set date number
-                        cell.attr("data-year-day", moment(cellDate).dayOfYear()).text(index);
+                        cell.attr("data-year-day", moment(cellDate).dayOfYear());
+                        
+                        // set today classes or text for other days
+                        if(moment(cellDate).format("YYYY-MM-DD") === moment(this.today).format("YYYY-MM-DD")) {
+                            cell.addClass("css-today");
+                            cell.append($("<span class='today'>" + index + "</span>"));
+                        } else {
+                            cell.text(index);
+                        }
+                        
                         // resolve month index
                         if (index < daysInMonth) {
                             index++;

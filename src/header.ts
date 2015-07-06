@@ -55,7 +55,6 @@ module Calendar {
             return $("<div />")
                         .addClass("col-md-12")
                         .append($("<div />")
-                            .addClass("pull-left")
                             .append(this.renderButton("prev"))
                             .append(this.renderTitle())
                             .append(this.renderButton("next")));
@@ -70,16 +69,17 @@ module Calendar {
          */
         renderButton(direction: string): JQuery {
             var yearValue = direction === "prev" ? this.year - 1 : this.year + 1,
-                iconClass = direction === "prev" ? "fa fa-chevron-left" : "fa fa-chevron-right";
+                previousElement: JQuery = $("<span>&laquo;</span>"),
+                nextElement: JQuery = $("<span>&raquo;</span>");
 
             return $("<div />")
-                        .addClass("btn btn-default year-direction")
-                        .attr("type", "button")
+                        .addClass("btn btn-link year-direction")
                         .attr("name", "year")
                         .attr("data-direction", direction)
                         .attr("value", yearValue)
                         .append($("<span />")
-                            .addClass(iconClass));
+                            .addClass("direction-sign")
+                            .append(direction === "prev" ? previousElement : nextElement));
         }
 
         /**

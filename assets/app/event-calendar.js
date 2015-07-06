@@ -44,11 +44,11 @@ var Calendar;
             return $("<div />").addClass("row calendar-header").append(this.renderHeader());
         };
         Header.prototype.renderHeader = function () {
-            return $("<div />").addClass("col-md-12").append($("<div />").addClass("pull-left").append(this.renderButton("prev")).append(this.renderTitle()).append(this.renderButton("next")));
+            return $("<div />").addClass("col-md-12").append($("<div />").append(this.renderButton("prev")).append(this.renderTitle()).append(this.renderButton("next")));
         };
         Header.prototype.renderButton = function (direction) {
-            var yearValue = direction === "prev" ? this.year - 1 : this.year + 1, iconClass = direction === "prev" ? "fa fa-chevron-left" : "fa fa-chevron-right";
-            return $("<div />").addClass("btn btn-default year-direction").attr("type", "button").attr("name", "year").attr("data-direction", direction).attr("value", yearValue).append($("<span />").addClass(iconClass));
+            var yearValue = direction === "prev" ? this.year - 1 : this.year + 1, previousElement = $("<span>&laquo;</span>"), nextElement = $("<span>&raquo;</span>");
+            return $("<div />").addClass("btn btn-link year-direction").attr("name", "year").attr("data-direction", direction).attr("value", yearValue).append($("<span />").addClass("direction-sign").append(direction === "prev" ? previousElement : nextElement));
         };
         Header.prototype.renderTitle = function () {
             return $("<div />").addClass("actual-year").attr("data-year", this.year).append($("<strong />").text(this.year));
@@ -154,10 +154,14 @@ var Calendar;
                         if (cellDateIndex === 6 || cellDateIndex === 0) {
                             cell.addClass("weekend");
                         }
+                        cell.attr("data-year-day", moment(cellDate).dayOfYear());
                         if (moment(cellDate).format("YYYY-MM-DD") === moment(this.today).format("YYYY-MM-DD")) {
-                            cell.addClass("css-today").addClass("today");
+                            cell.addClass("css-today");
+                            cell.append($("<span class='today'>" + index + "</span>"));
                         }
-                        cell.attr("data-year-day", moment(cellDate).dayOfYear()).text(index);
+                        else {
+                            cell.text(index);
+                        }
                         if (index < daysInMonth) {
                             index++;
                         }
@@ -186,10 +190,15 @@ var Calendar;
             this.templateDictionary = this.getDictionary();
         }
         Dialog.prototype.getDictionary = function () {
-            var localization = this.dialogSettings.localization;
+            var localization = this.dialogSettings.localization, startDate = moment(this.dialogSettings.start), endDate = moment(this.dialogSettings.end), title = "";
+            if (startDate.format("YYYY-MM-DD") === endDate.format("YYYY-MM-DD")) {
+                title = startDate.format("LL");
+            }
+            else {
+                title = startDate.format("LL") + " - " + endDate.format("LL");
+            }
             return {
-                "start": moment(this.dialogSettings.start).format("LL"),
-                "end": moment(this.dialogSettings.end).format("LL"),
+                "title": title,
                 "dropdown": Calendar.ModalTemplate.dropdownTemplate(this.dialogSettings),
                 "messageSentence": localization.messageSentence,
                 "noteSentence": localization.noteSentence,
@@ -203,7 +212,7 @@ var Calendar;
             this.modal = $(Calendar.Helpers.RenderTemplate(Calendar.ModalTemplate.template(), this.templateDictionary)).appendTo($("body"));
             this.modal.modal();
             this.modal.on("click", ".modal-body .dropdown-menu li", function (e) { return _this.selectChange(e); });
-            this.modal.on("change", "input", function (e) { return _this.messageChanged(e); });
+            this.modal.on("change", "textarea", function (e) { return _this.messageChanged(e); });
             this.modal.on("click", ".modal-body .btn-action", function (e) { return _this.click(e); });
             this.modal.on("keyup", function (e) { return _this.modalKeyup(e); });
             this.modal.on("hidden.bs.modal", function () {
@@ -243,16 +252,16 @@ var Calendar;
         Dialog.prototype.selectChange = function (e) {
             var li = $(e.target).closest("li");
             this.dialogSettings.selectedEvent = li.attr("data-value");
-            var html = li.find("a").html(), faIndex = html.indexOf("<i class"), htmlWithCaret = html.slice(0, faIndex) + " <span class='caret pull-right'></span>" + html.slice(faIndex);
-            $(".calendar-modal .dropdown-toggle").html(htmlWithCaret);
+            var html = li.find("a").html(), carret = "<span class='caret pull-right'></span>";
+            $(".calendar-modal .dropdown-toggle").html(html + carret);
         };
         Dialog.prototype.messageChanged = function (e) {
-            var input = $(e.target);
-            if (input.attr("name") === "userMessage") {
-                this.dialogSettings.message = input.val();
+            var area = $(e.target);
+            if (area.attr("name") === "userMessage") {
+                this.dialogSettings.message = area.val();
             }
             else {
-                this.dialogSettings.personalNote = input.val();
+                this.dialogSettings.personalNote = area.val();
             }
         };
         return Dialog;
@@ -264,27 +273,24 @@ var Calendar;
         ModalTemplate.template = function () {
             return [
                 "<div class='modal calendar-modal' tabindex='-1' role='dialog' aria-hidden='true'>",
-                "  <div class='modal-dialog modal-sm'>",
+                "  <div class='modal-dialog'>",
                 "    <div class='modal-content'>",
                 "       <div class='modal-header'  style='border-bottom: none;'>",
                 "           <button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>",
+                "           <h4 class='modal-title'>{{title}}</h4>",
                 "       </div>",
                 "       <div class='modal-body' style='padding-top: 0;'>",
-                "           <div class='row' style='padding-bottom: 15px;'>",
-                "               <div class='col-md-12'><i class='fa fa-calendar-o'></i> {{start}}</div>",
-                "               <div class='col-md-12'><i class='fa fa-calendar-o'></i> {{end}}</div>",
-                "           </div>",
                 "           <div class='row' style='padding-bottom: 15px;'>",
                 "               <div class='col-md-12'>{{dropdown}}</div>",
                 "           </div>",
                 "           <form>",
                 "               <div class='form-group'>",
                 "                   <div>{{messageSentence}}</div>",
-                "                   <input type='text' name='userMessage' class='form-control'>",
+                "                   <textarea name='userMessage' class='form-control' rows='3'></textarea>",
                 "               </div>",
                 "               <div class='form-group'>",
                 "                   <div>{{noteSentence}}</div>",
-                "                   <input type='text' name='privateNote' class='form-control'>",
+                "                   <textarea name='privateNote' class='form-control' rows='3'></textarea>",
                 "               </div>",
                 "           </form>",
                 "           <div class='row'>",
@@ -317,16 +323,16 @@ var Calendar;
         ModalTemplate.dropdownButton = [
             "<div class='btn-group' role='group'>",
             "   <button type='button' class='btn btn-default dropdown-toggle' data-toggle='dropdown' aria-expanded='false'>",
+            "   <span class='list-square' style='color: {{backgroundColor}};'></span>",
             "       {{value}}",
             "       <span class='caret pull-right'></span>",
-            "       <i class='fa fa-square pull-right' style='color: {{backgroundColor}}'></i>",
             "   </button>",
             "   <ul class='dropdown-menu' role='menu'>",
             "       {{dropdownlist}}",
             "   </ul>",
             "</div>"
         ].join("\n");
-        ModalTemplate.dropdownList = "<li data-value='{{value}}'><a href='#'>{{value}}<i class='fa fa-square pull-right' style='color: {{backgroundColor}};'></i></a></li>";
+        ModalTemplate.dropdownList = "<li data-value='{{value}}'><a href='#'><span class='list-square' style='color: {{backgroundColor}};'></span> {{value}}</a></li>";
         return ModalTemplate;
     })();
     Calendar.ModalTemplate = ModalTemplate;
@@ -455,7 +461,7 @@ var Calendar;
                 this.settings.submitData.process(data);
             }
             else {
-                this.settings.submitData.apply(null, data);
+                this.settings.submitData.call(null, data);
             }
         };
         Events.prototype.deleteItems = function () {
@@ -465,7 +471,7 @@ var Calendar;
                 this.settings.deleteData.process(data);
             }
             else {
-                this.settings.deleteData.apply(null, data);
+                this.settings.deleteData.call(null, data);
             }
         };
         Events.prototype.applyEventFormat = function () {
@@ -541,6 +547,9 @@ var Calendar;
             if (this.settings.locale) {
                 moment.locale(this.settings.locale);
             }
+            else {
+                moment.locale("en");
+            }
             this.moveAction = this.settings.moveAction;
             this.events = new Calendar.Events(this.element, this.settings);
             this.events.setSelectedlYear(this.year);
@@ -587,11 +596,15 @@ var Calendar;
                 this.moveAction.move(this.year, this.settings.data).always(function () { return _this.setSelectedYear(); });
             }
             else {
-                this.moveAction.call(null, this.year);
+                $.when(this.moveAction.call(null, this.year)).done(function (result) {
+                    _this.setSelectedYear(result);
+                }).fail(function () {
+                    _this.setSelectedYear();
+                });
             }
         };
-        EventCalendar.prototype.setSelectedYear = function () {
-            this.settings.data = this.moveAction.data;
+        EventCalendar.prototype.setSelectedYear = function (newData) {
+            this.settings.data = newData ? newData : this.moveAction.data;
             this.init();
             this.events.setSelectedlYear(this.year);
             this.setEventFormat();

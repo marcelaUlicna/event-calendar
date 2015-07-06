@@ -26,7 +26,6 @@
 			<li role="presentation" class="active"><a href="#calendar" aria-controls="calendar" role="tab" data-toggle="tab">Calendar</a></li>
 			<li role="presentation"><a href="#advance" aria-controls="advance" role="tab" data-toggle="tab">Advance calendar</a></li>
 			<li role="presentation"><a href="#localization" aria-controls="localization" role="tab" data-toggle="tab">Localization</a></li>
-			<li role="presentation"><a href="#server" aria-controls="server" role="tab" data-toggle="tab">Server data</a></li>
 			<li role="presentation"><a href="#documentation" aria-controls="documentation" role="tab" data-toggle="tab">Documentation</a></li>
 		  </ul>
 
@@ -85,21 +84,6 @@ $("#eventCalendar").eventCalendar({
 		deleteButton: "Vymazat"
 	}
 });
-</pre>
-		</div>
-		<div id="serverTab" class="modalCode" style="display: none;">
-			<pre>
-$("#eventCalendar").eventCalendar({
-	data: data,
-	events: [
-		{name: "Vacation", backgroundColor: "#5CB85C"},
-		{name: "Available", backgroundColor: "#5BC0DE"},
-		{name: "Business trip", backgroundColor: "#EC971F"},
-		{name: "Unavailable", backgroundColor: "#D9534F"},
-		{name: "Other event"}
-	]
-})
-;</pre>
 		</div>
       </div>
     </div>

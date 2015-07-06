@@ -144,11 +144,19 @@ module Calendar {
          * @return {any} - Returns dictionary template
          */
         private getDictionary(): any {
-            var localization = this.dialogSettings.localization;
+            var localization = this.dialogSettings.localization,
+                startDate = moment(this.dialogSettings.start),
+                endDate = moment(this.dialogSettings.end),
+                title = &quot;&quot;;
+                
+            if(startDate.format(&quot;YYYY-MM-DD&quot;) === endDate.format(&quot;YYYY-MM-DD&quot;)) {
+                title = startDate.format(&quot;LL&quot;);
+            } else {
+                title = startDate.format(&quot;LL&quot;) + &quot; - &quot; + endDate.format(&quot;LL&quot;);
+            }
 
             return {
-                &quot;start&quot;: moment(this.dialogSettings.start).format(&quot;LL&quot;),
-                &quot;end&quot;:  moment(this.dialogSettings.end).format(&quot;LL&quot;),
+                &quot;title&quot;: title,
                 &quot;dropdown&quot;: Calendar.ModalTemplate.dropdownTemplate(this.dialogSettings),
                 &quot;messageSentence&quot;: localization.messageSentence,
                 &quot;noteSentence&quot;: localization.noteSentence,
@@ -170,7 +178,7 @@ module Calendar {
             this.modal = $(Calendar.Helpers.RenderTemplate(Calendar.ModalTemplate.template(), this.templateDictionary)).appendTo($(&quot;body&quot;));
             this.modal.modal();
             this.modal.on(&quot;click&quot;, &quot;.modal-body .dropdown-menu li&quot;, (e) =&gt; this.selectChange(e));
-            this.modal.on(&quot;change&quot;, &quot;input&quot;, (e) =&gt; this.messageChanged(e));
+            this.modal.on(&quot;change&quot;, &quot;textarea&quot;, (e) =&gt; this.messageChanged(e));
             this.modal.on(&quot;click&quot;, &quot;.modal-body .btn-action&quot;, (e) =&gt; this.click(e));
             this.modal.on(&quot;keyup&quot;, (e) =&gt; this.modalKeyup(e));
             this.modal.on(&quot;hidden.bs.modal&quot;, () =&gt; {
@@ -265,10 +273,9 @@ module Calendar {
             this.dialogSettings.selectedEvent = li.attr(&quot;data-value&quot;);
 
             var html = li.find(&quot;a&quot;).html(),
-                faIndex = html.indexOf(&quot;&lt;i class&quot;),
-                htmlWithCaret = html.slice(0, faIndex) + &quot; &lt;span class=&#x27;caret pull-right&#x27;&gt;&lt;/span&gt;&quot; + html.slice(faIndex);
+                carret = &quot;&lt;span class=&#x27;caret pull-right&#x27;&gt;&lt;/span&gt;&quot;;
 
-            $(&quot;.calendar-modal .dropdown-toggle&quot;).html(htmlWithCaret);
+            $(&quot;.calendar-modal .dropdown-toggle&quot;).html(html + carret);
         }
 
         /**
@@ -278,12 +285,12 @@ module Calendar {
          * @param {JQueryEventObject} e - Input event handler
          */
         messageChanged(e:JQueryEventObject): void {
-            var input = $(e.target);
+            var area = $(e.target);
 
-            if(input.attr(&quot;name&quot;) === &quot;userMessage&quot;) {
-                this.dialogSettings.message = input.val();
+            if(area.attr(&quot;name&quot;) === &quot;userMessage&quot;) {
+                this.dialogSettings.message = area.val();
             } else {
-                this.dialogSettings.personalNote = input.val();
+                this.dialogSettings.personalNote = area.val();
             }
         }
     }
@@ -299,9 +306,9 @@ module Calendar {
         private static dropdownButton: string = [
             &quot;&lt;div class=&#x27;btn-group&#x27; role=&#x27;group&#x27;&gt;&quot;,
             &quot;   &lt;button type=&#x27;button&#x27; class=&#x27;btn btn-default dropdown-toggle&#x27; data-toggle=&#x27;dropdown&#x27; aria-expanded=&#x27;false&#x27;&gt;&quot;,
+            &quot;   &lt;span class=&#x27;list-square&#x27; style=&#x27;color: {{backgroundColor}};&#x27;&gt;&lt;/span&gt;&quot;,
             &quot;       {{value}}&quot;,
             &quot;       &lt;span class=&#x27;caret pull-right&#x27;&gt;&lt;/span&gt;&quot;,
-            &quot;       &lt;i class=&#x27;fa fa-square pull-right&#x27; style=&#x27;color: {{backgroundColor}}&#x27;&gt;&lt;/i&gt;&quot;,
             &quot;   &lt;/button&gt;&quot;,
             &quot;   &lt;ul class=&#x27;dropdown-menu&#x27; role=&#x27;menu&#x27;&gt;&quot;,
             &quot;       {{dropdownlist}}&quot;,
@@ -309,7 +316,7 @@ module Calendar {
             &quot;&lt;/div&gt;&quot;
         ].join(&quot;\n&quot;);
 
-        private static dropdownList: string = &quot;&lt;li data-value=&#x27;{{value}}&#x27;&gt;&lt;a href=&#x27;#&#x27;&gt;{{value}}&lt;i class=&#x27;fa fa-square pull-right&#x27; style=&#x27;color: {{backgroundColor}};&#x27;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;&quot;;
+        private static dropdownList: string = &quot;&lt;li data-value=&#x27;{{value}}&#x27;&gt;&lt;a href=&#x27;#&#x27;&gt;&lt;span class=&#x27;list-square&#x27; style=&#x27;color: {{backgroundColor}};&#x27;&gt;&lt;/span&gt; {{value}}&lt;/a&gt;&lt;/li&gt;&quot;;
 
         /**
          * Whole modal dialog html template.
@@ -321,27 +328,24 @@ module Calendar {
         static template(): string {
             return  [
                 &quot;&lt;div class=&#x27;modal calendar-modal&#x27; tabindex=&#x27;-1&#x27; role=&#x27;dialog&#x27; aria-hidden=&#x27;true&#x27;&gt;&quot;,
-                &quot;  &lt;div class=&#x27;modal-dialog modal-sm&#x27;&gt;&quot;,
+                &quot;  &lt;div class=&#x27;modal-dialog&#x27;&gt;&quot;,
                 &quot;    &lt;div class=&#x27;modal-content&#x27;&gt;&quot;,
                 &quot;       &lt;div class=&#x27;modal-header&#x27;  style=&#x27;border-bottom: none;&#x27;&gt;&quot;,
                 &quot;           &lt;button type=&#x27;button&#x27; class=&#x27;close&#x27; data-dismiss=&#x27;modal&#x27; aria-label=&#x27;Close&#x27;&gt;&lt;span aria-hidden=&#x27;true&#x27;&gt;&amp;times;&lt;/span&gt;&lt;/button&gt;&quot;,
+                &quot;           &lt;h4 class=&#x27;modal-title&#x27;&gt;{{title}}&lt;/h4&gt;&quot;,
                 &quot;       &lt;/div&gt;&quot;,
                 &quot;       &lt;div class=&#x27;modal-body&#x27; style=&#x27;padding-top: 0;&#x27;&gt;&quot;,
-                &quot;           &lt;div class=&#x27;row&#x27; style=&#x27;padding-bottom: 15px;&#x27;&gt;&quot;,
-                &quot;               &lt;div class=&#x27;col-md-12&#x27;&gt;&lt;i class=&#x27;fa fa-calendar-o&#x27;&gt;&lt;/i&gt; {{start}}&lt;/div&gt;&quot;,
-                &quot;               &lt;div class=&#x27;col-md-12&#x27;&gt;&lt;i class=&#x27;fa fa-calendar-o&#x27;&gt;&lt;/i&gt; {{end}}&lt;/div&gt;&quot;,
-                &quot;           &lt;/div&gt;&quot;,
                 &quot;           &lt;div class=&#x27;row&#x27; style=&#x27;padding-bottom: 15px;&#x27;&gt;&quot;,
                 &quot;               &lt;div class=&#x27;col-md-12&#x27;&gt;{{dropdown}}&lt;/div&gt;&quot;,
                 &quot;           &lt;/div&gt;&quot;,
                 &quot;           &lt;form&gt;&quot;,
                 &quot;               &lt;div class=&#x27;form-group&#x27;&gt;&quot;,
                 &quot;                   &lt;div&gt;{{messageSentence}}&lt;/div&gt;&quot;,
-                &quot;                   &lt;input type=&#x27;text&#x27; name=&#x27;userMessage&#x27; class=&#x27;form-control&#x27;&gt;&quot;,
+                &quot;                   &lt;textarea name=&#x27;userMessage&#x27; class=&#x27;form-control&#x27; rows=&#x27;3&#x27;&gt;&lt;/textarea&gt;&quot;,
                 &quot;               &lt;/div&gt;&quot;,
                 &quot;               &lt;div class=&#x27;form-group&#x27;&gt;&quot;,
                 &quot;                   &lt;div&gt;{{noteSentence}}&lt;/div&gt;&quot;,
-                &quot;                   &lt;input type=&#x27;text&#x27; name=&#x27;privateNote&#x27; class=&#x27;form-control&#x27;&gt;&quot;,
+                &quot;                   &lt;textarea name=&#x27;privateNote&#x27; class=&#x27;form-control&#x27; rows=&#x27;3&#x27;&gt;&lt;/textarea&gt;&quot;,
                 &quot;               &lt;/div&gt;&quot;,
                 &quot;           &lt;/form&gt;&quot;,
                 &quot;           &lt;div class=&#x27;row&#x27;&gt;&quot;,

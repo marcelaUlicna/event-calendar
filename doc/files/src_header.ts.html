@@ -130,7 +130,6 @@ module Calendar {
             return $(&quot;&lt;div /&gt;&quot;)
                         .addClass(&quot;col-md-12&quot;)
                         .append($(&quot;&lt;div /&gt;&quot;)
-                            .addClass(&quot;pull-left&quot;)
                             .append(this.renderButton(&quot;prev&quot;))
                             .append(this.renderTitle())
                             .append(this.renderButton(&quot;next&quot;)));
@@ -145,16 +144,17 @@ module Calendar {
          */
         renderButton(direction: string): JQuery {
             var yearValue = direction === &quot;prev&quot; ? this.year - 1 : this.year + 1,
-                iconClass = direction === &quot;prev&quot; ? &quot;fa fa-chevron-left&quot; : &quot;fa fa-chevron-right&quot;;
+                previousElement: JQuery = $(&quot;&lt;span&gt;&amp;laquo;&lt;/span&gt;&quot;),
+                nextElement: JQuery = $(&quot;&lt;span&gt;&amp;raquo;&lt;/span&gt;&quot;);
 
             return $(&quot;&lt;div /&gt;&quot;)
-                        .addClass(&quot;btn btn-default year-direction&quot;)
-                        .attr(&quot;type&quot;, &quot;button&quot;)
+                        .addClass(&quot;btn btn-link year-direction&quot;)
                         .attr(&quot;name&quot;, &quot;year&quot;)
                         .attr(&quot;data-direction&quot;, direction)
                         .attr(&quot;value&quot;, yearValue)
                         .append($(&quot;&lt;span /&gt;&quot;)
-                            .addClass(iconClass));
+                            .addClass(&quot;direction-sign&quot;)
+                            .append(direction === &quot;prev&quot; ? previousElement : nextElement));
         }
 
         /**

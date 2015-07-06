@@ -6,11 +6,24 @@
 .calendar-wrapper .calendar-header {
   margin-top: 5px;
   margin-bottom: 5px;
+  text-align: center;
 }
 .calendar-wrapper .calendar-header .actual-year {
   display: inline-block;
   margin: 0 7px;
   font-size: 1.3em;
+}
+.calendar-wrapper .calendar-header .year-direction {
+  color: #333;
+  padding: 0;
+  vertical-align: inherit;
+}
+.calendar-wrapper .calendar-header .year-direction:hover {
+  color: #333;
+  text-decoration: none;
+}
+.calendar-wrapper .calendar-header .direction-sign {
+  font-size: 18px;
 }
 .calendar-modal .dropdown-toggle {
   width: 266px;
@@ -22,9 +35,19 @@
 .calendar-modal .dropdown-menu {
   width: 100%;
 }
-.calendar-modal .fa.fa-square {
-  margin-top: 3px;
+.calendar-modal .dropdown-menu li a {
+  padding-left: 12px;
+}
+.calendar-modal .list-square {
   margin-right: 5px;
+  display: inline-block;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transform: translate(0, 0);
+}
+.calendar-modal .list-square:before {
+  content: "\2589";
 }
 .calendar-table {
   margin-bottom: 15px;
@@ -42,6 +65,7 @@
 .calendar-table .calendar-header-month th {
   border-bottom: none;
   padding: 5px;
+  text-align: center;
 }
 .calendar-table .calendar-header-day {
   background-color: #f7f7f7;
@@ -50,18 +74,23 @@
   text-align: center;
   font-size: 75%;
   font-weight: normal;
-  color: #a8a8a8;
+  color: #555;
   border: none;
 }
 .calendar-table .css-today th {
   color: #ffffff;
 }
-.calendar-table .css-today.calendar-header-month,
-.calendar-table .css-today.today {
-  border: 2px solid red;
-}
 .calendar-table .css-today.calendar-header-day {
   background-color: #0093D2;
+}
+.calendar-table .css-today .today {
+  border: 2px solid red;
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  bottom: -1px;
+  padding-top: 2px;
 }
 .calendar-table .calendar-body > tr > td {
   text-align: center;
@@ -70,6 +99,7 @@
   padding: 2px;
   border: 1px solid #ddd;
   cursor: default;
+  position: relative;
 }
 .calendar-table .selected-day {
   background-color: #e6e6e6;

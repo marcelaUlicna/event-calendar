@@ -261,7 +261,7 @@
             "module": "Calendar",
             "namespace": "",
             "file": "src\\modal.ts",
-            "line": 216,
+            "line": 223,
             "description": "Static class which contains templates for modal dialog",
             "static": 1
         },
@@ -417,7 +417,7 @@
         },
         {
             "file": "src\\calendar.ts",
-            "line": 81,
+            "line": 83,
             "description": "Initializes default plugin settings.",
             "itemtype": "method",
             "name": "defaultSettings",
@@ -430,7 +430,7 @@
         },
         {
             "file": "src\\calendar.ts",
-            "line": 103,
+            "line": 105,
             "description": "Calls static method to mark cells with server data.",
             "itemtype": "method",
             "name": "setEventFormat",
@@ -439,7 +439,7 @@
         },
         {
             "file": "src\\calendar.ts",
-            "line": 114,
+            "line": 116,
             "description": "Initializes view with calendars.",
             "itemtype": "method",
             "name": "init",
@@ -448,7 +448,7 @@
         },
         {
             "file": "src\\calendar.ts",
-            "line": 135,
+            "line": 137,
             "description": "Destroys plugin and removes all event handlers.\n\n__Usage__:\n\n    $(\"#calendar\").eventCalendar.destroy();",
             "itemtype": "method",
             "name": "destroy",
@@ -457,7 +457,7 @@
         },
         {
             "file": "src\\calendar.ts",
-            "line": 151,
+            "line": 153,
             "description": "Changes the year of calendar and calls method\nwhich obtains new data for selected year.",
             "itemtype": "method",
             "name": "changeYear",
@@ -473,7 +473,7 @@
         },
         {
             "file": "src\\calendar.ts",
-            "line": 171,
+            "line": 179,
             "description": "Sets data for selected year and calls rerendering calendar view\nand invokes method to mark cells according to server data.",
             "itemtype": "method",
             "name": "setSelectedYear",
@@ -769,7 +769,7 @@
         },
         {
             "file": "src\\header.ts",
-            "line": 64,
+            "line": 63,
             "description": "Creates navigation button.",
             "itemtype": "method",
             "name": "renderButton",
@@ -956,7 +956,7 @@
         },
         {
             "file": "src\\modal.ts",
-            "line": 85,
+            "line": 93,
             "description": "Renders modal dialog and binds all necessary events. After closing modal dialog\nit is removed from DOM.",
             "itemtype": "method",
             "name": "show",
@@ -969,7 +969,7 @@
         },
         {
             "file": "src\\modal.ts",
-            "line": 109,
+            "line": 117,
             "description": "Resolves button click from dialog and calls appropriate method.",
             "itemtype": "method",
             "name": "click",
@@ -985,7 +985,7 @@
         },
         {
             "file": "src\\modal.ts",
-            "line": 120,
+            "line": 128,
             "description": "jQuery keyup() event for enter and escape key.\nEnter key confirms dialog and escape key closes dialog\nwithout changes.",
             "itemtype": "method",
             "name": "modalKeyup",
@@ -1001,7 +1001,7 @@
         },
         {
             "file": "src\\modal.ts",
-            "line": 137,
+            "line": 145,
             "description": "Sets dialogResult to `DialogResult.Submit`.",
             "itemtype": "method",
             "name": "btnSubmit",
@@ -1017,7 +1017,7 @@
         },
         {
             "file": "src\\modal.ts",
-            "line": 148,
+            "line": 156,
             "description": "Sets dialogResult to `DialogResult.Delete`.",
             "itemtype": "method",
             "name": "btnDelete",
@@ -1033,7 +1033,7 @@
         },
         {
             "file": "src\\modal.ts",
-            "line": 159,
+            "line": 167,
             "description": "Sets dialogResult to `DialogResult.Cancel`.",
             "itemtype": "method",
             "name": "btnClose",
@@ -1049,7 +1049,7 @@
         },
         {
             "file": "src\\modal.ts",
-            "line": 170,
+            "line": 178,
             "description": "Closes modal dialog.",
             "itemtype": "method",
             "name": "close",
@@ -1058,7 +1058,7 @@
         },
         {
             "file": "src\\modal.ts",
-            "line": 179,
+            "line": 187,
             "description": "Applies changes after selecting some event from list component,\nsaves selected item to `dialogSettings` property and\nsets selected item to main button to reflect actual item.",
             "itemtype": "method",
             "name": "selectChange",
@@ -1074,7 +1074,7 @@
         },
         {
             "file": "src\\modal.ts",
-            "line": 199,
+            "line": 206,
             "description": "Saves input text to `dialogSettings` property.",
             "itemtype": "method",
             "name": "messageChanged",
@@ -1090,7 +1090,7 @@
         },
         {
             "file": "src\\modal.ts",
-            "line": 239,
+            "line": 246,
             "description": "Whole modal dialog html template.",
             "itemtype": "method",
             "name": "template",
@@ -1104,7 +1104,7 @@
         },
         {
             "file": "src\\modal.ts",
-            "line": 285,
+            "line": 289,
             "description": "Template for dropdown component with events.",
             "itemtype": "method",
             "name": "dropdownTemplate",
@@ -1313,7 +1313,7 @@
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src\\modal.ts:85"
+            "line": " src\\modal.ts:93"
         }
     ]
 }

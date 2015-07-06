@@ -27,10 +27,6 @@ $(function(){
 				configSelector = "localizationTab";
 				LocalizedCalendar();
 				break;
-			case "server":
-				configSelector = "serverTab";
-				ServerCalendar();
-				break;
 			case "documentation":
 				$(".calendarNote").hide();
 				Documentation();
@@ -83,29 +79,6 @@ $(function(){
         });
 
     }
-	
-	function ServerCalendar () {
-		var data = [];
-		moment.locale("en");
-
-		// get data from server
-		$.ajax("data/events.json")
-			.done(function(result) {
-				data = result;
-			})
-			.always(function(){
-				$("#eventCalendar").eventCalendar({
-					data: data,
-					events: [
-						{name: "Vacation", backgroundColor: "#5CB85C"},
-						{name: "Available", backgroundColor: "#5BC0DE"},
-						{name: "Business trip", backgroundColor: "#EC971F"},
-						{name: "Unavailable", backgroundColor: "#D9534F"},
-						{name: "Other event"}
-					]
-			    });
-		});	
-	}
 	
 	function Documentation () {
 		$("#eventCalendar").text("See documentation in new tab");

@@ -285,7 +285,7 @@ module Calendar {
             if(this.settings.submitData.process) {
                 this.settings.submitData.process(data);
             } else {
-                this.settings.submitData.apply(null, data);
+                this.settings.submitData.call(null, data);
             }
         }
 
@@ -302,7 +302,7 @@ module Calendar {
             if(this.settings.deleteData.process) {
                 this.settings.deleteData.process(data);
             } else {
-                this.settings.deleteData.apply(null, data);
+                this.settings.deleteData.call(null, data);
             }
         }
 

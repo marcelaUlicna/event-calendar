@@ -237,13 +237,18 @@ module Calendar {
                         if(cellDateIndex === 6 || cellDateIndex === 0) {
                             cell.addClass(&quot;weekend&quot;);
                         }
-                        // set today
-                        if(moment(cellDate).format(&quot;YYYY-MM-DD&quot;) === moment(this.today).format(&quot;YYYY-MM-DD&quot;)) {
-                            cell.addClass(&quot;css-today&quot;).addClass(&quot;today&quot;);
-                        }
 
                         // set date number
-                        cell.attr(&quot;data-year-day&quot;, moment(cellDate).dayOfYear()).text(index);
+                        cell.attr(&quot;data-year-day&quot;, moment(cellDate).dayOfYear());
+                        
+                        // set today classes or text for other days
+                        if(moment(cellDate).format(&quot;YYYY-MM-DD&quot;) === moment(this.today).format(&quot;YYYY-MM-DD&quot;)) {
+                            cell.addClass(&quot;css-today&quot;);
+                            cell.append($(&quot;&lt;span class=&#x27;today&#x27;&gt;&quot; + index + &quot;&lt;/span&gt;&quot;));
+                        } else {
+                            cell.text(index);
+                        }
+                        
                         // resolve month index
                         if (index &lt; daysInMonth) {
                             index++;

@@ -144,6 +144,8 @@ module Calendar {
 
             if(this.settings.locale) {
                 moment.locale(this.settings.locale);
+            } else {
+                moment.locale(&quot;en&quot;);
             }
 
             this.moveAction = this.settings.moveAction;
@@ -239,8 +241,14 @@ module Calendar {
                     .move(this.year, this.settings.data)
                     .always(() =&gt; this.setSelectedYear());
             } else {
-                this.moveAction.call(null, this.year);
-            }
+                $.when(this.moveAction.call(null, this.year))
+                    .done((result) =&gt; {
+                        this.setSelectedYear(result);
+                    })
+                    .fail(() =&gt; {
+                        this.setSelectedYear();
+                    });
+                }
         }
 
         /**
@@ -249,8 +257,8 @@ module Calendar {
          *
          * @method setSelectedYear
          */
-        setSelectedYear(): void {
-            this.settings.data = this.moveAction.data;
+        setSelectedYear(newData?: Array&lt;IData&gt;): void {
+            this.settings.data = newData ? newData : this.moveAction.data;
             this.init();
             this.events.setSelectedlYear(this.year);
             this.setEventFormat();

@@ -19,7 +19,8 @@ module.exports = function(app) {
 		// use mongoose to get all events in the database
 		Calendar.find(function(err, events) {
 
-			// if there is an error retrieving, send the error. nothing after res.send(err) will execute
+			// if there is an error retrieving, send the error. 
+			// nothing after res.send(err) will execute
 			if (err) {
 				res.send(err);
             }
@@ -38,7 +39,7 @@ module.exports = function(app) {
 		});
 	});
     
-	// 3. create events and send back all events after creation
+	// 3. create events and send back status or error message
 	app.post('/api/events', function(req, res) {
 		console.log("creating events from request", req.body.dataEvents);
 		
@@ -64,7 +65,7 @@ module.exports = function(app) {
 		});
 	});
 
-	// 4. delete events
+	// 4. delete events and send back status or error message
 	app.delete('/api/events', function(req, res) {
 		console.log("deleting events from request", req.body.dataEvents);
 		
@@ -81,7 +82,7 @@ module.exports = function(app) {
 		});
 	});
 
-	// application -------------------------------------------------------------
+	// application ======================================================
 	app.get('*', function(req, res) {
 		console.log("loading index page...");
 		res.sendfile('./public/index.html'); // load the single view file

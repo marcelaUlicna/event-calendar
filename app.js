@@ -23,13 +23,6 @@ $(function(){
                 {name: "Unavailable", backgroundColor: "#D9534F"},
                 {name: "Other"}
             ],
-            locale: "cs",
-            localization: {
-                messageSentence: "Informace (uživatel uvidí tuto zprávu)",
-                noteSentence: "Poznámka (pouze pro vás)",
-                submitButton: "Odeslat",
-                deleteButton: "Vymazat"
-            },
             moveAction: function (params) {
                 var url = "data/events" + params + ".json";
                 return $.ajax(url)

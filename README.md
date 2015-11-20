@@ -199,5 +199,3 @@ $("#calendar").eventCalendar({
 
 #### Note
 In `server` folder there is an example of saving data to database as well as javascript implementation of methods `moveAction`, `submitData` and `deleteData`.
-
-test
